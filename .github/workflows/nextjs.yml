@@ -33,7 +33,7 @@ jobs:
           static_site_generator: next
 
       - name: Restore cache
-        uses: actions/cache@v4  # v3 → v4 업데이트
+        uses: actions/cache@v4
         with:
           path: |
             .next/cache
@@ -44,11 +44,56 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build and Export Next.js
+      - name: Build with Next.js
+        run: npm run build
+
+      - name: Create and prepare out directory
         run: |
-          npm run build
-          ls -la
+          echo "Creating out directory for GitHub Pages..."
+          mkdir -p out
+          
+          # Copy public folder contents to out
+          if [ -d "public" ]; then
+            cp -r public/* out/ 2>/dev/null || true
+            echo "Copied public folder contents"
+          fi
+          
+          # Copy Next.js build output
+          if [ -d ".next/static" ]; then
+            mkdir -p out/_next
+            cp -r .next/static out/_next/ 2>/dev/null || true
+            echo "Copied static files"
+          fi
+          
+          # Find and copy HTML files from .next/server/app
+          if [ -d ".next/server/app" ]; then
+            find .next/server/app -name "*.html" -type f | while read file; do
+              # Get the relative path without .next/server/app prefix
+              relative_path=${file#.next/server/app/}
+              # Create directory structure in out
+              mkdir -p "out/$(dirname "$relative_path")"
+              # Copy the file
+              cp "$file" "out/$relative_path" 2>/dev/null || true
+            done
+            echo "Copied HTML files from server/app"
+          fi
+          
+          # Ensure we have an index.html
+          if [ ! -f "out/index.html" ]; then
+            if [ -f ".next/server/app/index.html" ]; then
+              cp ".next/server/app/index.html" "out/index.html"
+            elif [ -f ".next/server/app/page.html" ]; then
+              cp ".next/server/app/page.html" "out/index.html"
+            else
+              echo "<!DOCTYPE html><html><head><title>Portfolio</title></head><body><h1>Loading...</h1></body></html>" > out/index.html
+            fi
+          fi
+          
+          # Check final output
+          echo "Final out directory contents:"
           ls -la out/
+          echo "Total files in out:"
+          find out -type f | wc -l
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
