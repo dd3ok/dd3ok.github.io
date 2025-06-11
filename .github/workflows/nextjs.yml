@@ -28,7 +28,7 @@ jobs:
           cache: 'npm'
 
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5  # v4 → v5 업데이트
         with:
           static_site_generator: next
 
@@ -68,11 +68,8 @@ jobs:
           # Find and copy HTML files from .next/server/app
           if [ -d ".next/server/app" ]; then
             find .next/server/app -name "*.html" -type f | while read file; do
-              # Get the relative path without .next/server/app prefix
               relative_path=${file#.next/server/app/}
-              # Create directory structure in out
               mkdir -p "out/$(dirname "$relative_path")"
-              # Copy the file
               cp "$file" "out/$relative_path" 2>/dev/null || true
             done
             echo "Copied HTML files from server/app"
@@ -89,14 +86,11 @@ jobs:
             fi
           fi
           
-          # Check final output
           echo "Final out directory contents:"
           ls -la out/
-          echo "Total files in out:"
-          find out -type f | wc -l
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4  # v3 → v4 업데이트
         with:
           path: ./out
 
@@ -109,4 +103,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v3
+        uses: actions/deploy-pages@v4
