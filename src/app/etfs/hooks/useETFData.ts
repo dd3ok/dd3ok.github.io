@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import FinanceApiService from '../services/FinanceApiService';
 import { ETF, ETFFilters, ETFSortOptions } from '../types/etf';
-import { getUSETFData } from '../services/fallbackData';
 
 const INITIAL_FETCH_COUNT = 1200;
 const CACHE_DURATION = 60 * 1000;
@@ -36,16 +35,15 @@ export function useETFData({ apiKey }: UseETFDataProps): UseETFDataReturn {
         if (cached) {
             const { timestamp, data }: CachedData = JSON.parse(cached);
             if (Date.now() - timestamp < CACHE_DURATION) {
-                console.log('✅ 캐시된 데이터 사용');
                 setAllEtfData(data);
                 setIsLiveData(true);
                 setLoading(false);
                 setLastUpdated(new Date(timestamp));
+                setError(null);
                 return;
             }
         }
         setLoading(true);
-        console.log(`🚀 전체 ETF 데이터 수집 시작...`);
         try {
             const [detailsResponse, { etfs: koreaETFs }] = await Promise.all([
                 fetch('/data/etf-details.json'),
@@ -59,18 +57,19 @@ export function useETFData({ apiKey }: UseETFDataProps): UseETFDataReturn {
                 sector: etfDetails[etf.code]?.sector || '기타'
             }));
             const uniqueKoreaETFs = [...new Map(mergedKoreaETFs.map(etf => [etf.code, etf])).values()];
-            const usETFs = getUSETFData();
-            const combinedData = [...uniqueKoreaETFs, ...usETFs];
+            // 만약 미국 ETF도 API에서 받아오면 아래에 추가
+            // const usETFs = await apiService.getUSETFData();
+            // const combinedData = [...uniqueKoreaETFs, ...usETFs];
+            const combinedData = [...uniqueKoreaETFs]; // 미국 ETF 없음
             setAllEtfData(combinedData);
             const cacheData: CachedData = { timestamp: Date.now(), data: combinedData };
             sessionStorage.setItem(cacheKey, JSON.stringify(cacheData));
-            console.log('✅ 새로운 데이터 캐시 저장');
             setIsLiveData(true);
             setError(null);
         } catch (apiError) {
             setIsLiveData(false);
-            setError('API 연결 실패.');
-            setAllEtfData(getUSETFData());
+            setAllEtfData([]); // fallback 제거: 실패 시 데이터 없음!
+            setError('ETF 데이터를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.');
         } finally {
             setLoading(false);
             setLastUpdated(new Date());
@@ -96,35 +95,26 @@ export function useETFData({ apiKey }: UseETFDataProps): UseETFDataReturn {
                 etf => etf.country === 'US' || etf.tradingValue >= 500000000
             );
 
-        // --- 타입 안전한 정렬 코드 ---
         return [...dataToProcess].sort((a, b) => {
             const aValue = a[sortOptions.field];
             const bValue = b[sortOptions.field];
-
-            // 둘 다 undefined/누락 시는 동일 취급
             if (aValue === undefined || bValue === undefined) return 0;
-
-            // 둘 다 숫자인 경우 숫자비교
             if (typeof aValue === 'number' && typeof bValue === 'number') {
                 const result = aValue - bValue;
                 return sortOptions.direction === 'desc' ? -result : result;
             }
-            // 둘 다 문자열인 경우 localeCompare
             if (typeof aValue === 'string' && typeof bValue === 'string') {
                 const result = aValue.localeCompare(bValue, 'ko');
                 return sortOptions.direction === 'desc' ? -result : result;
             }
-            // 타입이 다르면(문자+숫자 등) 문자열 변환 후 비교(에러 방지)
             const result = String(aValue).localeCompare(String(bValue), 'ko');
             return sortOptions.direction === 'desc' ? -result : result;
         });
     }, [allEtfData, filters, sortOptions]);
 
-    // 국내/미국 ETF 개수
     const koreaCount = useMemo(() => allEtfData.filter(e => e.country === 'KR').length, [allEtfData]);
     const usCount = useMemo(() => allEtfData.filter(e => e.country === 'US').length, [allEtfData]);
 
-    // 최고 등락률/거래량 ETF
     const { highestDailyChangeETF, highestVolumeETF } = useMemo(() => {
         const koreaData = allEtfData.filter(e => e.country === 'KR');
         if (koreaData.length === 0)
