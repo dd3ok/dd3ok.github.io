@@ -1,6 +1,3 @@
-// /app/etfs/components/ETFCard.tsx
-import { Api } from '../types/api';
-
 interface ETFCardProps {
     etfs: Api[];
     onETFClick: (etf: Api) => void;
