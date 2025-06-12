@@ -99,7 +99,7 @@ export default function Navigation() {
             `}
         >
             <div className="container">
-                <div className="flex items-center justify-between h-16 px-4">
+                <div className="flex items-center justify-between h-16 px-6">
                     {/* Logo */}
                     <Link
                         href="/"
@@ -202,7 +202,7 @@ export default function Navigation() {
 
                     {/* Mobile Menu Button */}
                     <button
-                        className="md:hidden p-2"
+                        className="md:hidden p-2 mr-1"
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                     >
                         <div className="w-6 h-6 flex flex-col justify-center items-center">
