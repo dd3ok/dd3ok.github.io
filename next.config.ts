@@ -31,18 +31,27 @@ const nextConfig = {
     typescript: {
         ignoreBuildErrors: true,
     },
-
+    async headers() {
+        return [
+            {
+                source: '/api/:path*',
+                headers: [
+                    { key: 'Access-Control-Allow-Origin', value: '*' },
+                    { key: 'Access-Control-Allow-Methods', value: 'GET, POST, OPTIONS' },
+                    { key: 'Access-Control-Allow-Headers', value: 'Content-Type, Authorization' },
+                ],
+            },
+        ];
+    },
     // API 통합을 위한 설정 (향후 확장용)
     async rewrites() {
         return [
             {
-                source: '/api/:path*',
-                destination: process.env.NODE_ENV === 'development'
-                    ? 'http://localhost:3001/api/:path*'
-                    : 'https://your-api-domain.com/api/:path*'
-            }
-        ]
-    },
+                source: '/proxy/:path*',
+                destination: 'https://apis.data.go.kr/:path*',
+            },
+        ];
+    }
 }
 
 module.exports = nextConfig

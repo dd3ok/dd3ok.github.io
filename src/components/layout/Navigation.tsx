@@ -16,7 +16,7 @@ const navItems = [
         label: 'Services',
         type: 'dropdown',
         dropdown: [
-            { id: 'stocks', label: '주식 정보', path: '/stocks', icon: '📈' },
+            { id: 'etfs', label: 'Api 비교하기', path: '/etfs', icon: '📈' },
             { id: 'wedding', label: '결혼식 초대장', path: '/wedding', icon: '💒' },
             { id: 'tools', label: '개발 도구', path: '/tools', icon: '🛠️' }
         ]

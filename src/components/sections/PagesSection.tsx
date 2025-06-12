@@ -6,10 +6,10 @@ import Card from '@/components/ui/Card'
 
 const services = [
     {
-        title: '주식 정보',
+        title: 'Api 모아보기',
         description: '실시간 트렌딩 주식과 정책 수혜주 분석을 제공합니다',
         icon: '📈',
-        path: '/stocks',
+        path: '/etfs',
         features: ['실시간 주가', '트렌드 분석', '정책 수혜주'],
         color: 'from-blue-500 to-cyan-500'
     },
