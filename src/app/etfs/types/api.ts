@@ -1,4 +1,3 @@
-// /app/etfs/types/api.ts
 export interface ApiResponse {
     response: {
         header: {

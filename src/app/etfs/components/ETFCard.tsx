@@ -1,6 +1,8 @@
+import { ApiETFItem } from '../types/api';
+
 interface ETFCardProps {
-    etfs: Api[];
-    onETFClick: (etf: Api) => void;
+    etfs: ApiETFItem[];
+    onETFClick: (etf: ApiETFItem) => void;
 }
 
 export default function ETFCard({ etfs, onETFClick }: ETFCardProps) {
