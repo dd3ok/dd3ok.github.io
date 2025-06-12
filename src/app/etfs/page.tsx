@@ -34,7 +34,7 @@ export default function ETFsPage() {
         sortOptions,
         setSortOptions,
     } = useETFData({
-        apiKey: process.env.NEXT_PUBLIC_DATA_GO_KR_API_KEY!,
+        apiKey: 'UaBt2nqzn3pbDto2MjAkWkeBjsl3IuykuO7nPIZPvjxhFyqpxLdKRINzTbPWH1Bw8DAvQUs1udzMl8JdaznOAw==',
     });
 
     const handleCountryFilterChange = useCallback(
