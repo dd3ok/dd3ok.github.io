@@ -5,7 +5,7 @@ import { useETFData } from './hooks/useETFData';
 import ETFTable from './components/ETFTable';
 import StatCards from './components/StatCards';
 import FilterBar from './components/FilterBar';
-import { ETF, ETFSortOptions } from '../types/etf';
+import { ETF, ETFSortOptions } from './types/etf';
 
 type SortField = keyof Pick<
     ETF,
@@ -69,10 +69,10 @@ export default function ETFsPage() {
 
     if (loading && filteredData.length === 0) {
         return (
-            <div className="flex justify-center items-center min-h-screen bg-slate-50">
-                <div className="text-center">
-                    <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-600"></div>
-                    <p className="mt-4 text-lg text-slate-700 font-medium">ETF 정보 센터를 불러오는 중...</p>
+            <div className="flex items-center justify-center min-h-screen bg-slate-50">
+                <div className="text-center w-full">
+                    <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-600 mx-auto"></div>
+                    <p className="mt-4 text-lg text-slate-700 font-medium">Loading ETF LIVE</p>
                 </div>
             </div>
         );
