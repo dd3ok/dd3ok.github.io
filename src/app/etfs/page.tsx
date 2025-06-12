@@ -5,7 +5,6 @@ import { useETFData } from './hooks/useETFData';
 import ETFTable from './components/ETFTable';
 import StatCards from './components/StatCards';
 import FilterBar from './components/FilterBar';
-import ETFModal from './components/ETFModal';
 import { ETF, ETFSortOptions } from '../types/etf';
 
 type SortField = keyof Pick<
@@ -133,9 +132,6 @@ export default function ETFsPage() {
                     </section>
                 </div>
             </main>
-
-            {/* ETF 상세 모달 */}
-            {selectedETF && <ETFModal etf={selectedETF} onClose={handleCloseModal} />}
         </div>
     );
 }
