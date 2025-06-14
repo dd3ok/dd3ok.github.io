@@ -3,7 +3,7 @@ import FinanceApiService from '../services/FinanceApiService';
 import { ETF, ETFFilters, ETFSortOptions } from '../types/etf';
 
 const INITIAL_FETCH_COUNT = 1200;
-const CACHE_DURATION = 60 * 1;
+const CACHE_DURATION = 60 * 1000;
 
 interface CachedData { timestamp: number; data: ETF[]; }
 interface EtfDetails { [code: string]: { provider: string; fee: number; sector: string; }; }
