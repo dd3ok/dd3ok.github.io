@@ -5,8 +5,12 @@ import './globals.css'  // 이 줄이 있는지 확인!
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-    title: 'dd3ok - Backend Engineer',
+    title: 'dd3ok',
     description: 'Backend Developer Portfolio',
+    icons: {
+        icon: '/favicon.ico',
+        apple: '/apple-icon.png'
+    },
 }
 
 export default function RootLayout({
