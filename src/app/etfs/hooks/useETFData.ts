@@ -7,7 +7,6 @@ const CACHE_DURATION = 60 * 1000;
 
 interface CachedData { timestamp: number; data: ETF[]; }
 interface EtfDetails { [code: string]: { provider: string; fee: number; sector: string; }; }
-interface UseETFDataProps { apiKey: string; }
 interface UseETFDataReturn {
     filteredData: ETF[]; loading: boolean; error: string | null; lastUpdated: Date | null; isLiveData: boolean;
     koreaCount: number; usCount: number;
@@ -18,7 +17,7 @@ interface UseETFDataReturn {
     filters: ETFFilters; sortOptions: ETFSortOptions;
 }
 
-export function useETFData({ apiKey }: UseETFDataProps): UseETFDataReturn {
+export function useETFData(): UseETFDataReturn {
     const [allEtfData, setAllEtfData] = useState<ETF[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -26,7 +25,7 @@ export function useETFData({ apiKey }: UseETFDataProps): UseETFDataReturn {
     const [isLiveData, setIsLiveData] = useState<boolean>(false);
     const [filters, setFilters] = useState<ETFFilters>({ country: 'KR', searchTerm: '', hideLowVolume: true });
     const [sortOptions, setSortOptions] = useState<ETFSortOptions>({ field: 'tradingValue', direction: 'desc' });
-    const apiService = useMemo(() => new FinanceApiService(apiKey), [apiKey]);
+    const apiService = useMemo(() => new FinanceApiService(), []);
 
     // API 데이터 fetch 및 캐시 관리
     const fetchETFData = useCallback(async () => {

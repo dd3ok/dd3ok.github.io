@@ -20,7 +20,7 @@ type SortField = keyof Pick<
 >;
 
 export default function ETFsPage() {
-    const [selectedETF, setSelectedETF] = useState<ETF | null>(null);
+    const [, setSelectedETF] = useState<ETF | null>(null);
     const {
         filteredData,
         loading,
@@ -33,9 +33,7 @@ export default function ETFsPage() {
         filters,
         sortOptions,
         setSortOptions,
-    } = useETFData({
-        apiKey: 'UaBt2nqzn3pbDto2MjAkWkeBjsl3IuykuO7nPIZPvjxhFyqpxLdKRINzTbPWH1Bw8DAvQUs1udzMl8JdaznOAw==',
-    });
+    } = useETFData();
 
     const handleCountryFilterChange = useCallback(
         (country: 'KR' | 'US') => {

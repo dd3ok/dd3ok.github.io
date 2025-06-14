@@ -1,13 +1,19 @@
 import {ETF} from '../types/etf';
 import {ApiResponse, ApiETFItem} from '../types/api';
+import { getEnvConfig } from '@/utils/EnvConfig';
 
 export default class FinanceApiService {
-    private readonly baseUrl = 'https://apis.data.go.kr/1160100/service/GetSecuritiesProductInfoService';
+    private readonly config = getEnvConfig()
+    private readonly baseUrl: string;
     private readonly apiKey: string;
 
-    constructor(apiKey: string) {
-        if (!apiKey) throw new Error('API 키가 제공되지 않았습니다.');
-        this.apiKey = apiKey;
+    constructor() {
+        this.baseUrl = this.config.etfApi.baseUrl
+        this.apiKey = this.config.etfApi.apiKey
+
+        if (!this.apiKey) {
+            console.warn('⚠️ ETF API 키가 설정되지 않았습니다. 폴백 데이터를 사용합니다.')
+        }
     }
 
     private getLatestTradingDay(): string {
