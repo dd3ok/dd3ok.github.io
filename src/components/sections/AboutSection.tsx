@@ -54,8 +54,8 @@ export default function AboutSection() {
                         </h3>
                         <div className="space-y-4 text-gray-600">
                             <p>
-                                백엔드 개발자로 시작했고 LLM과 MLOps에 관심이 있습니다,
-                                애플리케이션 개발과 운영에 전문성을 갖추고 있습니다.
+                                스프링 기반의 백엔드 서비스를 주로 담당했고 LLM에 관심이 있습니다.
+                                웹 애플리케이션 개발과 운영에 전문성을 갖추고 있습니다.
                             </p>
                             <p>
                                 특히 분산 시스템 아키텍처와 도메인 주도 설계(DDD)에 관심이 많으며,

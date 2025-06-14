@@ -10,8 +10,11 @@ export default function Footer() {
                     {/* 메인 소개 섹션 */}
                     <div className="md:col-span-2">
                         <h3 className="text-xl font-bold mb-4">dd3ok</h3>
-                        <p className="text-gray-400 leading-relaxed max-w-md">
+                        <p className="text-gray-400 leading-relaxed max-w-md mb-3">
                             확장 가능한 시스템과 효율적인 서비스를 구축하는 개발자입니다.
+                        </p>
+                        <p className="text-gray-500 text-sm leading-relaxed max-w-md">
+                            성능 최적화, 대용량 트래픽 처리, 분산환경 아키텍쳐에 관심이 많습니다.
                         </p>
                     </div>
 
@@ -37,15 +40,6 @@ export default function Footer() {
                             </li>
                             <li>
                                 <a
-                                    href="mailto:hwick@kakao.com"
-                                    className="hover:text-white transition-colors inline-flex items-center group"
-                                >
-                                    <span className="mr-3 text-lg group-hover:scale-110 transition-transform">✉️</span>
-                                    Email
-                                </a>
-                            </li>
-                            <li>
-                                <a
                                     href="https://linkedin.com/in/dd3ok"
                                     target="_blank"
                                     rel="noopener noreferrer"
@@ -53,6 +47,15 @@ export default function Footer() {
                                 >
                                     <span className="mr-3 text-lg group-hover:scale-110 transition-transform">💼</span>
                                     LinkedIn
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href="mailto:hwick@kakao.com"
+                                    className="hover:text-white transition-colors inline-flex items-center group"
+                                >
+                                    <span className="mr-3 text-lg group-hover:scale-110 transition-transform">✉️</span>
+                                    Email
                                 </a>
                             </li>
                         </ul>
@@ -66,7 +69,7 @@ export default function Footer() {
                             &copy; {currentYear} dd3ok. All rights reserved.
                         </p>
                         <div className="flex space-x-4 text-sm text-gray-500">
-                            <span>Made with ❤️ in Korea</span>
+                            <span>Made with Claude & Gemini</span>
                         </div>
                     </div>
                 </div>

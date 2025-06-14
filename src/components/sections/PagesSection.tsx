@@ -11,7 +11,9 @@ const services = [
         icon: '📈',
         path: '/etfs',
         features: ['실시간 ETF', '트렌드 분석', '정책 수혜주'],
-        color: 'from-blue-500 to-cyan-500'
+        color: 'from-blue-500 to-cyan-500',
+        buttonText: '서비스 이용하기',
+        buttonType: 'service' // 서비스 타입
     },
     {
         title: '모바일 청첩장',
@@ -19,17 +21,22 @@ const services = [
         icon: '🤵‍♂️❤️👰‍♀️',
         path: '/wedding',
         features: ['모바일 청첩장', '포토 갤러리', '방명록'],
-        color: 'from-pink-500 to-rose-500'
+        color: 'from-pink-500 to-rose-500',
+        buttonText: '서비스 이용하기',
+        buttonType: 'service' // 서비스 타입
     },
     {
-        title: '개발 도구',
-        description: '일상적인 개발 작업을 위한 유용한 도구 모음입니다',
-        icon: '🛠️',
-        path: '/tools',
-        features: ['JSON Formatter', 'Base64 변환', '색상 팔레트'],
-        color: 'from-purple-500 to-indigo-500'
+        title: '코드리뷰 AI',
+        description: 'PR을 올려 gemini 한테 리뷰를 받자',
+        icon: '🤖',
+        path: 'https://github.com/dd3ok/no-pair-prgm',
+        features: ['gemini api 연동', 'Github PR 자동 코드리뷰'],
+        color: 'from-purple-500 to-indigo-500',
+        buttonText: 'Repository 바로가기',
+        buttonType: 'repo' // 레포지토리 타입
     }
 ]
+
 
 export default function ServicesSection() {
     const [isVisible, setIsVisible] = useState(false)
@@ -72,7 +79,7 @@ export default function ServicesSection() {
                     {services.map((service, index) => (
                         <Card
                             key={service.title}
-                            className={`group hover:shadow-2xl transition-all duration-500 overflow-hidden ${
+                            className={`group hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col ${
                                 isVisible ? 'scale-in visible' : 'scale-in'
                             }`}
                             style={{ transitionDelay: `${index * 200}ms` }}
@@ -90,7 +97,8 @@ export default function ServicesSection() {
                                 <div className="absolute bottom-4 left-4 w-16 h-16 bg-white/10 rounded-full blur-xl" />
                             </div>
 
-                            <div className="p-6">
+                            {/* 컨텐츠 영역 - flex-grow로 공간 확장 */}
+                            <div className="p-6 flex flex-col flex-grow">
                                 <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
                                     {service.title}
                                 </h3>
@@ -99,8 +107,8 @@ export default function ServicesSection() {
                                     {service.description}
                                 </p>
 
-                                {/* 기능 목록 */}
-                                <div className="mb-6">
+                                {/* 기능 목록 - flex-grow로 남은 공간 차지 */}
+                                <div className="mb-6 flex-grow">
                                     <ul className="space-y-2">
                                         {service.features.map((feature, idx) => (
                                             <li key={idx} className="flex items-center text-sm text-gray-600">
@@ -113,35 +121,22 @@ export default function ServicesSection() {
                                     </ul>
                                 </div>
 
-                                {/* CTA 버튼 */}
-                                <Link
-                                    href={service.path}
-                                    className="inline-flex items-center justify-center w-full px-4 py-3 bg-gray-900 text-white rounded-lg hover:bg-blue-600 transition-all duration-300 group-hover:scale-105 font-medium"
-                                >
-                                    서비스 이용하기
-                                    <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </Link>
+                                <div className="mt-auto">
+                                    <Link
+                                        href={service.path}
+                                        className={`inline-flex items-center justify-center w-full px-4 py-3 rounded-lg transition-all duration-300 group-hover:scale-105 font-medium bg-gray-900 text-white hover:bg-blue-600'}`}
+                                        target='_blank'
+                                    >
+                                        {service.buttonText}
+                                        <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                                        </svg>
+                                    </Link>
+                                </div>
                             </div>
                         </Card>
                     ))}
                 </div>
-
-                {/* 추가 CTA */}
-                {/*<div className={`text-center mt-12 ${isVisible ? 'fade-in visible' : 'fade-in'}`} style={{ transitionDelay: '600ms' }}>*/}
-                {/*    <p className="text-gray-600 mb-6">*/}
-                {/*        더 많은 도구와 서비스가 곧 추가될 예정입니다*/}
-                {/*    </p>*/}
-                {/*    <div className="inline-flex items-center px-6 py-3 bg-white rounded-lg shadow-md">*/}
-                {/*        <span className="text-sm text-gray-500">개발 중</span>*/}
-                {/*        <div className="ml-3 flex space-x-1">*/}
-                {/*            <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>*/}
-                {/*            <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>*/}
-                {/*            <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>*/}
-                {/*        </div>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
             </div>
         </section>
     )

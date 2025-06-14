@@ -17,8 +17,8 @@ const navItems = [
         type: 'dropdown',
         dropdown: [
             { id: 'etfs', label: 'ETF LIVE', path: '/etfs', icon: '📈' },
-            { id: 'wedding', label: '결혼식 초대장', path: '/wedding', icon: '💒' },
-            { id: 'tools', label: '개발 도구', path: '/tools', icon: '🛠️' }
+            { id: 'wedding', label: '모바일 청첩장', path: '/wedding', icon: '🧑‍❤️‍👩' },
+            { id: 'no-pair-prgm', label: '코드리뷰 AI', path: '/nopairprgm', icon: '🤖' }
         ]
     },
     { id: 'contact', label: 'Contact', type: 'section' }

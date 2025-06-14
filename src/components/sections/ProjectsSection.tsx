@@ -10,7 +10,7 @@ const projects = [
         title: 'ESM+ 부정로그인탐지(ATO) 연동/개발',
         description: 'ATO 솔루션 도입을 위한 협의, 설계, 개발을 담당했습니다.',
         tech: ['.NET', 'Spring Boot', 'MSSQL', 'Redis', 'jQuery', 'Kafka'],
-        image: '/projects/esm-signin.png',
+        image: '/image/projects/esm-signin.png',
         github: '#',
         demo: 'https://signin.esmplus.com'
     },
@@ -18,7 +18,7 @@ const projects = [
         title: 'ESM+ 판매자 가입 개선',
         description: '신규 판매자 가입시 지마켓/옥션 동시가입 및 ESM 가입프로세스 개선 작업입니다.',
         tech: ['.NET', 'Spring Boot', 'Spring Batch', 'MSSQL'],
-        image: '/projects/esm-signup.png',
+        image: '/image/projects/esm-signup.png',
         github: '#',
         demo: 'https://signup.esmplus.com/signup/seller'
     },
@@ -26,7 +26,7 @@ const projects = [
         title: 'ESM+ 로그인 및 인증 서비스 개발',
         description: '모놀리식 서비스였던 ESM+의 MSA화를 위해 로그인 서비스를 닷넷에서 스프링으로 마이그레이션했습니다.',
         tech: ['Spring Boot', 'MSSQL', 'Redis', 'Kafka'],
-        image: '/projects/esm-signin.png',
+        image: '/image/projects/esm-signin.png',
         github: '#',
         demo: 'https://signin.esmplus.com'
     },
@@ -34,7 +34,7 @@ const projects = [
         title: 'ESM+ 슈퍼딜/올킬 신청 프로세스',
         description: '판매자가 슈퍼딜/올킬 직접 신청할 수 있는 프로세스이며 프론트와 백엔드 모두 담당했습니다.',
         tech: ['Spring Boot', 'MSSQL', 'Next.js', 'React'],
-        image: '/projects/esm-seller-deal.png',
+        image: '/image/projects/esm-seller-deal.png',
         github: '#',
         demo: 'https://signin.esmplus.com'
     },
@@ -42,7 +42,7 @@ const projects = [
         title: 'ESM+ 카테고리 담당자 관리',
         description: 'ESM+ 카테고리와 영업 담당자와 매칭 및 관리 프로젝트로 백엔드 전체와 어드민 프론트 개발을 했습니다.',
         tech: ['Spring Boot', 'MSSQL', 'Redis', 'Spring Batch', 'Vue'],
-        image: '/projects/esm-category-manager.png',
+        image: '/image/projects/esm-category-manager.png',
         github: '#',
         demo: 'https://signin.esmplus.com'
     },
@@ -50,9 +50,17 @@ const projects = [
         title: '판매자 관련 API, Gateway 담당 및 안정화',
         description: '판매자 정보, QA, 공지사항 등 판매자 관련 API와 Gateway 서버 안정화를 담당했습니다.',
         tech: ['Spring Boot', 'Spring Cloud', 'MSSQL', 'Redis', 'Kafka', 'Next.js', 'React'],
-        image: '/projects/esm-etapi.png',
+        image: '/image/projects/esm-etapi.png',
         github: '#',
         demo: 'https://etapi.gmarket.com/pages/API-%EA%B0%80%EC%9D%B4%EB%93%9C'
+    },
+    {
+        title: '삼성전자 입찰견적시스템(BQMS) MRO 몰',
+        description: '삼성 임직원들을 위한 B2B MRO 몰 서비스를 개발/운영했습니다.',
+        tech: ['Spring', 'Oracle', 'Mybatis', 'jQuery', 'SOAP'],
+        image: '/image/projects/sec-bqms.png',
+        github: '#',
+        demo: 'https://www.sec-bqms.com/bqms/partnerLogin/anonymous/loginPage.do?_frameF=true'
     }
 ]
 
