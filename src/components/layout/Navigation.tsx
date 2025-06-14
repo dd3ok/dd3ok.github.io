@@ -13,7 +13,7 @@ const navItems = [
     { id: 'experience', label: 'Experience', type: 'section' },
     {
         id: 'services',
-        label: 'Services',
+        label: 'Toys',
         type: 'dropdown',
         dropdown: [
             { id: 'etfs', label: 'ETF LIVE', path: '/etfs', icon: '📈' },

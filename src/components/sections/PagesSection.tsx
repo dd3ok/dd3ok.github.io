@@ -68,7 +68,7 @@ export default function ServicesSection() {
             <div className="container">
                 <div className={`text-center mb-16 ${isVisible ? 'fade-in visible' : 'fade-in'}`}>
                     <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                        Learn & Studying
+                        Toys
                     </h2>
                     <p className="text-lg text-gray-600 max-w-2xl mx-auto">
                         개인적인 페이지와 토이프로젝트 repository입니다

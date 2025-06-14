@@ -4,7 +4,7 @@ export function useActiveSection() {
     const [activeSection, setActiveSection] = useState('')
 
     useEffect(() => {
-        const sections = ['hero', 'about', 'projects', 'experience', 'contact']
+        const sections = ['hero', 'about', 'projects', 'experience', 'services', 'contact']
 
         const handleScroll = () => {
             const scrollPosition = window.scrollY + 100
