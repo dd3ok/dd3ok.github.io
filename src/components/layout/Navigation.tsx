@@ -9,8 +9,8 @@ import { useActiveSection } from '@/hooks/useActiveSection'
 const navItems = [
     { id: 'hero', label: 'Home', type: 'section' },
     { id: 'about', label: 'About', type: 'section' },
-    { id: 'projects', label: 'Projects', type: 'section' },
     { id: 'experience', label: 'Experience', type: 'section' },
+    { id: 'projects', label: 'Projects', type: 'section' },
     {
         id: 'services',
         label: 'Toys',

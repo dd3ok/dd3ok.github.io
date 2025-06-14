@@ -51,7 +51,7 @@ export default function ExperienceSection() {
         <section
             id="experience"
             ref={sectionRef}
-            className="section-padding bg-white"
+            className="section-padding bg-gray-50"
         >
             <div className="container">
                 <div className={`text-center mb-16 ${isVisible ? 'fade-in visible' : 'fade-in'}`}>
@@ -80,7 +80,7 @@ export default function ExperienceSection() {
                             {/* 타임라인 도트 - 정확한 중앙 정렬 */}
                             <div className="absolute left-3 top-8 w-4 h-4 bg-blue-600 rounded-full border-4 border-white shadow-lg" />
 
-                            <div className="bg-gray-50 rounded-lg p-6">
+                            <div className="bg-white rounded-lg p-6 shadow-sm">
                                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
                                     <div>
                                         <h3 className="text-xl font-bold text-gray-900">

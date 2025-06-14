@@ -113,7 +113,7 @@ export default function ProjectsSection() {
             <section
                 id="projects"
                 ref={sectionRef}
-                className="section-padding bg-gray-50"
+                className="section-padding bg-white"
             >
                 <div className="container">
                     <div className={`text-center mb-16 ${isVisible ? 'fade-in visible' : 'fade-in'}`}>
@@ -193,7 +193,7 @@ export default function ProjectsSection() {
                                             size="sm"
                                             onClick={() => window.open(project.demo, '_blank')}
                                         >
-                                            방문하기
+                                            Live Demo
                                         </Button>
                                     </div>
                                 </div>
