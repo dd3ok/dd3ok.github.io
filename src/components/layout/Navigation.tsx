@@ -19,7 +19,7 @@ const navItems = [
         dropdown: [
             { id: 'etfs', label: 'ETF LIVE', path: '/etfs', icon: '📈' },
             { id: 'wedding', label: '모바일 청첩장', path: '/wedding', icon: '🧑‍❤️‍👩' },
-            { id: 'no-pair-prgm', label: '코드리뷰 AI', path: '/nopairprgm', icon: '🤖' }
+            { id: 'nopairprgm', label: '코드리뷰 AI', path: 'https://github.com/dd3ok/no-pair-prgm', icon: '🤖' }
         ]
     },
     { id: 'contact', label: 'Contact', type: 'section' }
