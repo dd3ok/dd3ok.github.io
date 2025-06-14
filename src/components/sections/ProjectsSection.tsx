@@ -193,7 +193,7 @@ export default function ProjectsSection() {
                                             size="sm"
                                             onClick={() => window.open(project.demo, '_blank')}
                                         >
-                                            Live Demo
+                                            방문하기
                                         </Button>
                                     </div>
                                 </div>
