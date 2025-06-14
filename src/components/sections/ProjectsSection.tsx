@@ -55,8 +55,8 @@ const projects = [
         demo: 'https://etapi.gmarket.com/pages/API-%EA%B0%80%EC%9D%B4%EB%93%9C'
     },
     {
-        title: '삼성전자 입찰견적시스템(BQMS) MRO 몰',
-        description: '삼성 임직원들을 위한 B2B MRO 몰 서비스를 개발/운영했습니다.',
+        title: '삼성전자 입찰견적관리시스템(BQMS) MRO 몰',
+        description: '삼성 임직원들을 위한 B2B 서비스로 결제를 제외한 상품부터 정산까지 개발/운영했습니다.',
         tech: ['Spring', 'Oracle', 'Mybatis', 'jQuery', 'SOAP'],
         image: '/image/projects/sec-bqms.png',
         github: '#',
@@ -193,7 +193,7 @@ export default function ProjectsSection() {
                                             size="sm"
                                             onClick={() => window.open(project.demo, '_blank')}
                                         >
-                                            Live Demo
+                                            방문하기
                                         </Button>
                                     </div>
                                 </div>
