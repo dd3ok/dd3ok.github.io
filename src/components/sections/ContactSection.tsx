@@ -337,12 +337,11 @@ export default function ContactSection() {
                                         </div>
                                     )}
 
-                                    <Button
+                                    {/* 제출 버튼 - HTML button 사용 */}
+                                    <button
                                         type="submit"
-                                        variant="primary"
-                                        size="lg"
-                                        className="w-full"
                                         disabled={isSubmitting}
+                                        className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                                     >
                                         {isSubmitting ? (
                                             <div className="flex items-center justify-center">
@@ -352,7 +351,7 @@ export default function ContactSection() {
                                         ) : (
                                             '메시지 보내기'
                                         )}
-                                    </Button>
+                                    </button>
                                 </form>
                             </div>
                         </div>
