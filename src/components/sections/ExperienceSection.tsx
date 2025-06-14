@@ -12,7 +12,7 @@ const experiences = [
             'ESM+ 슈퍼딜/올킬 신청 및 관리',
             'ESM+ 카테고리-카테고리 담당자 매칭',
             'ESM+ QA/공지/판매자정보 관리/안정화',
-            'ESM+ Gateway 관리/안정화'
+            '판매자 관련 API 및 Gateway 관리/안정화'
         ]
     },
     {
