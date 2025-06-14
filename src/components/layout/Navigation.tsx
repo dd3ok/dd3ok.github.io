@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useActiveSection } from '@/hooks/useActiveSection'
 
@@ -103,9 +104,17 @@ export default function Navigation() {
                     {/* Logo */}
                     <Link
                         href="/"
-                        className="font-bold text-xl cursor-pointer hover:scale-105 transition-transform"
+                        className="flex items-center space-x-2 md:space-x-3 cursor-pointer hover:scale-105 transition-transform"
                     >
-                        <span className="text-blue-600">dd3ok</span>
+                        <Image
+                            src="/logo.png"
+                            alt="dd3ok 로고"
+                            width={32}
+                            height={32}
+                            className="w-8 h-8 md:w-10 md:h-10 rounded-lg"
+                            priority
+                        />
+                        <span className="font-bold text-lg md:text-xl text-blue-600">dd3ok</span>
                     </Link>
 
                     {/* Desktop Menu */}
