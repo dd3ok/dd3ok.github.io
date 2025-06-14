@@ -66,11 +66,11 @@ export default function HeroSection() {
                     </div>
 
                     {/* Scroll Indicator */}
-                    <div className={`absolute bottom-8 left-1/2 transform -translate-x-1/2 transition-all duration-1000 delay-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
-                        <div className="w-6 h-10 border-2 border-gray-300 rounded-full flex justify-center">
-                            <div className="w-1 h-3 bg-gray-300 rounded-full mt-2 animate-bounce" />
-                        </div>
-                    </div>
+                    {/*<div className={`absolute bottom-8 left-1/2 transform -translate-x-1/2 transition-all duration-1000 delay-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>*/}
+                    {/*    <div className="w-6 h-10 border-2 border-gray-300 rounded-full flex justify-center">*/}
+                    {/*        <div className="w-1 h-3 bg-gray-300 rounded-full mt-2 animate-bounce" />*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
                 </div>
             </div>
         </section>

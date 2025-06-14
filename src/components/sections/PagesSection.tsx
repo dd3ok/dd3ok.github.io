@@ -6,19 +6,19 @@ import Card from '@/components/ui/Card'
 
 const services = [
     {
-        title: 'Api 모아보기',
-        description: '실시간 트렌딩 주식과 정책 수혜주 분석을 제공합니다',
+        title: 'ETF LIVE',
+        description: '국내/미국 ETF의 실시간 정보를 한눈에 비교하세요',
         icon: '📈',
         path: '/etfs',
-        features: ['실시간 주가', '트렌드 분석', '정책 수혜주'],
+        features: ['실시간 ETF', '트렌드 분석', '정책 수혜주'],
         color: 'from-blue-500 to-cyan-500'
     },
     {
-        title: '결혼식 초대장',
-        description: '특별한 날을 위한 디지털 초대장과 RSVP 시스템입니다',
-        icon: '💒',
+        title: '모바일 청첩장',
+        description: '미리보는 모바일 청첩장',
+        icon: '🤵‍♂️❤️👰‍♀️',
         path: '/wedding',
-        features: ['디지털 초대장', 'RSVP 관리', '포토 갤러리'],
+        features: ['모바일 청첩장', '포토 갤러리', '방명록'],
         color: 'from-pink-500 to-rose-500'
     },
     {
