@@ -45,6 +45,11 @@ jobs:
         run: npm ci
 
       - name: Build with Next.js
+        env:
+          NEXT_PUBLIC_DATA_ETF_API: ${{ secrets.DATA_ETF_API }}
+          NEXT_PUBLIC_DATA_ETF_API_KEY: ${{ secrets.DATA_ETF_API_KEY }}
+          NEXT_PUBLIC_PAGES_KOYEB_API: ${{ secrets.PAGES_KOYEB_API }}
+          NEXT_PUBLIC_PAGES_KOYEB_API_KEY: ${{ secrets.PAGES_KOYEB_API_KEY }}
         run: npm run build
 
       - name: Create and prepare out directory
