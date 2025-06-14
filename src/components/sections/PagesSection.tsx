@@ -13,7 +13,7 @@ const services = [
         features: ['실시간 ETF', '트렌드 분석', '정책 수혜주'],
         color: 'from-blue-500 to-cyan-500',
         buttonText: '서비스 이용하기',
-        buttonType: 'service' // 서비스 타입
+        buttonType: 'service'
     },
     {
         title: '모바일 청첩장',
@@ -23,17 +23,17 @@ const services = [
         features: ['모바일 청첩장', '포토 갤러리', '방명록'],
         color: 'from-pink-500 to-rose-500',
         buttonText: '서비스 이용하기',
-        buttonType: 'service' // 서비스 타입
+        buttonType: 'service'
     },
     {
         title: '코드리뷰 AI',
-        description: 'PR을 올려 gemini 한테 리뷰를 받자',
+        description: 'PR을 올려 Gemini 한테 리뷰를 받자',
         icon: '🤖',
         path: 'https://github.com/dd3ok/no-pair-prgm',
-        features: ['gemini api 연동', 'Github PR 자동 코드리뷰'],
+        features: ['Gemini api 연동', 'Github PR 자동 코드리뷰'],
         color: 'from-purple-500 to-indigo-500',
         buttonText: 'Repository 바로가기',
-        buttonType: 'repo' // 레포지토리 타입
+        buttonType: 'repo'
     }
 ]
 
