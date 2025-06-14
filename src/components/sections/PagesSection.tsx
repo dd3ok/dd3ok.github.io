@@ -34,6 +34,16 @@ const services = [
         color: 'from-purple-500 to-indigo-500',
         buttonText: 'Repository 바로가기',
         buttonType: 'repo'
+    },
+    {
+        title: '마인크래프트 HUD',
+        description: 'Minecraft Mod로 현재 내 상태를 표시합니다',
+        icon: '⛏️',
+        path: 'https://github.com/dd3ok/fabric-fpsxyzs',
+        features: ['Fabric API 사용', '정보별 업데이트 주기 최적화'],
+        color: 'from-green-500 to-emerald-500',
+        buttonText: 'Repository 바로가기',
+        buttonType: 'repo'
     }
 ]
 

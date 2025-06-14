@@ -19,7 +19,8 @@ const navItems = [
         dropdown: [
             { id: 'etfs', label: 'ETF LIVE', path: '/etfs', icon: '📈' },
             { id: 'wedding', label: '모바일 청첩장', path: '/wedding', icon: '🧑‍❤️‍👩' },
-            { id: 'nopairprgm', label: '코드리뷰 AI', path: 'https://github.com/dd3ok/no-pair-prgm', icon: '🤖' }
+            { id: 'nopairprgm', label: '코드리뷰 AI', path: 'https://github.com/dd3ok/no-pair-prgm', icon: '🤖' },
+            { id: 'fpsxyz', label: '마인크래프트 HUD', path: 'https://github.com/dd3ok/fabric-fpsxyz', icon: '⛏️' }
         ]
     },
     { id: 'contact', label: 'Contact', type: 'section' }
