@@ -24,7 +24,7 @@ export default function Footer() {
                     </div>
 
                     {/* 연결 섹션 */}
-                    <div>
+                    <div className="text-left md:text-left text-right pr-4 md:pr-0">
                         <h4 className="font-semibold mb-4">연결</h4>
                         <ul className="space-y-3 text-gray-400">
                             <li>
@@ -91,7 +91,7 @@ export default function Footer() {
 
                 {/* 하단 저작권 */}
                 <div className="border-t border-gray-800 pt-8">
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div className="flex flex-col md:flex-row md:justify-between md:items-center items-end gap-4 text-right md:text-left pr-4 md:pr-0">
                         <p className="text-gray-400 text-sm">
                             &copy; {currentYear} dd3ok. All rights reserved.
                         </p>
