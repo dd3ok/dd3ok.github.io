@@ -154,7 +154,7 @@ export default function ContactSection() {
         >
             <div className="container">
                 <div className={`text-center mb-12 md:mb-16 ${isVisible ? 'fade-in visible' : 'fade-in'}`}>
-                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 md:mb-4">
+                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-blue-600 mb-3 md:mb-4">
                         Contact
                     </h2>
                     <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto px-4 md:px-0">

@@ -30,7 +30,7 @@ const services = [
         description: 'PR을 올려 Gemini 한테 리뷰를 받자',
         icon: '🤖',
         path: 'https://github.com/dd3ok/no-pair-prgm',
-        features: ['Gemini api 연동', 'Github PR 자동 코드리뷰'],
+        features: ['Gemini API 연동', 'Github PR 자동 코드리뷰'],
         color: 'from-purple-500 to-indigo-500',
         buttonText: 'Repository 바로가기',
         buttonType: 'repo'
@@ -77,7 +77,7 @@ export default function ServicesSection() {
         >
             <div className="container">
                 <div className={`text-center mb-16 ${isVisible ? 'fade-in visible' : 'fade-in'}`}>
-                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                    <h2 className="text-3xl md:text-4xl font-bold text-blue-600 mb-4">
                         Toys
                     </h2>
                     <p className="text-lg text-gray-600 max-w-2xl mx-auto">
