@@ -8,8 +8,12 @@ export const metadata: Metadata = {
     title: 'dd3ok',
     description: 'Backend Developer Portfolio',
     icons: {
-        icon: '/src/app/icon.ico',
-        apple: 'src/app/icon.png',
+        icon: [
+            { url: '/favicon/icon.ico', sizes: '16x16' },
+            { url: '/favicon/icon.png', sizes: '32x32' },
+            { url: '/favicon/icon.png', sizes: '512x512' },
+        ],
+        apple: '/favicon/apple-icon.png',
     },
 }
 
