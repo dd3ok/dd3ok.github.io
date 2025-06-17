@@ -18,9 +18,10 @@ const navItems = [
         type: 'dropdown',
         dropdown: [
             { id: 'etfs', label: 'ETF LIVE', path: '/etfs', icon: '📈' },
-            { id: 'wedding', label: '모바일 청첩장', path: '/wedding', icon: '🧑‍❤️‍👩' },
+            { id: 'wedding', label: '모바일 청첩장(작업중)', path: '/wedding', icon: '🧑‍❤️‍👩' },
             { id: 'nopairprgm', label: '코드리뷰 AI', path: 'https://github.com/dd3ok/no-pair-prgm', icon: '🤖' },
-            { id: 'fpsxyz', label: '마인크래프트 HUD', path: 'https://github.com/dd3ok/fabric-fpsxyzs', icon: '⛏️' }
+            { id: 'fpsxyz', label: '마인크래프트 HUD', path: 'https://github.com/dd3ok/fabric-fpsxyzs', icon: '⛏️' },
+            { id: 'oauth', label: 'OAuth/토큰/세션', path: 'https://github.com/dd3ok/auth-service', icon: '🔐' }
         ]
     },
     { id: 'contact', label: 'Contact', type: 'section' }
@@ -224,7 +225,13 @@ export default function Navigation() {
                 </div>
 
                 {/* Mobile Menu */}
-                <div className={`md:hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'} overflow-hidden`}>
+                <div
+                    className={`
+                        md:hidden transition-all duration-300 ease-in-out 
+                        ${isMobileMenuOpen ? 'max-h-[75vh] opacity-100' : 'max-h-0 opacity-0'} 
+                        overflow-y-auto
+                    `}
+                >
                     <div className="px-4 py-2 space-y-1 bg-white/95 backdrop-blur-md border-t border-gray-100">
                         {navItems.map((item) => (
                             <div key={item.id}>
@@ -243,18 +250,12 @@ export default function Navigation() {
                                     </button>
                                 ) : (
                                     <>
+                                        {/* 🔥 여기가 수정된 부분입니다! */}
                                         <button
-                                            onClick={() => {
-                                                if (mobileServicesOpen) {
-                                                    setMobileServicesOpen(false)
-                                                    scrollToSection(item.id)
-                                                } else {
-                                                    setMobileServicesOpen(true)
-                                                }
-                                            }}
+                                            onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
                                             className={`
                                                 flex items-center justify-between w-full px-3 py-2 text-base font-medium rounded-lg transition-colors duration-200
-                                                ${activeSection === item.id
+                                                ${activeSection === item.id || mobileServicesOpen
                                                 ? 'text-blue-600 bg-blue-50'
                                                 : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
                                             }
@@ -284,6 +285,7 @@ export default function Navigation() {
                                                         rel="noopener noreferrer"  // 보안 강화
                                                         className="flex items-center px-3 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200 group"
                                                         onClick={() => {
+                                                            // 드롭다운 항목 클릭 시 메뉴 전체 닫기
                                                             setIsMobileMenuOpen(false)
                                                             setMobileServicesOpen(false)
                                                         }}
@@ -313,3 +315,4 @@ export default function Navigation() {
         </nav>
     )
 }
+

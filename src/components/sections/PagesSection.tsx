@@ -16,7 +16,7 @@ const services = [
         buttonType: 'service'
     },
     {
-        title: '모바일 청첩장',
+        title: '모바일 청첩장(작업중)',
         description: '미리보는 모바일 청첩장',
         icon: '🤵‍♂️❤️👰‍♀️',
         path: '/wedding',
@@ -42,6 +42,16 @@ const services = [
         path: 'https://github.com/dd3ok/fabric-fpsxyzs',
         features: ['Fabric API 사용', '정보별 업데이트 주기 최적화'],
         color: 'from-green-500 to-emerald-500',
+        buttonText: 'Repository 바로가기',
+        buttonType: 'repo'
+    },
+    {
+        title: 'OAuth 로그인 + 세션/토큰 관리',
+        description: 'Naver, Kakao, Google OAuth로 간편하게 로그인하세요',
+        icon: '🔐',
+        path: 'https://github.com/dd3ok/auth-service',
+        features: ['OAuth 2.0 로그인', 'JWT 토큰 인증', 'Redis 세션 관리'],
+        color: 'from-orange-500 to-red-500',
         buttonText: 'Repository 바로가기',
         buttonType: 'repo'
     }
