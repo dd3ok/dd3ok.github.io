@@ -2,7 +2,7 @@
 
 import useHealthCheck from '@/hooks/useHealthCheck';
 
-export function HealthCheckInitializer() {
+export function HealthcheckInitializer() {
     useHealthCheck();
     return null;
 }
