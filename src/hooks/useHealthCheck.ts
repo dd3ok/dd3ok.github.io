@@ -1,13 +1,7 @@
 import { useEffect } from 'react';
 
-interface HealthCheckResponse {
-    status: string;
-    message?: string;
-    timestamp: string;
-}
-
 const CACHE_KEY = 'healthCheckLastCalled';
-const CACHE_DURATION_MS = 180000; // 3분 (밀리초 단위)
+const CACHE_DURATION_MS = 120000; // 2분
 
 const useHealthCheck = (): void => {
     useEffect(() => {
@@ -17,15 +11,12 @@ const useHealthCheck = (): void => {
             try {
                 const apiUrl = process.env.NEXT_PUBLIC_PAGES_KOYEB_API + '/api/healthcheck';
                 const response = await fetch(apiUrl, {
-                    method: 'GET',
-                    headers: { 'Content-Type': 'application/json' },
+                    method: 'GET'
                 });
 
                 if (!response.ok) {
                     throw new Error(`Health check failed with status: ${response.status}`);
                 }
-
-                const result: HealthCheckResponse = await response.json();
 
                 localStorage.setItem(CACHE_KEY, Date.now().toString());
             } catch (error) {
