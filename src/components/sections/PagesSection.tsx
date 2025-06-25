@@ -30,7 +30,7 @@ const services = [
         description: 'PR을 올려 Gemini 한테 리뷰를 받자',
         icon: '🤖',
         path: 'https://github.com/dd3ok/no-pair-prgm',
-        features: ['Gemini API 연동', 'Github PR 자동 코드리뷰'],
+        features: ['Gemini 1.5 Flash 연동', 'Github API 연동', 'Github PR 자동 코드리뷰'],
         color: 'from-purple-500 to-indigo-500',
         buttonText: 'Repository 바로가기',
         buttonType: 'repo'
@@ -54,7 +54,17 @@ const services = [
         color: 'from-orange-500 to-red-500',
         buttonText: 'Repository 바로가기',
         buttonType: 'repo'
-    }
+    },
+    {
+        title: 'Who am AI',
+        description: '저에 대해 궁금한 점을 직접 물어보세요.',
+        icon: '🤖',
+        path: 'https://github.com/dd3ok/who-am-ai',
+        features: ['Gen AI SDK + Gemini 2.5 Flash Lite' , '이력서 맞춤 답변', '채팅 컨텍스트 구현'],
+        color: "from-gray-300 to-gray-500",
+        buttonText: 'Repository 바로가기',
+        buttonType: 'repo'
+    },
 ]
 
 

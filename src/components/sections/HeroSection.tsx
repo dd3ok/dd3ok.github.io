@@ -22,9 +22,7 @@ export default function HeroSection() {
     return (
         <section
             id="hero"
-            // [수정 1] 모바일 레이아웃 정렬 방식 변경
-            // flex-col과 justify-center를 사용하여 모바일에서 세로 중앙 정렬을 구현합니다.
-            // PC에서는 justify-start로 상단 정렬로 전환됩니다.
+            // section-padding을 다시 사용하고, 정렬 로직을 유지합니다.
             className="min-h-screen flex flex-col justify-center lg:justify-start relative overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-50 section-padding"
         >
             <div className="absolute inset-0 overflow-hidden">
@@ -32,11 +30,12 @@ export default function HeroSection() {
                 <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-indigo-100 rounded-full mix-blend-multiply filter blur-xl opacity-70" />
             </div>
 
-            <div className="container relative z-10">
-                <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-12 lg:gap-8">
+            {/* [수정] 이 container div에 반응형 패딩을 추가하여 모바일 헤더 문제를 해결합니다. */}
+            <div className="container relative z-10 pt-16 lg:pt-0">
+                <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-8 lg:gap-12">
 
                     <div className="text-center lg:text-left lg:justify-self-end lg:max-w-xl">
-                        <div className={`transition-all duration-1000 delay-300 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+                        <div className={`transition-[opacity,transform] duration-1000 delay-100 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
                             <div className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
                                 <div className="mb-4">안녕하세요,</div>
                                 <div className="text-blue-600 mb-4">Backend Engineer</div>
@@ -44,14 +43,14 @@ export default function HeroSection() {
                             </div>
                         </div>
 
-                        <div className={`transition-all duration-1000 delay-500 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+                        <div className={`transition-[opacity,transform] duration-1000 delay-300 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
                             <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
                                 스프링 기반의 백엔드 서비스 개발을 해왔고, <br />
                                 확장 가능한 시스템과 효율적인 서비스 구축에 집중합니다.
                             </p>
                         </div>
 
-                        <div className={`transition-all duration-1000 delay-700 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+                        <div className={`transition-[opacity,transform] duration-1000 delay-500 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
                             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center">
                                 <Button
                                     variant="primary"
@@ -71,7 +70,7 @@ export default function HeroSection() {
                         </div>
                     </div>
 
-                    <div className="w-full max-w-md justify-self-start mt-12 lg:mt-0 lg:ml-8">
+                    <div className={`w-full max-w-md justify-self-start lg:ml-8 transition-[opacity,transform] duration-1000 delay-100 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
                         <AIChat />
                     </div>
                 </div>

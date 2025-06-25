@@ -3,6 +3,7 @@
 import { useState, FormEvent, useRef, useEffect } from 'react'
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { useUserIdentifier } from '@/hooks/useUserIdentifier';
+import Image from 'next/image';
 
 // 아이콘 컴포넌트들
 const SendIcon = () => (
@@ -43,7 +44,7 @@ interface Message {
 export default function AIChat() {
     const userId = useUserIdentifier();
     const [messages, setMessages] = useState<Message[]>([
-        { text: "안녕하세요! 제 포트폴리오에 대해 궁금한 점을 질문해주세요.", isUser: false }
+        { text: "안녕하세요! 무엇이든 물어보세요.", isUser: false }
     ]);
     const [inputValue, setInputValue] = useState('');
     const [isResponding, setIsResponding] = useState(false);
@@ -126,7 +127,7 @@ export default function AIChat() {
 
     const connectionStatus = {
         [ReadyState.CONNECTING]: '연결 중...',
-        [ReadyState.OPEN]: 'AI Assistant',
+        [ReadyState.OPEN]: '유인재 AI',
         [ReadyState.CLOSING]: '연결 종료 중...',
         [ReadyState.CLOSED]: '연결 끊김',
         [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
@@ -176,7 +177,7 @@ export default function AIChat() {
     return (
         <div className="w-full max-w-md mx-auto bg-white/70 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/50 flex flex-col h-[36rem]">
             <div className="p-4 border-b border-gray-200/50 flex items-center justify-center gap-2 bg-slate-100/60 rounded-t-2xl">
-                <span role="img" aria-label="robot" className="text-xl">🤖</span>
+                <span role="img" aria-label="robot" className="text-xl"><Image src="/image/coffeecat.png" alt="AI-Profile" width={25} height={25} /></span>
                 <h3 className="text-md font-semibold text-gray-800">{connectionStatus}</h3>
             </div>
 
@@ -185,7 +186,7 @@ export default function AIChat() {
                     <div key={index} className={`flex items-end gap-3 ${msg.isUser ? 'justify-end' : 'justify-start'}`}>
                         {!msg.isUser && (
                             <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center ring-1 ring-slate-200 shrink-0 text-xl">
-                                <span role="img" aria-label="robot">🤖</span>
+                                <span role="img" aria-label="robot"><Image src="/image/coffeecat.png" alt="AI-Profile" width={20} height={20} /></span>
                             </div>
                         )}
                         <div className={`px-4 py-2.5 rounded-xl max-w-xs md:max-w-sm break-words shadow-md transition-all duration-300 hover:shadow-lg ${msg.isUser ? 'bg-blue-600 text-white rounded-br-none' : 'bg-slate-100 text-slate-800 rounded-bl-none'}`}>
@@ -198,7 +199,7 @@ export default function AIChat() {
                 {isResponding && !isTimeout && (
                     <div className="flex items-end gap-3 justify-start">
                         <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center ring-1 ring-slate-200 shrink-0 text-xl">
-                            <span role="img" aria-label="robot">🤖</span>
+                            <span role="img" aria-label="robot"><Image src="/image/coffeecat.png" alt="AI-Profile" width={20} height={20} /></span>
                         </div>
                         <div className="px-4 py-3 rounded-xl shadow-md bg-slate-100">
                             <LoadingDots />
@@ -210,7 +211,7 @@ export default function AIChat() {
                 {isTimeout && (
                     <div className="flex items-end gap-3 justify-start">
                         <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center ring-1 ring-slate-200 shrink-0 text-xl">
-                            <span role="img" aria-label="robot">🤖</span>
+                            <span role="img" aria-label="robot"><Image src="/image/coffeecat.png" alt="AI-Profile" width={20} height={20} /></span>
                         </div>
                         <div className="px-4 py-3 rounded-xl shadow-md bg-slate-100">
                             <TimeoutMessage onRetry={handleRetry} />
@@ -225,7 +226,7 @@ export default function AIChat() {
                         type="text"
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
-                        placeholder="무엇이든 물어보세요..."
+                        placeholder="무엇이든 물어보세요."
                         className="flex-1 px-4 py-2.5 bg-slate-100/80 border border-transparent rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all text-sm"
                     />
                     <button
