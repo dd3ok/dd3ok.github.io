@@ -20,7 +20,6 @@ const LoadingDots = () => (
     </div>
 );
 
-// [추가] 타임아웃 메시지 컴포넌트
 const TimeoutMessage = ({ onRetry }: { onRetry: () => void }) => (
     <div className="flex flex-col items-center space-y-3 text-center">
         <div className="text-slate-500 text-sm">
@@ -36,6 +35,26 @@ const TimeoutMessage = ({ onRetry }: { onRetry: () => void }) => (
     </div>
 );
 
+// [추가] 연결 상태 아이콘 컴포넌트
+const ConnectionStatusIcon = ({ readyState }: { readyState: ReadyState }) => {
+    const statusInfo = {
+        [ReadyState.CONNECTING]: { color: 'bg-yellow-500', animate: 'animate-pulse', title: '연결 중' },
+        [ReadyState.OPEN]: { color: 'bg-green-500', animate: '', title: '연결됨' },
+        [ReadyState.CLOSING]: { color: 'bg-yellow-500', animate: '', title: '연결 종료 중' },
+        [ReadyState.CLOSED]: { color: 'bg-red-500', animate: '', title: '연결 끊김' },
+        [ReadyState.UNINSTANTIATED]: { color: 'bg-gray-400', animate: '', title: '초기화 안됨' },
+    }[readyState];
+
+    if (!statusInfo) return null;
+
+    return (
+        <span
+            title={statusInfo.title}
+            className={`h-3 w-3 rounded-full ${statusInfo.color} ${statusInfo.animate} transition-colors`}
+        />
+    );
+};
+
 interface Message {
     text: string;
     isUser: boolean;
@@ -48,20 +67,18 @@ export default function AIChat() {
     ]);
     const [inputValue, setInputValue] = useState('');
     const [isResponding, setIsResponding] = useState(false);
-    const [isTimeout, setIsTimeout] = useState(false); // [추가] 타임아웃 상태
-    const [lastUserMessage, setLastUserMessage] = useState(''); // [추가] 마지막 사용자 메시지 저장
+    const [isTimeout, setIsTimeout] = useState(false);
+    const [lastUserMessage, setLastUserMessage] = useState('');
     const chatContainerRef = useRef<HTMLDivElement>(null);
 
     const isFirstToken = useRef(false);
-    const timeoutRef = useRef<NodeJS.Timeout | null>(null); // [추가] 타임아웃 레퍼런스
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-    const socketUrl = 'wss://who-am-ai-57dj.onrender.com/ws/chat';
+    const socketUrl = process.env.NEXT_PUBLIC_WHO_AM_AI_API + '/ws/chat';
     const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
 
-    // [수정] 타임아웃 처리 추가
     useEffect(() => {
         if (lastMessage !== null) {
-            // [추가] 응답이 왔으므로 타임아웃 클리어
             if (timeoutRef.current) {
                 clearTimeout(timeoutRef.current);
                 timeoutRef.current = null;
@@ -94,7 +111,6 @@ export default function AIChat() {
         }
     }, [lastMessage]);
 
-    // [추가] 타임아웃 처리 함수
     const handleTimeout = () => {
         console.log('5초 타임아웃 발생');
         setIsResponding(false);
@@ -105,7 +121,6 @@ export default function AIChat() {
         }
     };
 
-    // [추가] 재시도 함수
     const handleRetry = () => {
         if (!userId || readyState !== ReadyState.OPEN) return;
 
@@ -120,14 +135,12 @@ export default function AIChat() {
         };
 
         sendMessage(JSON.stringify(messageToSend));
-
-        // 새로운 타임아웃 설정
         timeoutRef.current = setTimeout(handleTimeout, 5000);
     };
 
     const connectionStatus = {
         [ReadyState.CONNECTING]: '연결 중...',
-        [ReadyState.OPEN]: '유인재 AI',
+        [ReadyState.OPEN]: 'dd3ok',
         [ReadyState.CLOSING]: '연결 종료 중...',
         [ReadyState.CLOSED]: '연결 끊김',
         [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
@@ -138,9 +151,8 @@ export default function AIChat() {
         if (chatContainer) {
             chatContainer.scrollTo({ top: chatContainer.scrollHeight, behavior: 'smooth' });
         }
-    }, [messages, isTimeout]); // [수정] isTimeout도 의존성에 추가
+    }, [messages, isTimeout]);
 
-    // [추가] 컴포넌트 언마운트 시 타임아웃 클리어
     useEffect(() => {
         return () => {
             if (timeoutRef.current) {
@@ -155,7 +167,7 @@ export default function AIChat() {
 
         const userMessage: Message = { text: inputValue, isUser: true };
         setMessages(prev => [...prev, userMessage]);
-        setLastUserMessage(inputValue); // [추가] 마지막 사용자 메시지 저장
+        setLastUserMessage(inputValue);
 
         const messageToSend = {
             uuid: userId,
@@ -166,18 +178,17 @@ export default function AIChat() {
         sendMessage(JSON.stringify(messageToSend));
 
         setIsResponding(true);
-        setIsTimeout(false); // [추가] 타임아웃 상태 초기화
+        setIsTimeout(false);
         isFirstToken.current = true;
         setInputValue('');
-
-        // [추가] 5초 타임아웃 설정
         timeoutRef.current = setTimeout(handleTimeout, 5000);
     };
 
     return (
         <div className="w-full max-w-md mx-auto bg-white/70 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/50 flex flex-col h-[36rem]">
-            <div className="p-4 border-b border-gray-200/50 flex items-center justify-center gap-2 bg-slate-100/60 rounded-t-2xl">
-                <span role="img" aria-label="robot" className="text-xl"><Image src="/image/coffeecat.png" alt="AI-Profile" width={25} height={25} /></span>
+            {/* [수정] 헤더 부분 */}
+            <div className="p-4 border-b border-gray-200/50 flex items-center justify-center gap-2 bg-primary-500 rounded-t-2xl">
+                <ConnectionStatusIcon readyState={readyState} />
                 <h3 className="text-md font-semibold text-gray-800">{connectionStatus}</h3>
             </div>
 
@@ -195,7 +206,6 @@ export default function AIChat() {
                     </div>
                 ))}
 
-                {/* [수정] 로딩 상태와 타임아웃 상태 분리 */}
                 {isResponding && !isTimeout && (
                     <div className="flex items-end gap-3 justify-start">
                         <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center ring-1 ring-slate-200 shrink-0 text-xl">
@@ -207,7 +217,6 @@ export default function AIChat() {
                     </div>
                 )}
 
-                {/* [추가] 타임아웃 메시지 */}
                 {isTimeout && (
                     <div className="flex items-end gap-3 justify-start">
                         <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center ring-1 ring-slate-200 shrink-0 text-xl">
