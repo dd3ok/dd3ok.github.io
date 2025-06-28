@@ -4,6 +4,8 @@ import { useState, FormEvent, useRef, useEffect } from 'react'
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { useUserIdentifier } from '@/hooks/useUserIdentifier';
 import Image from 'next/image';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 // 아이콘 컴포넌트들
 const SendIcon = () => (
@@ -35,7 +37,7 @@ const TimeoutMessage = ({ onRetry }: { onRetry: () => void }) => (
     </div>
 );
 
-// [추가] 연결 상태 아이콘 컴포넌트
+// 연결 상태 아이콘 컴포넌트
 const ConnectionStatusIcon = ({ readyState }: { readyState: ReadyState }) => {
     const statusInfo = {
         [ReadyState.CONNECTING]: { color: 'bg-yellow-500', animate: 'animate-pulse', title: '연결 중' },
@@ -140,7 +142,7 @@ export default function AIChat() {
 
     const connectionStatus = {
         [ReadyState.CONNECTING]: '연결 중...',
-        [ReadyState.OPEN]: 'dd3ok',
+        [ReadyState.OPEN]: '연결됨',
         [ReadyState.CLOSING]: '연결 종료 중...',
         [ReadyState.CLOSED]: '연결 끊김',
         [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
@@ -186,7 +188,7 @@ export default function AIChat() {
 
     return (
         <div className="w-full max-w-md mx-auto bg-white/70 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/50 flex flex-col h-[36rem]">
-            {/* [수정] 헤더 부분 */}
+            {/* 헤더 부분 */}
             <div className="p-4 border-b border-gray-200/50 flex items-center justify-center gap-2 bg-primary-500 rounded-t-2xl">
                 <ConnectionStatusIcon readyState={readyState} />
                 <h3 className="text-md font-semibold text-gray-800">{connectionStatus}</h3>
@@ -197,11 +199,69 @@ export default function AIChat() {
                     <div key={index} className={`flex items-end gap-3 ${msg.isUser ? 'justify-end' : 'justify-start'}`}>
                         {!msg.isUser && (
                             <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center ring-1 ring-slate-200 shrink-0 text-xl">
-                                <span role="img" aria-label="robot"><Image src="/image/coffeecat.png" alt="AI-Profile" width={20} height={20} /></span>
+                                <span role="img" aria-label="robot">
+                                    <Image src="/image/coffeecat.png" alt="AI-Profile" width={20} height={20} />
+                                </span>
                             </div>
                         )}
                         <div className={`px-4 py-2.5 rounded-xl max-w-xs md:max-w-sm break-words shadow-md transition-all duration-300 hover:shadow-lg ${msg.isUser ? 'bg-blue-600 text-white rounded-br-none' : 'bg-slate-100 text-slate-800 rounded-bl-none'}`}>
-                            <p className="text-sm leading-relaxed">{msg.text}</p>
+                            {msg.isUser ? (
+                                <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.text}</p>
+                            ) : (
+                                <div className="prose prose-sm prose-slate max-w-none [&>*:first-child]:mt-0 [&>*:last-child]:mb-0">
+                                    <ReactMarkdown
+                                        remarkPlugins={[remarkGfm]}
+                                        components={{
+                                            // 코드 블록을 더 작은 크기로 조정
+                                            pre: ({ children }) => (
+                                                <pre className="!text-xs !p-2 !my-2 !bg-slate-800 !text-slate-100 !rounded-md overflow-x-auto">
+                                                {children}
+                                            </pre>
+                                            ),
+                                            // 인라인 코드 스타일 조정
+                                            code: ({ inline, children }) => (
+                                                inline ? (
+                                                    <code className="!text-xs !px-1 !py-0.5 !bg-slate-200 !text-slate-800 !rounded">
+                                                        {children}
+                                                    </code>
+                                                ) : (
+                                                    <code className="!text-xs">{children}</code>
+                                                )
+                                            ),
+                                            // 제목 크기 조정
+                                            h1: ({ children }) => <h1 className="!text-sm !font-bold !my-2">{children}</h1>,
+                                            h2: ({ children }) => <h2 className="!text-sm !font-semibold !my-1">{children}</h2>,
+                                            h3: ({ children }) => <h3 className="!text-xs !font-medium !my-1">{children}</h3>,
+                                            // 단락 간격 조정
+                                            p: ({ children }) => <p className="!text-sm !my-1 !leading-relaxed">{children}</p>,
+                                            // 리스트 간격 조정
+                                            ul: ({ children }) => <ul className="!text-sm !my-1 !pl-4">{children}</ul>,
+                                            ol: ({ children }) => <ol className="!text-sm !my-1 !pl-4">{children}</ol>,
+                                            li: ({ children }) => <li className="!my-0.5">{children}</li>,
+                                            // 인용구 스타일 조정
+                                            blockquote: ({ children }) => (
+                                                <blockquote className="!text-sm !my-2 !pl-3 !border-l-2 !border-slate-300 !italic">
+                                                    {children}
+                                                </blockquote>
+                                            ),
+                                            // 테이블 스타일 조정
+                                            table: ({ children }) => (
+                                                <div className="!my-2 overflow-x-auto">
+                                                    <table className="!text-xs !min-w-full">{children}</table>
+                                                </div>
+                                            ),
+                                            // 링크 색상 조정
+                                            a: ({ children, href }) => (
+                                                <a href={href} className="!text-blue-600 hover:!text-blue-800 !underline" target="_blank" rel="noopener noreferrer">
+                                                    {children}
+                                                </a>
+                                            ),
+                                        }}
+                                    >
+                                        {msg.text}
+                                    </ReactMarkdown>
+                                </div>
+                            )}
                         </div>
                     </div>
                 ))}
@@ -209,7 +269,9 @@ export default function AIChat() {
                 {isResponding && !isTimeout && (
                     <div className="flex items-end gap-3 justify-start">
                         <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center ring-1 ring-slate-200 shrink-0 text-xl">
-                            <span role="img" aria-label="robot"><Image src="/image/coffeecat.png" alt="AI-Profile" width={20} height={20} /></span>
+                            <span role="img" aria-label="robot">
+                                <Image src="/image/coffeecat.png" alt="AI-Profile" width={20} height={20} />
+                            </span>
                         </div>
                         <div className="px-4 py-3 rounded-xl shadow-md bg-slate-100">
                             <LoadingDots />
@@ -220,7 +282,9 @@ export default function AIChat() {
                 {isTimeout && (
                     <div className="flex items-end gap-3 justify-start">
                         <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center ring-1 ring-slate-200 shrink-0 text-xl">
-                            <span role="img" aria-label="robot"><Image src="/image/coffeecat.png" alt="AI-Profile" width={20} height={20} /></span>
+                            <span role="img" aria-label="robot">
+                                <Image src="/image/coffeecat.png" alt="AI-Profile" width={20} height={20} />
+                            </span>
                         </div>
                         <div className="px-4 py-3 rounded-xl shadow-md bg-slate-100">
                             <TimeoutMessage onRetry={handleRetry} />

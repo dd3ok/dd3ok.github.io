@@ -10,10 +10,13 @@
     "export": "next build"
   },
   "dependencies": {
+    "@tailwindcss/typography": "^0.5.16",
     "next": "^15.3.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-use-websocket": "^4.13.0"
+    "react-markdown": "^10.1.0",
+    "react-use-websocket": "^4.13.0",
+    "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^15.3.3",
