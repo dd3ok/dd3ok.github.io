@@ -215,19 +215,24 @@ export default function AIChat() {
                                             // 코드 블록을 더 작은 크기로 조정
                                             pre: ({ children }) => (
                                                 <pre className="!text-xs !p-2 !my-2 !bg-slate-800 !text-slate-100 !rounded-md overflow-x-auto">
-                                                {children}
-                                            </pre>
+                                                    {children}
+                                                </pre>
                                             ),
-                                            // 인라인 코드 스타일 조정
-                                            code: ({ inline, children }) => (
-                                                inline ? (
-                                                    <code className="!text-xs !px-1 !py-0.5 !bg-slate-200 !text-slate-800 !rounded">
+                                            // 인라인 코드 스타일 조정 - 타입 오류 수정
+                                            code: ({ node, className, children, ...props }: any) => {
+                                                const match = /language-(\w+)/.exec(className || '');
+                                                const isInline = !match;
+
+                                                return isInline ? (
+                                                    <code className="!text-xs !px-1 !py-0.5 !bg-slate-200 !text-slate-800 !rounded" {...props}>
                                                         {children}
                                                     </code>
                                                 ) : (
-                                                    <code className="!text-xs">{children}</code>
-                                                )
-                                            ),
+                                                    <code className="!text-xs" {...props}>
+                                                        {children}
+                                                    </code>
+                                                );
+                                            },
                                             // 제목 크기 조정
                                             h1: ({ children }) => <h1 className="!text-sm !font-bold !my-2">{children}</h1>,
                                             h2: ({ children }) => <h2 className="!text-sm !font-semibold !my-1">{children}</h2>,
