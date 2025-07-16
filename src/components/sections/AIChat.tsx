@@ -141,7 +141,7 @@ export default function AIChat() {
     };
 
     const connectionStatus = {
-        [ReadyState.CONNECTING]: '연결 중...',
+        [ReadyState.CONNECTING]: '연결 중.. (Sleep 시 30초)',
         [ReadyState.OPEN]: '연결됨',
         [ReadyState.CLOSING]: '연결 종료 중...',
         [ReadyState.CLOSED]: '연결 끊김',
