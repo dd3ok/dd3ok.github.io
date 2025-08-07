@@ -26,7 +26,8 @@ const TimeoutMessage = ({ onRetry }: { onRetry: () => void }) => (
     <div className="flex flex-col items-center space-y-3 text-center">
         <div className="text-slate-500 text-sm">
             <p>응답이 지연되고 있습니다.</p>
-            <p>다시 시도해주세요.</p>
+            <p>서버 Sleep시 초기 로딩이 있습니다.</p>
+            <p>잠시후 다시 시도해주세요.</p>
         </div>
         <button
             onClick={onRetry}
@@ -65,7 +66,7 @@ interface Message {
 export default function AIChat() {
     const userId = useUserIdentifier();
     const [messages, setMessages] = useState<Message[]>([
-        { text: "안녕하세요! 무엇이든 물어보세요.", isUser: false }
+        { text: "안녕하세요! 인재 AI입니다.", isUser: false }
     ]);
     const [inputValue, setInputValue] = useState('');
     const [isResponding, setIsResponding] = useState(false);
@@ -114,7 +115,7 @@ export default function AIChat() {
     }, [lastMessage]);
 
     const handleTimeout = () => {
-        console.log('5초 타임아웃 발생');
+        console.log('10초 타임아웃 발생');
         setIsResponding(false);
         setIsTimeout(true);
         if (timeoutRef.current) {
@@ -137,11 +138,11 @@ export default function AIChat() {
         };
 
         sendMessage(JSON.stringify(messageToSend));
-        timeoutRef.current = setTimeout(handleTimeout, 5000);
+        timeoutRef.current = setTimeout(handleTimeout, 10000);
     };
 
     const connectionStatus = {
-        [ReadyState.CONNECTING]: '연결 중.. (Sleep 시 30초)',
+        [ReadyState.CONNECTING]: '연결 중.. (Sleep 시 60초)',
         [ReadyState.OPEN]: '연결됨',
         [ReadyState.CLOSING]: '연결 종료 중...',
         [ReadyState.CLOSED]: '연결 끊김',
