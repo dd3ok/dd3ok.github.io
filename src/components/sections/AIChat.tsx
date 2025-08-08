@@ -184,7 +184,7 @@ export default function AIChat() {
         setIsTimeout(false);
         isFirstToken.current = true;
         setInputValue('');
-        timeoutRef.current = setTimeout(handleTimeout, 5000);
+        timeoutRef.current = setTimeout(handleTimeout, 10000);
     };
 
     return (
