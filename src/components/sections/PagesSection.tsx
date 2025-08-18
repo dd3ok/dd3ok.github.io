@@ -57,10 +57,10 @@ const services = [
     },
     {
         title: 'Repository to MD/TEXT',
-        description: '파일 하나씩 복사 붙여넣기 하지마세요. LLM을 위한 Repository 요약 도구',
+        description: '파일 하나씩 복사, 붙여넣기 하지 마세요.\nLLM을 위한 Repository 요약 도구',
         icon: '📦',
         path: 'https://repo2md.onrender.com',
-        features: ['TEXT 요약', '마크다운 요약'],
+        features: ['텍스트로 복사', '마크다운 파일 다운로드'],
         color: 'from-blue-500 to-cyan-500',
         buttonText: '서비스 이용하기',
         buttonType: 'service'
