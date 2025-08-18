@@ -6,16 +6,6 @@ import Card from '@/components/ui/Card'
 
 const services = [
     {
-        title: 'ETF LIVE',
-        description: '국내/미국 ETF의 실시간 정보를 한눈에 비교하세요',
-        icon: '📈',
-        path: '/etfs',
-        features: ['실시간 ETF', '트렌드 분석', '정책 수혜주'],
-        color: 'from-blue-500 to-cyan-500',
-        buttonText: '서비스 이용하기',
-        buttonType: 'service'
-    },
-    {
         title: '모바일 청첩장(작업중)',
         description: '미리보는 모바일 청첩장',
         icon: '🤵‍♂️❤️👰‍♀️',
@@ -64,6 +54,16 @@ const services = [
         color: "from-gray-300 to-gray-500",
         buttonText: 'Repository 바로가기',
         buttonType: 'repo'
+    },
+    {
+        title: 'Repository to MD/TEXT',
+        description: 'LLM을 위해 Repository를 한개의 텍스트/마크다운으로 요약하세요.',
+        icon: '📦',
+        path: '/repo2md',
+        features: ['Repository 분석', 'Repository 요약', 'text/md'],
+        color: 'from-blue-500 to-cyan-500',
+        buttonText: '서비스 이용하기',
+        buttonType: 'service'
     },
 ]
 
