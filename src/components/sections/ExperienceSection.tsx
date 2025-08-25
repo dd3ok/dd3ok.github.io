@@ -59,7 +59,7 @@ export default function ExperienceSection() {
                         Experience
                     </h2>
                     <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                        다양한 환경에서의 개발 경험과 성장 과정입니다
+                        다양한 환경에서 개발을 경험했습니다.
                     </p>
                 </div>
 

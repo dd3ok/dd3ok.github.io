@@ -43,23 +43,23 @@ export default function AboutSection() {
                         About Me
                     </h2>
                     <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                        분산 시스템과 소프트웨어 설계에 관심이 많은 개발자입니다
+                        #클린코드 #대용량트래픽 #분산환경 #AI #LLM
                     </p>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
                     <div className={`${isVisible ? 'slide-in-left visible' : 'slide-in-left'}`}>
                         <h3 className="text-2xl font-bold text-gray-900 mb-6">
-                            안정적이고 확장 가능한 시스템을 만듭니다
+                            확장 가능하고 안정적인 시스템을 만듭니다
                         </h3>
                         <div className="space-y-4 text-gray-600">
                             <p>
-                                스프링 기반의 백엔드 서비스를 주로 담당했고 LLM에 관심이 있습니다.
+                                스프링 기반의 백엔드 서비스를 주로 담당했고 최근에는 AI와 LLM에 관심이 있습니다.
                                 웹 애플리케이션 개발과 운영에 전문성을 갖추고 있습니다.
                             </p>
                             <p>
-                                특히 분산 시스템 아키텍처와 도메인 주도 설계(DDD)에 관심이 많으며,
-                                코드의 품질과 시스템의 안정성을 중시합니다.
+                                특히 분산 시스템 아키텍처에 관심이 많으며,
+                                안정적인 시스템을 만들기 위해 노력합니다.
                             </p>
                             <p>
                                 지속적인 학습을 통해 최신 기술 트렌드를 따라가며,

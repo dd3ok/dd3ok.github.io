@@ -121,7 +121,7 @@ export default function ProjectsSection() {
                             Projects
                         </h2>
                         <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                            지마켓/옥션의 판매자 센터 ESM PLUS를 메인으로 담당했습니다
+                            지마켓/옥션의 판매자 센터 ESM PLUS, 삼성전자 B2B BQMS의 MRO몰을 담당했습니다.
                         </p>
                     </div>
 

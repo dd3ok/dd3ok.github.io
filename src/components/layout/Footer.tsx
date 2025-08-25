@@ -14,7 +14,7 @@ export default function Footer() {
                             확장 가능한 시스템과 효율적인 서비스를 구축하는 개발자입니다.
                         </p>
                         <p className="text-gray-500 text-sm leading-relaxed max-w-md">
-                            성능 최적화, 대용량 트래픽 처리, 분산환경 아키텍쳐에 관심이 많습니다.
+                            대용량 트래픽 처리, 분산환경 아키텍쳐, AI에 관심이 많습니다.
                         </p>
                     </div>
 
