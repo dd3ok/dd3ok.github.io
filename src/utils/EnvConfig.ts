@@ -1,7 +1,6 @@
 export interface EnvConfig {
     pagesApi: {
         baseUrl: string
-        apiKey: string
     }
     isDevelopment: boolean
 }
@@ -12,7 +11,6 @@ export const getEnvConfig = (): EnvConfig => {
     return {
         pagesApi: {
             baseUrl: process.env.NEXT_PUBLIC_PAGES_KOYEB_API || (isDevelopment ? 'http://localhost:8080' : 'https://extreme-ariela-dd3ok-99cbe6d5.koyeb.app'),
-            apiKey: process.env.PAGES_KOYEB_API_KEY || ''
         },
         isDevelopment
     }

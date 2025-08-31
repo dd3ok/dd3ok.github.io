@@ -47,7 +47,6 @@ jobs:
       - name: Build with Next.js
         env:
           NEXT_PUBLIC_PAGES_KOYEB_API: ${{ secrets.PAGES_KOYEB_API }}
-          PAGES_KOYEB_API_KEY: ${{ secrets.PAGES_KOYEB_API_KEY }}
           NEXT_PUBLIC_WHO_AM_AI_API: ${{ secrets.WHO_AM_AI_API }}
         run: npm run build
 
