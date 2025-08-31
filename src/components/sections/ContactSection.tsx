@@ -2,7 +2,7 @@
 
 import {useEffect, useRef, useState} from 'react'
 import Card from '@/components/ui/Card'
-import {getEnvConfig, validateApiKeys} from '@/utils/EnvConfig'
+import {getEnvConfig} from '@/utils/EnvConfig'
 
 interface ContactFormData {
     name: string
@@ -18,7 +18,7 @@ interface FormErrors {
 
 export default function ContactSection() {
     const [isVisible, setIsVisible] = useState(false)
-    const sectionRef = useRef<HTMLDivElement>(null)
+    const sectionRef = useRef<HTMLDivElement | null>(null)
     const [formData, setFormData] = useState<ContactFormData>({
         name: '',
         email: '',
@@ -111,10 +111,7 @@ export default function ContactSection() {
             const response = await fetch(`${config.pagesApi.baseUrl}/api/home/contacts`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    ...(config.pagesApi.apiKey && {
-                        'Authorization': `Bearer ${config.pagesApi.apiKey}`
-                    })
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(formData)
             })

@@ -15,13 +15,3 @@ export const getEnvConfig = (): EnvConfig => {
         isDevelopment
     }
 }
-
-export const validateApiKeys = (config: EnvConfig): string[] => {
-    const errors: string[] = []
-
-    if (!config.pagesApi.apiKey && !config.isDevelopment) {
-        errors.push('백엔드 API 키가 설정되지 않았습니다')
-    }
-
-    return errors
-}
