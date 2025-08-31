@@ -46,10 +46,8 @@ jobs:
 
       - name: Build with Next.js
         env:
-          NEXT_PUBLIC_DATA_ETF_API: ${{ secrets.DATA_ETF_API }}
-          NEXT_PUBLIC_DATA_ETF_API_KEY: ${{ secrets.DATA_ETF_API_KEY }}
           NEXT_PUBLIC_PAGES_KOYEB_API: ${{ secrets.PAGES_KOYEB_API }}
-          NEXT_PUBLIC_PAGES_KOYEB_API_KEY: ${{ secrets.PAGES_KOYEB_API_KEY }}
+          PAGES_KOYEB_API_KEY: ${{ secrets.PAGES_KOYEB_API_KEY }}
           NEXT_PUBLIC_WHO_AM_AI_API: ${{ secrets.WHO_AM_AI_API }}
         run: npm run build
 

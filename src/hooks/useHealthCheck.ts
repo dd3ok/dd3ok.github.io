@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { getEnvConfig } from '@/utils/EnvConfig';
 
 const CACHE_KEY = 'healthCheckLastCalled';
 const CACHE_DURATION_MS = 120000; // 2분
@@ -9,7 +10,8 @@ const useHealthCheck = (): void => {
             console.log('Attempting health check...');
 
             try {
-                const apiUrl = process.env.NEXT_PUBLIC_PAGES_KOYEB_API + '/api/healthcheck';
+                const config = getEnvConfig();
+                const apiUrl = config.pagesApi.baseUrl + '/api/healthcheck';
                 const response = await fetch(apiUrl, {
                     method: 'GET'
                 });
