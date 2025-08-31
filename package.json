@@ -10,6 +10,7 @@
     "export": "next build"
   },
   "dependencies": {
+    "@google/genai": "^1.16.0",
     "@tailwindcss/typography": "^0.5.16",
     "next": "^15.3.3",
     "react": "^19.1.0",
