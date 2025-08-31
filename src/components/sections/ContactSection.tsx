@@ -102,12 +102,6 @@ export default function ContactSection() {
         setFormErrors({})
 
         try {
-            // 환경 설정 검증
-            const configErrors = validateApiKeys(config)
-            if (configErrors.length > 0 && !config.isDevelopment) {
-                throw new Error('API 설정이 올바르지 않습니다.')
-            }
-
             const response = await fetch(`${config.pagesApi.baseUrl}/api/home/contacts`, {
                 method: 'POST',
                 headers: {
