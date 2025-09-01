@@ -77,7 +77,7 @@ export default function AIChat() {
     const isFirstToken = useRef(false);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-    const socketUrl = process.env.NEXT_PUBLIC_WHO_AM_AI_API + '/ws/chat';
+    const socketUrl = process.env.NEXT_PUBLIC_WHO_AM_AI_WS + '/ws/chat';
     const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
 
     useEffect(() => {

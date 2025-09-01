@@ -56,11 +56,21 @@ const services = [
         buttonType: 'repo'
     },
     {
-        title: 'Repository to MD/TEXT',
-        description: '파일 하나씩 복사, 붙여넣기 하지 마세요.\nLLM을 위한 Repository 요약 도구',
+        title: 'Repository 파일들 -> 한개의 텍스트',
+        description: 'LLM을 위한 Repository 요약 도구, 복사, 붙여넣기를 편하게',
         icon: '📦',
         path: 'https://repo2md.onrender.com',
-        features: ['텍스트로 복사', '마크다운 파일 다운로드'],
+        features: ['클립보드 및 MD파일로 export'],
+        color: 'from-yello-500 to-green-500',
+        buttonText: '서비스 이용하기',
+        buttonType: 'service'
+    },
+    {
+        title: '입어보기+',
+        description: '잘 어울릴까? 편하게 입어보세요.',
+        icon: '👕',
+        path: 'https://dd3ok.github.io/ai-fitting',
+        features: ['AI 피팅 서비스', 'gemini-2.5-flash-image-preview'],
         color: 'from-blue-500 to-cyan-500',
         buttonText: '서비스 이용하기',
         buttonType: 'service'

@@ -22,7 +22,8 @@ const navItems = [
             { id: 'fpsxyz', label: '마인크래프트 HUD', path: 'https://github.com/dd3ok/fabric-fpsxyzs', icon: '⛏️' },
             { id: 'oauth', label: 'OAuth/토큰/세션', path: 'https://github.com/dd3ok/auth-service', icon: '🔐' },
             { id: 'whoamai', label: '채팅 AI', path: 'https://github.com/dd3ok/who-am-ai', icon: '🤖' },
-            { id: 'repo2md', label: '레포지토리 요약', path: 'https://repo2md.onrender.com/', icon: '📦' }
+            { id: 'repo2md', label: '레포지토리 요약', path: 'https://repo2md.onrender.com/', icon: '📦' },
+            { id: 'ai-fitting', label: '입어보기+', path: 'https://dd3ok.github.io/ai-fitting', icon: '👕' }
         ]
     },
     { id: 'contact', label: 'Contact', type: 'section' }

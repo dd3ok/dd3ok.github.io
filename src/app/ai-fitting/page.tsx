@@ -93,7 +93,7 @@ const AIFittingPage: React.FC = () => {
             <Header />
             <main className="container mx-auto p-4 md:p-8">
                 <p className="text-center text-slate-600 mb-8 max-w-2xl mx-auto">
-                    인물 사진과 의류 사진을 업로드하여 가상으로 옷을 입혀보세요. AI가 자연스럽게 두 이미지를 합성하여 새로운 스타일을 제안합니다.
+                    인물 사진과 의류 사진을 업로드하여 가상으로 옷을 입혀보세요.
                 </p>
 
                 {error && (
