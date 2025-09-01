@@ -91,13 +91,13 @@ const AIFittingPage: React.FC = () => {
     return (
         <div className="min-h-screen bg-slate-100 text-slate-800 font-sans">
             <Header />
-            <main className="container mx-auto p-4 md:p-8">
-                <p className="text-center text-slate-600 mb-8 max-w-2xl mx-auto">
+            <main className="container mx-auto px-4 py-6 md:px-6 md:py-8 max-w-3xl">
+                <p className="text-center text-slate-600 mb-8 max-w-xl mx-auto">
                     인물 사진과 의류 사진을 업로드하여 가상으로 옷을 입혀보세요.
                 </p>
 
                 {error && (
-                    <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-6 max-w-2xl mx-auto">
+                    <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-6 max-w-xl mx-auto">
                         <div className="flex">
                             <div className="flex-shrink-0">
                                 {/* Error Icon */}
@@ -115,34 +115,50 @@ const AIFittingPage: React.FC = () => {
                 )}
 
                 {/* 6. ImageUploader에 명확하게 분리된 핸들러 전달 */}
-                <ImageUploader
-                    id="person-uploader"
-                    title="1. 인물 사진"
-                    imageSrc={personImageUrl}
-                    onImageChange={handlePersonImageChange}
-                />
-                <ImageUploader
-                    id="clothing-uploader"
-                    title="2. 의류 사진"
-                    imageSrc={clothingImageUrl}
-                    onImageChange={handleClothingImageChange}
-                />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-6 mb-12">
+                    <div>
+                        <ImageUploader
+                            id="person-uploader"
+                            title="1. 인물 사진"
+                            imageSrc={personImageUrl}
+                            onImageChange={handlePersonImageChange}
+                        />
+                        <div className="mt-4 text-sm text-slate-600 bg-slate-50 p-4 rounded-lg break-words text-center">
+                            <p className="font-medium">* 단독 사진, 배경과 구분이 명확한 사진이 좋아요.</p>
+                        </div>
+                    </div>
+                    <div>
+                        <ImageUploader
+                            id="clothing-uploader"
+                            title="2. 의류 사진"
+                            imageSrc={clothingImageUrl}
+                            onImageChange={handleClothingImageChange}
+                        />
+                        <div className="mt-4 text-sm text-slate-600 bg-slate-50 p-4 rounded-lg break-words text-center">
+                            <p>* 배경과 구분이 뚜렷하거나 누끼 제거 후 사용해주세요.</p>
+                        </div>
+                    </div>
+                </div>
 
-                <div className="text-center mb-8">
+                {/* 가상 피팅 시작하기 버튼 섹션 - 위치를 아래로 이동하고 너비 조정 */}
+                <div className="flex justify-center my-10">
                     <button
                         onClick={handleGenerate}
                         disabled={loading || !personImageFile || !clothingImageFile}
-                        className="bg-sky-600 text-white font-bold py-3 px-12 rounded-full hover:bg-sky-700 disabled:bg-slate-400 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 shadow-lg"
+                        className="bg-sky-600 text-white font-bold py-3 px-6 rounded-full hover:bg-sky-700 disabled:bg-slate-400 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 shadow-lg w-full max-w-[280px] md:max-w-xs"
                     >
                         {loading ? '생성 중...' : '가상 피팅 시작하기'}
                     </button>
                 </div>
 
-                <ResultDisplay
-                    imageSrc={generatedImage}
-                    loading={loading}
-                    error={error}
-                />
+                {/* 수정된 부분: 결과 섹션을 별도로 분리하고 상단 여백 추가 */}
+                <div className="mt-10 pt-6">
+                    <ResultDisplay
+                        imageSrc={generatedImage}
+                        loading={loading}
+                        error={error}
+                    />
+                </div>
             </main>
             <footer className="text-center p-4 text-slate-500 text-sm">
                 <p>Powered by Gemini API & WHO-AM-AI</p>
