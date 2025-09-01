@@ -43,15 +43,6 @@ const nextConfig = {
             },
         ];
     },
-    // API 통합을 위한 설정 (향후 확장용)
-    async rewrites() {
-        return [
-            {
-                source: '/proxy/:path*',
-                destination: 'https://apis.data.go.kr/:path*',
-            },
-        ];
-    }
 }
 
 module.exports = nextConfig
