@@ -65,6 +65,10 @@ const AIFittingPage: React.FC = () => {
             const response = await fetch(apiUrl, { method: 'POST', body: formData });
 
             if (!response.ok) {
+                if (response.status === 429) {
+                    throw new Error('1시간에 최대 10번 호출할 수 있어요.');
+                }
+
                 const errorBody = await response.text();
                 throw new Error(`이미지 생성에 실패했습니다: ${errorBody || response.statusText}`);
             }
@@ -73,11 +77,17 @@ const AIFittingPage: React.FC = () => {
             const imageUrl = URL.createObjectURL(imageBlob);
             setGeneratedImage(imageUrl);
         } catch (err: any) {
-            setError(err.message || '알 수 없는 오류가 발생했습니다.');
+            // 네트워크 에러 등 다른 에러들에 대한 처리
+            if (err.name === 'TypeError' && err.message === 'Failed to fetch') {
+                setError('네트워크 연결에 문제가 있습니다. 인터넷 연결을 확인하고 다시 시도해주세요.');
+            } else {
+                setError(err.message || '알 수 없는 오류가 발생했습니다.');
+            }
         } finally {
             setLoading(false);
         }
     }, [personImageFile, clothingImageFile]);
+
 
     // 5. 컴포넌트 언마운트 시 URL 정리 (생략)
     useEffect(() => {
