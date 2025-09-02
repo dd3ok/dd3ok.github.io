@@ -104,8 +104,11 @@ const AIFittingPage: React.FC = () => {
 
             {/* 메인 컨테이너 */}
             <main className="container mx-auto px-1 py-4 sm:px-4 sm:py-6 md:px-6 md:py-8 max-w-4xl">
-                <p className="text-center text-slate-600 mb-4 sm:mb-6 max-w-2xl mx-auto text-sm md:text-base">
+                <p className="text-center text-slate-600 mb-2 max-w-2xl mx-auto text-sm md:text-base">
                     인물 사진과 의류 사진을 업로드하여 가상으로 옷을 입어보세요.
+                </p>
+                <p className="text-center text-slate-500 mb-4 sm:mb-6 max-w-2xl mx-auto text-xs">
+                    * 이미지는 저장되지 않습니다.
                 </p>
 
                 {/* 에러 메시지 (생략) */}

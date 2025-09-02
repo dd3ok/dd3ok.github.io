@@ -16,7 +16,7 @@ export const ResultDisplay: React.FC<ResultDisplayProps> = ({
 
     return (
         <div className="bg-white p-4 md:p-6 rounded-2xl shadow-lg min-h-[300px] md:min-h-[400px] flex flex-col items-center justify-center">
-            <h2 className="text-lg md:text-xl font-semibold text-slate-700 mb-4 text-center">3. 가상 피팅 결과</h2>
+            <h2 className="text-lg md:text-xl font-semibold text-slate-700 mb-4 text-center">3. 입어보기 결과</h2>
             <div className="w-full flex-grow flex items-center justify-center border-2 border-slate-200 rounded-xl p-2 md:p-4">
                 {loading ? (
                     <Loader />
