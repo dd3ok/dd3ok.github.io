@@ -2,8 +2,8 @@ import React from 'react';
 import type { Metadata, Viewport } from 'next';
 
 export const metadata: Metadata = {
-  title: 'AI 가상 피팅룸',
-  description: '인물 사진과 의류 사진을 업로드하여 AI가 옷을 입혀주는 가상 피팅 경험',
+  title: '입어보기+',
+  description: '옷이 나한테 어울릴까? 사진을 업로드해 가상으로 입어보는 서비스',
 };
 
 export const viewport: Viewport = {
