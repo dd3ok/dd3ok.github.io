@@ -4,6 +4,11 @@ import { getEnvConfig } from '@/utils/EnvConfig';
 const CACHE_KEY = 'healthCheckLastCalled';
 const CACHE_DURATION_MS = 120000; // 2분
 
+interface HealthCheckTarget {
+    name: string;
+    url: string;
+}
+
 const useHealthCheck = (): void => {
     useEffect(() => {
         const performHealthCheck = async (): Promise<void> => {
@@ -11,14 +16,34 @@ const useHealthCheck = (): void => {
 
             try {
                 const config = getEnvConfig();
-                const apiUrl = config.pagesApi.baseUrl + '/api/healthcheck';
-                const response = await fetch(apiUrl, {
-                    method: 'GET'
-                });
+                const healthCheckTargets: HealthCheckTarget[] = [
+                    {
+                        name: 'Pages API',
+                        url: `${config.pagesApi.baseUrl}/api/healthcheck`,
+                    },
+                ];
 
-                if (!response.ok) {
-                    throw new Error(`Health check failed with status: ${response.status}`);
+                if (config.whoAmAiApi?.baseUrl) {
+                    healthCheckTargets.push({
+                        name: 'WhoAmAI API',
+                        url: `${config.whoAmAiApi.baseUrl}/api/healthcheck`,
+                    });
+                } else {
+                    console.warn('⚠️ NEXT_PUBLIC_WHO_AM_AI_API is not configured; skipping WhoAmAI health check.');
                 }
+
+                await Promise.all(
+                    healthCheckTargets.map(async (target) => {
+                        const response = await fetch(target.url, { method: 'GET' });
+
+                        if (!response.ok) {
+                            throw new Error(`[${target.name}] health check failed with status: ${response.status}`);
+                        }
+
+                        // Some health-check endpoints return primitive values (e.g., long); consume the body to avoid reader lock.
+                        await response.text();
+                    }),
+                );
 
                 localStorage.setItem(CACHE_KEY, Date.now().toString());
             } catch (error) {
