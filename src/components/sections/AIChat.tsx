@@ -66,7 +66,7 @@ interface Message {
 export default function AIChat() {
     const userId = useUserIdentifier();
     const [messages, setMessages] = useState<Message[]>([
-        { text: "안녕하세요! 인재 AI입니다.", isUser: false }
+        { text: "안녕하세요! 인재 AI입니다 👋\n\n경력, 프로젝트, 기술에 관해 무엇이든 물어보세요.", isUser: false }
     ]);
     const [inputValue, setInputValue] = useState('');
     const [isResponding, setIsResponding] = useState(false);
@@ -201,7 +201,7 @@ export default function AIChat() {
                         {!msg.isUser && (
                             <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center ring-1 ring-slate-200 shrink-0 text-xl">
                                 <span role="img" aria-label="robot">
-                                    <Image src="/image/coffeecat.png" alt="AI-Profile" width={20} height={20} />
+                                    <Image src="/image/aiimage.png" alt="AI-Profile" width={20} height={20} />
                                 </span>
                             </div>
                         )}
@@ -276,7 +276,7 @@ export default function AIChat() {
                     <div className="flex items-end gap-3 justify-start">
                         <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center ring-1 ring-slate-200 shrink-0 text-xl">
                             <span role="img" aria-label="robot">
-                                <Image src="/image/coffeecat.png" alt="AI-Profile" width={20} height={20} />
+                                <Image src="/image/aiimage.png" alt="AI-Profile" width={20} height={20} />
                             </span>
                         </div>
                         <div className="px-4 py-3 rounded-xl shadow-md bg-slate-100">
@@ -289,7 +289,7 @@ export default function AIChat() {
                     <div className="flex items-end gap-3 justify-start">
                         <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center ring-1 ring-slate-200 shrink-0 text-xl">
                             <span role="img" aria-label="robot">
-                                <Image src="/image/coffeecat.png" alt="AI-Profile" width={20} height={20} />
+                                <Image src="/image/aiimage.png" alt="AI-Profile" width={20} height={20} />
                             </span>
                         </div>
                         <div className="px-4 py-3 rounded-xl shadow-md bg-slate-100">
