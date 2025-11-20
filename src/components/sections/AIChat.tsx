@@ -199,9 +199,9 @@ export default function AIChat() {
                 {messages.map((msg, index) => (
                     <div key={index} className={`flex items-end gap-3 ${msg.isUser ? 'justify-end' : 'justify-start'}`}>
                         {!msg.isUser && (
-                            <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center ring-1 ring-slate-200 shrink-0 text-xl">
+                            <div className="w-8 h-8 flex items-center justify-center shrink-0 text-xl">
                                 <span role="img" aria-label="robot">
-                                    <Image src="/image/aiimage.png" alt="AI-Profile" width={20} height={20} />
+                                    <Image src="/image/aiimage.png" alt="AI-Profile" width={28} height={28} />
                                 </span>
                             </div>
                         )}
@@ -274,9 +274,9 @@ export default function AIChat() {
 
                 {isResponding && !isTimeout && (
                     <div className="flex items-end gap-3 justify-start">
-                        <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center ring-1 ring-slate-200 shrink-0 text-xl">
+                        <div className="w-8 h-8 flex items-center justify-center shrink-0 text-xl">
                             <span role="img" aria-label="robot">
-                                <Image src="/image/aiimage.png" alt="AI-Profile" width={20} height={20} />
+                                <Image src="/image/aiimage.png" alt="AI-Profile" width={28} height={28} />
                             </span>
                         </div>
                         <div className="px-4 py-3 rounded-xl shadow-md bg-slate-100">
@@ -287,9 +287,9 @@ export default function AIChat() {
 
                 {isTimeout && (
                     <div className="flex items-end gap-3 justify-start">
-                        <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center ring-1 ring-slate-200 shrink-0 text-xl">
+                        <div className="w-8 h-8 flex items-center justify-center shrink-0 text-xl">
                             <span role="img" aria-label="robot">
-                                <Image src="/image/aiimage.png" alt="AI-Profile" width={20} height={20} />
+                                <Image src="/image/aiimage.png" alt="AI-Profile" width={28} height={28} />
                             </span>
                         </div>
                         <div className="px-4 py-3 rounded-xl shadow-md bg-slate-100">
