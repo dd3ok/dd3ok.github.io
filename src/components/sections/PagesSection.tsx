@@ -56,11 +56,11 @@ const services = [
         buttonType: 'repo'
     },
     {
-        title: 'Repository 파일들 -> 한개의 텍스트',
-        description: 'LLM을 위한 Repository 요약 도구, 복사, 붙여넣기를 편하게',
+        title: 'Repoclip',
+        description: 'LLM을 위한 Repository 요약 도구',
         icon: '📦',
-        path: 'https://repo2md.onrender.com',
-        features: ['클립보드 및 MD파일로 export'],
+        path: 'https://repoclip.onrender.com',
+        features: ['Github 저장소 / ZIP 파일 업로드', '클립보드 or 텍스트파일로 export'],
         color: 'from-yello-500 to-green-500',
         buttonText: '서비스 이용하기',
         buttonType: 'service'
