@@ -1,8 +1,8 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import Image from 'next/image'
 import Card from '@/components/ui/Card'
-import Button from '@/components/ui/Button'
 import ImageModal from '@/components/ui/ImageModal'
 
 const projects = [
@@ -148,13 +148,13 @@ export default function ProjectsSection() {
                                     role="button"
                                     aria-label={`${project.title} 이미지 크게 보기`}
                                 >
-                                    <img
+                                    <Image
                                         src={project.image}
                                         alt={project.title}
-                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                        onError={e => {
-                                            e.currentTarget.src = '/api/placeholder/600/400'
-                                        }}
+                                        fill
+                                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                                        priority={index < 2}
                                     />
 
                                     {/* 호버 오버레이 */}
@@ -188,13 +188,14 @@ export default function ProjectsSection() {
                                     </div>
 
                                     <div className="flex gap-3">
-                                        <Button
-                                            variant="primary"
-                                            size="sm"
-                                            onClick={() => window.open(project.demo, '_blank')}
+                                        <a
+                                            href={project.demo}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 bg-blue-600 hover:bg-blue-700 text-white focus:ring-blue-500 px-4 py-2 text-sm inline-flex items-center justify-center"
                                         >
                                             방문하기
-                                        </Button>
+                                        </a>
                                     </div>
                                 </div>
                             </Card>

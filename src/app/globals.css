@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -77,9 +75,17 @@ body {
 }
 
 .container {
-  max-width: 1200px;
+  /* Slightly reduce the global container width to tighten the layout */
+  max-width: 1100px;
   margin: 0 auto;
   width: 100%;
+}
+
+@media (max-width: 640px) {
+  /* Add a bit of breathing room on small screens */
+  .container {
+    width: 92%;
+  }
 }
 
 .fade-in {

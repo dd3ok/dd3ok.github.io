@@ -11,10 +11,10 @@ export default function Footer() {
                     <div className="md:col-span-2">
                         <h3 className="text-xl font-bold mb-4">dd3ok</h3>
                         <p className="text-gray-400 leading-relaxed max-w-md mb-3">
-                            확장 가능한 시스템과 효율적인 서비스를 구축하는 개발자입니다.
+                            확장 가능하고 효율적인 서비스를 만들겠습니다.
                         </p>
                         <p className="text-gray-500 text-sm leading-relaxed max-w-md">
-                            대용량 트래픽 처리, 분산환경 아키텍쳐, AI에 관심이 많습니다.
+                            트래픽 대응, 분산 처리, 그리고 AI 접목을 즐기는 백엔드 개발자입니다.
                         </p>
                     </div>
 

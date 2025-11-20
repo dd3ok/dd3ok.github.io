@@ -36,7 +36,7 @@ export default function HeroSection() {
 
                     <div className="text-center lg:text-left lg:justify-self-end lg:max-w-xl">
                         <div className={`transition-[opacity,transform] duration-1000 delay-100 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
-                            <div className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+                            <div className="text-4xl md:text-5xl font-bold leading-tight text-gray-900 mb-6">
                                 <div className="mb-4">안녕하세요,</div>
                                 <div className="text-blue-600 mb-4">Backend Engineer</div>
                                 <div>유인재입니다</div>
@@ -45,8 +45,8 @@ export default function HeroSection() {
 
                         <div className={`transition-[opacity,transform] duration-1000 delay-300 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
                             <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-                                스프링 기반의 백엔드 서비스 개발을 해왔고, <br />
-                                확장 가능한 시스템과 안정적인 서비스 구축을 목표로 합니다.
+                                스프링 기반 백엔드 경험을 바탕으로,<br />
+                                확장성·안정성을 갖춘 서비스를 설계하고 개발합니다.
                             </p>
                         </div>
 
