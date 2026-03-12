@@ -69,7 +69,8 @@ const markdownComponents: Components = {
             {children}
         </pre>
     ),
-    code: ({ className, children, ...props }) => {
+    code: ({ node, className, children, ...props }) => {
+        void node;
         const match = /language-(\w+)/.exec(className || '');
         const isInline = !match;
 
