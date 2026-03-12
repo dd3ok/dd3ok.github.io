@@ -76,12 +76,14 @@ const AIFittingPage: React.FC = () => {
             const imageBlob = await response.blob();
             const imageUrl = URL.createObjectURL(imageBlob);
             setGeneratedImage(imageUrl);
-        } catch (err: any) {
+        } catch (err: unknown) {
             // 네트워크 에러 등 다른 에러들에 대한 처리
-            if (err.name === 'TypeError' && err.message === 'Failed to fetch') {
+            if (err instanceof TypeError && err.message === 'Failed to fetch') {
                 setError('네트워크 연결에 문제가 있습니다. 인터넷 연결을 확인하고 다시 시도해주세요.');
-            } else {
+            } else if (err instanceof Error) {
                 setError(err.message || '알 수 없는 오류가 발생했습니다.');
+            } else {
+                setError('알 수 없는 오류가 발생했습니다.');
             }
         } finally {
             setLoading(false);

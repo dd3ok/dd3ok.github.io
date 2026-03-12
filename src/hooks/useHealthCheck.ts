@@ -66,7 +66,7 @@ const useHealthCheck = (): void => {
             if (currentTime - lastCalledTime > CACHE_DURATION_MS) {
                 performHealthCheck();
             }
-        } catch (e) {
+        } catch {
             // 로컬 스토리지를 사용할 수 없는 환경(예: 시크릿 모드 일부 설정)을 위한 예외 처리
             performHealthCheck();
         }

@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+const nextConfig: NextConfig = {
     // GitHub Pages 정적 배포 설정
     output: 'export',
     trailingSlash: true,
@@ -17,32 +17,16 @@ const nextConfig = {
     assetPrefix: '',
 
     // 성능 최적화
-    swcMinify: true,
     compiler: {
         removeConsole: process.env.NODE_ENV === 'production',
     },
 
-    // ESLint 비활성화
+    // Next.js 15.5.2의 내장 lint 단계는 현재 flat config 조합과 충돌하므로
+    // 저장소의 lint 게이트는 package.json의 build/validate 스크립트에서 강제합니다.
     eslint: {
         ignoreDuringBuilds: true,
     },
 
-    // TypeScript 오류 무시
-    typescript: {
-        ignoreBuildErrors: true,
-    },
-    async headers() {
-        return [
-            {
-                source: '/api/:path*',
-                headers: [
-                    { key: 'Access-Control-Allow-Origin', value: '*' },
-                    { key: 'Access-Control-Allow-Methods', value: 'GET, POST, OPTIONS' },
-                    { key: 'Access-Control-Allow-Headers', value: 'Content-Type, Authorization' },
-                ],
-            },
-        ];
-    },
 }
 
 module.exports = nextConfig
