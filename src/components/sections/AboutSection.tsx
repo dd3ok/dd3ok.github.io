@@ -2,13 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Card from '@/components/ui/Card'
-
-const skills = [
-    { category: 'Language', items: ['Java', 'Kotlin', 'javascript', 'C#'] },
-    { category: 'Framework & Library', items: ['Spring Boot', 'React', 'Next.js', 'Vue', 'jQuery'] },
-    { category: 'Database', items: ['Oracle', 'MSSQL', 'Redis', 'MongoDB', 'Kafka'] },
-    { category: 'Monitoring', items: ['Prometheus', 'Grafana', 'ELK Stack', 'Datadog'] }
-]
+import { aboutContent, skills } from '@/data/portfolio'
 
 export default function AboutSection() {
     const [isVisible, setIsVisible] = useState(false)
@@ -43,28 +37,21 @@ export default function AboutSection() {
                         About Me
                     </h2>
                     <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                        #클린코드 #대용량트래픽 #분산환경 #AI #LLM
+                        {aboutContent.summaryTags.map((tag) => `#${tag}`).join(' ')}
                     </p>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
                     <div className={`${isVisible ? 'slide-in-left visible' : 'slide-in-left'}`}>
                         <h3 className="text-2xl font-bold text-gray-900 mb-6">
-                            확장 가능하고 안정적인 시스템을 만듭니다
+                            {aboutContent.title}
                         </h3>
                         <div className="space-y-4 text-gray-600">
-                            <p>
-                                스프링 기반의 백엔드 서비스를 주로 담당했고 최근에는 AI와 LLM에 관심이 있습니다.
-                                웹 애플리케이션 개발과 운영에 전문성을 갖추고 있습니다.
-                            </p>
-                            <p>
-                                특히 분산 시스템 아키텍처에 관심이 많으며,
-                                안정적인 시스템을 만들기 위해 노력합니다.
-                            </p>
-                            <p>
-                                지속적인 학습을 통해 최신 기술 트렌드를 따라가며,
-                                팀과의 협업을 통한 문제 해결을 선호합니다.
-                            </p>
+                            {aboutContent.paragraphs.map((paragraph) => (
+                                <p key={paragraph}>
+                                    {paragraph}
+                                </p>
+                            ))}
                         </div>
                     </div>
 

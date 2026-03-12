@@ -1,30 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-
-const experiences = [
-    {
-        company: '지마켓',
-        position: 'Backend Developer',
-        period: '2021.10 - 2024.12',
-        description: [
-            'ESM+ 로그인/가입/인증',
-            'ESM+ 슈퍼딜/올킬 신청 및 관리',
-            'ESM+ 카테고리-카테고리 담당자 매칭',
-            'ESM+ QA/공지/판매자정보 관리/안정화',
-            '판매자 관련 API 및 Gateway 관리/안정화'
-        ]
-    },
-    {
-        company: '미라콤아이앤씨',
-        position: 'Backend Developer',
-        period: '2018.01 - 2021.10',
-        description: [
-            '삼성전자 입찰견적시스템(BQMS) MRO몰 개발 및 운영',
-            '삼성전자로지텍 설치지원시스템(BISS) 개발 및 운영'
-        ]
-    }
-]
+import { experiences } from '@/data/portfolio'
 
 export default function ExperienceSection() {
     const [isVisible, setIsVisible] = useState(false)
