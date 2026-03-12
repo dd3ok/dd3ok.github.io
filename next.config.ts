@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+const nextConfig: NextConfig = {
     // GitHub Pages 정적 배포 설정
     output: 'export',
     trailingSlash: true,
@@ -17,7 +17,6 @@ const nextConfig = {
     assetPrefix: '',
 
     // 성능 최적화
-    swcMinify: true,
     compiler: {
         removeConsole: process.env.NODE_ENV === 'production',
     },
@@ -30,18 +29,6 @@ const nextConfig = {
     // TypeScript 오류 무시
     typescript: {
         ignoreBuildErrors: true,
-    },
-    async headers() {
-        return [
-            {
-                source: '/api/:path*',
-                headers: [
-                    { key: 'Access-Control-Allow-Origin', value: '*' },
-                    { key: 'Access-Control-Allow-Methods', value: 'GET, POST, OPTIONS' },
-                    { key: 'Access-Control-Allow-Headers', value: 'Content-Type, Authorization' },
-                ],
-            },
-        ];
     },
 }
 
