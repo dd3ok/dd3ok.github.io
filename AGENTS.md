@@ -37,8 +37,8 @@
 - Dev server: `npm run dev`
 - Build: `npm run build`
 - Type check: `npx tsc --noEmit`
-- Lint:
-  current lint script is outdated and should be modernized before relying on it as a gate
+- Lint: `npm run lint`
+- Validate: `npm run validate`
 
 ## Working Style
 1. Write or update a plan in `docs/plans`
@@ -50,4 +50,4 @@
 ## Current Constraints
 - The site is statically exported, so Next.js runtime-only features are limited
 - Some user-facing features depend on external services waking up from sleep
-- Build currently ignores lint and TypeScript errors in `next.config.ts`; treat that as technical debt
+- Next.js 15.5.2 built-in linting still conflicts with the current flat config path, so repository lint is enforced before build via `npm run validate`
