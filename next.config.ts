@@ -21,15 +21,12 @@ const nextConfig: NextConfig = {
         removeConsole: process.env.NODE_ENV === 'production',
     },
 
-    // ESLint 비활성화
+    // Next.js 15.5.2의 내장 lint 단계는 현재 flat config 조합과 충돌하므로
+    // 저장소의 lint 게이트는 package.json의 build/validate 스크립트에서 강제합니다.
     eslint: {
         ignoreDuringBuilds: true,
     },
 
-    // TypeScript 오류 무시
-    typescript: {
-        ignoreBuildErrors: true,
-    },
 }
 
 module.exports = nextConfig
