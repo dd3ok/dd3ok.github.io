@@ -55,3 +55,6 @@ Establish a repeatable development workflow and then improve the portfolio in sm
 ## Progress Log
 - 2026-03-12: Created branch `codex/real-dev-workflow`
 - 2026-03-12: Added `AGENTS.md`, `docs/guidelines`, and `docs/plans` scaffolding
+- 2026-03-12: Started branch-based implementation flow on `codex/portfolio-workflow-setup`
+- 2026-03-12: Completed Ticket 2 by migrating lint to ESLint CLI, aligning `eslint-config-next` with Next 15, and excluding generated output from lint scope
+- 2026-03-12: Cleaned current lint violations in source files and verified with `npm run lint`, `npx tsc --noEmit`, and `npm run build`

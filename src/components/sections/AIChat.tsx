@@ -4,7 +4,7 @@ import { useState, FormEvent, useRef, useEffect } from 'react'
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { useUserIdentifier } from '@/hooks/useUserIdentifier';
 import Image from 'next/image';
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown, { type Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
 // 아이콘 컴포넌트들
@@ -62,6 +62,50 @@ interface Message {
     text: string;
     isUser: boolean;
 }
+
+const markdownComponents: Components = {
+    pre: ({ children }) => (
+        <pre className="!text-xs !p-2 !my-2 !bg-slate-800 !text-slate-100 !rounded-md overflow-x-auto">
+            {children}
+        </pre>
+    ),
+    code: ({ className, children, ...props }) => {
+        const match = /language-(\w+)/.exec(className || '');
+        const isInline = !match;
+
+        return isInline ? (
+            <code className="!text-xs !px-1 !py-0.5 !bg-slate-200 !text-slate-800 !rounded" {...props}>
+                {children}
+            </code>
+        ) : (
+            <code className="!text-xs" {...props}>
+                {children}
+            </code>
+        );
+    },
+    h1: ({ children }) => <h1 className="!text-sm !font-bold !my-2">{children}</h1>,
+    h2: ({ children }) => <h2 className="!text-sm !font-semibold !my-1">{children}</h2>,
+    h3: ({ children }) => <h3 className="!text-xs !font-medium !my-1">{children}</h3>,
+    p: ({ children }) => <p className="!text-sm !my-1 !leading-relaxed">{children}</p>,
+    ul: ({ children }) => <ul className="!text-sm !my-1 !pl-4">{children}</ul>,
+    ol: ({ children }) => <ol className="!text-sm !my-1 !pl-4">{children}</ol>,
+    li: ({ children }) => <li className="!my-0.5">{children}</li>,
+    blockquote: ({ children }) => (
+        <blockquote className="!text-sm !my-2 !pl-3 !border-l-2 !border-slate-300 !italic">
+            {children}
+        </blockquote>
+    ),
+    table: ({ children }) => (
+        <div className="!my-2 overflow-x-auto">
+            <table className="!text-xs !min-w-full">{children}</table>
+        </div>
+    ),
+    a: ({ children, href }) => (
+        <a href={href} className="!text-blue-600 hover:!text-blue-800 !underline" target="_blank" rel="noopener noreferrer">
+            {children}
+        </a>
+    ),
+};
 
 export default function AIChat() {
     const userId = useUserIdentifier();
@@ -212,57 +256,7 @@ export default function AIChat() {
                                 <div className="prose prose-sm prose-slate max-w-none [&>*:first-child]:mt-0 [&>*:last-child]:mb-0">
                                     <ReactMarkdown
                                         remarkPlugins={[remarkGfm]}
-                                        components={{
-                                            // 코드 블록을 더 작은 크기로 조정
-                                            pre: ({ children }) => (
-                                                <pre className="!text-xs !p-2 !my-2 !bg-slate-800 !text-slate-100 !rounded-md overflow-x-auto">
-                                                    {children}
-                                                </pre>
-                                            ),
-                                            // 인라인 코드 스타일 조정 - 타입 오류 수정
-                                            code: ({ node, className, children, ...props }: any) => {
-                                                const match = /language-(\w+)/.exec(className || '');
-                                                const isInline = !match;
-
-                                                return isInline ? (
-                                                    <code className="!text-xs !px-1 !py-0.5 !bg-slate-200 !text-slate-800 !rounded" {...props}>
-                                                        {children}
-                                                    </code>
-                                                ) : (
-                                                    <code className="!text-xs" {...props}>
-                                                        {children}
-                                                    </code>
-                                                );
-                                            },
-                                            // 제목 크기 조정
-                                            h1: ({ children }) => <h1 className="!text-sm !font-bold !my-2">{children}</h1>,
-                                            h2: ({ children }) => <h2 className="!text-sm !font-semibold !my-1">{children}</h2>,
-                                            h3: ({ children }) => <h3 className="!text-xs !font-medium !my-1">{children}</h3>,
-                                            // 단락 간격 조정
-                                            p: ({ children }) => <p className="!text-sm !my-1 !leading-relaxed">{children}</p>,
-                                            // 리스트 간격 조정
-                                            ul: ({ children }) => <ul className="!text-sm !my-1 !pl-4">{children}</ul>,
-                                            ol: ({ children }) => <ol className="!text-sm !my-1 !pl-4">{children}</ol>,
-                                            li: ({ children }) => <li className="!my-0.5">{children}</li>,
-                                            // 인용구 스타일 조정
-                                            blockquote: ({ children }) => (
-                                                <blockquote className="!text-sm !my-2 !pl-3 !border-l-2 !border-slate-300 !italic">
-                                                    {children}
-                                                </blockquote>
-                                            ),
-                                            // 테이블 스타일 조정
-                                            table: ({ children }) => (
-                                                <div className="!my-2 overflow-x-auto">
-                                                    <table className="!text-xs !min-w-full">{children}</table>
-                                                </div>
-                                            ),
-                                            // 링크 색상 조정
-                                            a: ({ children, href }) => (
-                                                <a href={href} className="!text-blue-600 hover:!text-blue-800 !underline" target="_blank" rel="noopener noreferrer">
-                                                    {children}
-                                                </a>
-                                            ),
-                                        }}
+                                        components={markdownComponents}
                                     >
                                         {msg.text}
                                     </ReactMarkdown>
