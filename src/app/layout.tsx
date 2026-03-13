@@ -4,17 +4,19 @@ import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 const siteUrl = 'https://dd3ok.github.io'
+const siteTitle = 'dd3ok'
+const siteDescription = 'Backend Developer Portfolio'
 
 export const metadata: Metadata = {
     metadataBase: new URL(siteUrl),
-    title: 'dd3ok',
-    description: 'Backend Developer Portfolio',
+    title: siteTitle,
+    description: siteDescription,
     alternates: {
         canonical: '/',
     },
     openGraph: {
-        title: 'dd3ok',
-        description: 'Backend Developer Portfolio',
+        title: siteTitle,
+        description: siteDescription,
         url: siteUrl,
         siteName: 'dd3ok Portfolio',
         locale: 'ko_KR',
@@ -30,8 +32,8 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'dd3ok',
-        description: 'Backend Developer Portfolio',
+        title: siteTitle,
+        description: siteDescription,
         images: ['/logo.png'],
     },
     icons: {

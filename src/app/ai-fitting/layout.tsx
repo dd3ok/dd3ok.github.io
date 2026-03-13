@@ -1,17 +1,21 @@
 import React from 'react';
 import type { Metadata, Viewport } from 'next';
 
+const siteUrl = 'https://dd3ok.github.io';
+const title = '입어보기+';
+const description = '옷이 나한테 어울릴까? 사진을 업로드해 가상으로 입어보는 서비스';
+
 export const metadata: Metadata = {
-  metadataBase: new URL('https://dd3ok.github.io'),
-  title: '입어보기+',
-  description: '옷이 나한테 어울릴까? 사진을 업로드해 가상으로 입어보는 서비스',
+  metadataBase: new URL(siteUrl),
+  title,
+  description,
   alternates: {
     canonical: '/ai-fitting',
   },
   openGraph: {
-    title: '입어보기+',
-    description: '옷이 나한테 어울릴까? 사진을 업로드해 가상으로 입어보는 서비스',
-    url: 'https://dd3ok.github.io/ai-fitting',
+    title,
+    description,
+    url: `${siteUrl}/ai-fitting`,
     siteName: 'dd3ok Portfolio',
     locale: 'ko_KR',
     type: 'website',
@@ -26,8 +30,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '입어보기+',
-    description: '옷이 나한테 어울릴까? 사진을 업로드해 가상으로 입어보는 서비스',
+    title,
+    description,
     images: ['/image/aiimage.png'],
   },
 };
