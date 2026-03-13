@@ -4,8 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import Card from '@/components/ui/Card'
 import { services } from '@/data/portfolio'
-
-const isExternalLink = (path: string) => path.startsWith('http')
+import { isExternalLink } from '@/utils/links'
 
 export default function ServicesSection() {
     const [isVisible, setIsVisible] = useState(false)

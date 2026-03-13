@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useActiveSection } from '@/hooks/useActiveSection'
+import { isExternalLink } from '@/utils/links'
 
 // 네비게이션 아이템 구조
 const navItems = [
@@ -29,8 +30,6 @@ const navItems = [
     { id: 'contact', label: 'Contact', type: 'section' }
 ]
 
-const isExternalLink = (href: string) => href.startsWith('http')
-
 export default function Navigation() {
     const [isScrolled, setIsScrolled] = useState(false)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -49,6 +48,11 @@ export default function Navigation() {
         return () => window.removeEventListener('scroll', handleScroll)
     }, [])
 
+    const closeMobileMenu = useCallback(() => {
+        setIsMobileMenuOpen(false)
+        setMobileServicesOpen(false)
+    }, [])
+
     useEffect(() => {
         if (!isMobileMenuOpen) {
             return
@@ -56,20 +60,14 @@ export default function Navigation() {
 
         const handleKeyDown = (event: KeyboardEvent) => {
             if (event.key === 'Escape') {
-                setIsMobileMenuOpen(false)
-                setMobileServicesOpen(false)
+                closeMobileMenu()
             }
         }
 
         document.addEventListener('keydown', handleKeyDown)
 
         return () => document.removeEventListener('keydown', handleKeyDown)
-    }, [isMobileMenuOpen])
-
-    const closeMobileMenu = () => {
-        setIsMobileMenuOpen(false)
-        setMobileServicesOpen(false)
-    }
+    }, [closeMobileMenu, isMobileMenuOpen])
 
     const scrollToSection = (sectionId: string) => {
         // 메인 페이지가 아닌 경우 메인으로 이동 후 스크롤
