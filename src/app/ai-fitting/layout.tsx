@@ -2,15 +2,39 @@ import React from 'react';
 import type { Metadata, Viewport } from 'next';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://dd3ok.github.io'),
   title: '입어보기+',
   description: '옷이 나한테 어울릴까? 사진을 업로드해 가상으로 입어보는 서비스',
+  alternates: {
+    canonical: '/ai-fitting',
+  },
+  openGraph: {
+    title: '입어보기+',
+    description: '옷이 나한테 어울릴까? 사진을 업로드해 가상으로 입어보는 서비스',
+    url: 'https://dd3ok.github.io/ai-fitting',
+    siteName: 'dd3ok Portfolio',
+    locale: 'ko_KR',
+    type: 'website',
+    images: [
+      {
+        url: '/image/aiimage.png',
+        width: 1024,
+        height: 1024,
+        alt: '입어보기+ 미리보기 이미지',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '입어보기+',
+    description: '옷이 나한테 어울릴까? 사진을 업로드해 가상으로 입어보는 서비스',
+    images: ['/image/aiimage.png'],
+  },
 };
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
 };
 
 export default function AIFittingLayout({
