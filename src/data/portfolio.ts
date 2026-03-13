@@ -157,7 +157,7 @@ export const services: Service[] = [
         icon: '📦',
         path: 'https://repoclip.onrender.com',
         features: ['Github 저장소 / ZIP 파일 업로드', '클립보드 or 텍스트파일로 export'],
-        color: 'from-yello-500 to-green-500',
+        color: 'from-yellow-500 to-green-500',
         buttonText: '서비스 이용하기',
         buttonType: 'service',
     },

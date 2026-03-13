@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import Card from '@/components/ui/Card'
 import { services } from '@/data/portfolio'
+import { isExternalLink } from '@/utils/links'
+
 export default function ServicesSection() {
     const [isVisible, setIsVisible] = useState(false)
     const sectionRef = useRef<HTMLDivElement>(null)
@@ -54,9 +56,9 @@ export default function ServicesSection() {
                             <div className={`h-32 bg-gradient-to-br ${service.color} relative overflow-hidden`}>
                                 <div className="absolute inset-0 bg-black/10" />
                                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-4xl filter drop-shadow-lg">
-                    {service.icon}
-                  </span>
+                                    <span className="text-4xl filter drop-shadow-lg">
+                                        {service.icon}
+                                    </span>
                                 </div>
                                 {/* 장식 요소 */}
                                 <div className="absolute top-4 right-4 w-20 h-20 bg-white/10 rounded-full blur-xl" />
@@ -90,8 +92,9 @@ export default function ServicesSection() {
                                 <div className="mt-auto">
                                     <Link
                                         href={service.path}
-                                        className={`inline-flex items-center justify-center w-full px-4 py-3 rounded-lg transition-all duration-300 group-hover:scale-105 font-medium bg-gray-900 text-white hover:bg-blue-600'}`}
-                                        target='_blank'
+                                        className="inline-flex items-center justify-center w-full px-4 py-3 rounded-lg transition-all duration-300 group-hover:scale-105 font-medium bg-gray-900 text-white hover:bg-blue-600"
+                                        target={isExternalLink(service.path) ? '_blank' : undefined}
+                                        rel={isExternalLink(service.path) ? 'noopener noreferrer' : undefined}
                                     >
                                         {service.buttonText}
                                         <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

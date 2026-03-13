@@ -62,3 +62,5 @@ Establish a repeatable development workflow and then improve the portfolio in sm
 - 2026-03-12: Kept `eslint.ignoreDuringBuilds` temporarily because Next 15.5.2 built-in linting still conflicts with the current flat config path; repository lint is enforced before build instead
 - 2026-03-12: Started Ticket 4 on branch `codex/extract-portfolio-content-data`
 - 2026-03-12: Moved about, skills, experience, projects, and services metadata into `src/data/portfolio.ts` so section components can stay focused on rendering
+- 2026-03-13: Started Ticket 5 on branch `codex/polish-portfolio-ui` to fix small UX regressions in service cards, image modal fallback handling, and mobile navigation accessibility
+- 2026-03-13: Completed Ticket 5 by fixing service link polish, replacing the broken image modal fallback with an inline placeholder, and tightening mobile navigation link behavior and accessibility before verifying with `npm run build`

@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useActiveSection } from '@/hooks/useActiveSection'
+import { isExternalLink } from '@/utils/links'
 
 // 네비게이션 아이템 구조
 const navItems = [
@@ -47,9 +48,31 @@ export default function Navigation() {
         return () => window.removeEventListener('scroll', handleScroll)
     }, [])
 
+    const closeMobileMenu = useCallback(() => {
+        setIsMobileMenuOpen(false)
+        setMobileServicesOpen(false)
+    }, [])
+
+    useEffect(() => {
+        if (!isMobileMenuOpen) {
+            return
+        }
+
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                closeMobileMenu()
+            }
+        }
+
+        document.addEventListener('keydown', handleKeyDown)
+
+        return () => document.removeEventListener('keydown', handleKeyDown)
+    }, [closeMobileMenu, isMobileMenuOpen])
+
     const scrollToSection = (sectionId: string) => {
         // 메인 페이지가 아닌 경우 메인으로 이동 후 스크롤
         if (window.location.pathname !== '/') {
+            closeMobileMenu()
             router.push(`/#${sectionId}`)
             return
         }
@@ -57,8 +80,7 @@ export default function Navigation() {
         const element = document.getElementById(sectionId)
         if (element) {
             element.scrollIntoView({ behavior: 'smooth' })
-            setIsMobileMenuOpen(false)
-            setMobileServicesOpen(false)
+            closeMobileMenu()
         }
     }
 
@@ -109,6 +131,7 @@ export default function Navigation() {
                     <Link
                         href="/"
                         className="flex items-center space-x-2 md:space-x-3 cursor-pointer hover:scale-105 transition-transform"
+                        onClick={closeMobileMenu}
                     >
                         <Image
                             src="/logo.png"
@@ -132,6 +155,7 @@ export default function Navigation() {
                             >
                                 {item.type === 'section' ? (
                                     <button
+                                        type="button"
                                         onClick={() => scrollToSection(item.id)}
                                         className={`
                                             relative px-3 py-2 text-sm font-medium transition-colors duration-200
@@ -149,7 +173,12 @@ export default function Navigation() {
                                 ) : (
                                     <>
                                         <button
+                                            type="button"
                                             onClick={() => scrollToSection(item.id)}
+                                            onFocus={() => handleMouseEnter(item.id)}
+                                            aria-haspopup="menu"
+                                            aria-expanded={activeDropdown === item.id}
+                                            aria-controls={`${item.id}-desktop-menu`}
                                             className={`
                                                 relative px-3 py-2 text-sm font-medium transition-colors duration-200 flex items-center
                                                 ${activeSection === item.id
@@ -176,35 +205,45 @@ export default function Navigation() {
                                         {/* Dropdown Menu */}
                                         {activeDropdown === item.id && item.dropdown && (
                                             <div
+                                                id={`${item.id}-desktop-menu`}
+                                                role="menu"
                                                 className="absolute top-full left-0 mt-1 w-56 bg-white rounded-lg shadow-xl border border-gray-100 py-2 z-50"
                                                 onMouseEnter={handleDropdownMouseEnter}
                                                 onMouseLeave={handleMouseLeave}
+                                                onFocus={handleDropdownMouseEnter}
                                             >
                                                 {/* 마우스 이동을 위한 투명 브릿지 */}
                                                 <div className="absolute -top-1 left-0 right-0 h-1 bg-transparent" />
 
-                                                {item.dropdown.map((dropdownItem) => (
-                                                    <Link
-                                                        key={dropdownItem.id}
-                                                        href={dropdownItem.path}
-                                                        target="_blank"  // 새창으로 열기
-                                                        rel="noopener noreferrer"  // 보안 강화
-                                                        className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200 group"
-                                                        onClick={() => setActiveDropdown(null)}
-                                                    >
-                                                        <span className="mr-3 text-lg">{dropdownItem.icon}</span>
-                                                        {dropdownItem.label}
-                                                        {/* 새창 아이콘 추가 */}
-                                                        <svg
-                                                            className="w-3 h-3 ml-auto text-gray-400 group-hover:text-blue-500 transition-colors"
-                                                            fill="none"
-                                                            stroke="currentColor"
-                                                            viewBox="0 0 24 24"
+                                                {item.dropdown.map((dropdownItem) => {
+                                                    const external = isExternalLink(dropdownItem.path)
+
+                                                    return (
+                                                        <Link
+                                                            key={dropdownItem.id}
+                                                            href={dropdownItem.path}
+                                                            target={external ? '_blank' : undefined}
+                                                            rel={external ? 'noopener noreferrer' : undefined}
+                                                            role="menuitem"
+                                                            className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200 group"
+                                                            onClick={() => setActiveDropdown(null)}
                                                         >
-                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                                                        </svg>
-                                                    </Link>
-                                                ))}
+                                                            <span className="mr-3 text-lg">{dropdownItem.icon}</span>
+                                                            {dropdownItem.label}
+                                                            {external && (
+                                                                <svg
+                                                                    className="w-3 h-3 ml-auto text-gray-400 group-hover:text-blue-500 transition-colors"
+                                                                    fill="none"
+                                                                    stroke="currentColor"
+                                                                    viewBox="0 0 24 24"
+                                                                    aria-hidden="true"
+                                                                >
+                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                                                </svg>
+                                                            )}
+                                                        </Link>
+                                                    )
+                                                })}
                                             </div>
                                         )}
                                     </>
@@ -215,8 +254,12 @@ export default function Navigation() {
 
                     {/* Mobile Menu Button */}
                     <button
+                        type="button"
                         className="md:hidden p-2 mr-1"
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        aria-expanded={isMobileMenuOpen}
+                        aria-controls="mobile-navigation"
+                        aria-label={isMobileMenuOpen ? '모바일 메뉴 닫기' : '모바일 메뉴 열기'}
                     >
                         <div className="w-6 h-6 flex flex-col justify-center items-center">
                             <span className={`bg-gray-700 block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${isMobileMenuOpen ? 'rotate-45 translate-y-1' : '-translate-y-0.5'}`} />
@@ -228,17 +271,16 @@ export default function Navigation() {
 
                 {/* Mobile Menu */}
                 <div
-                    className={`
-                        md:hidden transition-all duration-300 ease-in-out 
-                        ${isMobileMenuOpen ? 'max-h-[75vh] opacity-100' : 'max-h-0 opacity-0'} 
-                        overflow-y-auto
-                    `}
+                    id="mobile-navigation"
+                    className="md:hidden overflow-y-auto"
+                    hidden={!isMobileMenuOpen}
                 >
                     <div className="px-4 py-2 space-y-1 bg-white/95 backdrop-blur-md border-t border-gray-100">
                         {navItems.map((item) => (
                             <div key={item.id}>
                                 {item.type === 'section' ? (
                                     <button
+                                        type="button"
                                         onClick={() => scrollToSection(item.id)}
                                         className={`
                                             block w-full text-left px-3 py-2 text-base font-medium rounded-lg transition-colors duration-200
@@ -252,9 +294,11 @@ export default function Navigation() {
                                     </button>
                                 ) : (
                                     <>
-                                        {/* 🔥 여기가 수정된 부분입니다! */}
                                         <button
+                                            type="button"
                                             onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+                                            aria-expanded={mobileServicesOpen}
+                                            aria-controls="mobile-services-menu"
                                             className={`
                                                 flex items-center justify-between w-full px-3 py-2 text-base font-medium rounded-lg transition-colors duration-200
                                                 ${activeSection === item.id || mobileServicesOpen
@@ -278,33 +322,36 @@ export default function Navigation() {
 
                                         {/* Mobile Services Dropdown */}
                                         {mobileServicesOpen && item.dropdown && (
-                                            <div className="ml-4 mt-1 space-y-1">
-                                                {item.dropdown.map((dropdownItem) => (
-                                                    <Link
-                                                        key={dropdownItem.id}
-                                                        href={dropdownItem.path}
-                                                        target="_blank"  // 새창으로 열기
-                                                        rel="noopener noreferrer"  // 보안 강화
-                                                        className="flex items-center px-3 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200 group"
-                                                        onClick={() => {
-                                                            // 드롭다운 항목 클릭 시 메뉴 전체 닫기
-                                                            setIsMobileMenuOpen(false)
-                                                            setMobileServicesOpen(false)
-                                                        }}
-                                                    >
-                                                        <span className="mr-3">{dropdownItem.icon}</span>
-                                                        {dropdownItem.label}
-                                                        {/* 새창 아이콘 추가 */}
-                                                        <svg
-                                                            className="w-3 h-3 ml-auto text-gray-400 group-hover:text-blue-500 transition-colors"
-                                                            fill="none"
-                                                            stroke="currentColor"
-                                                            viewBox="0 0 24 24"
+                                            <div id="mobile-services-menu" className="ml-4 mt-1 space-y-1" role="menu">
+                                                {item.dropdown.map((dropdownItem) => {
+                                                    const external = isExternalLink(dropdownItem.path)
+
+                                                    return (
+                                                        <Link
+                                                            key={dropdownItem.id}
+                                                            href={dropdownItem.path}
+                                                            target={external ? '_blank' : undefined}
+                                                            rel={external ? 'noopener noreferrer' : undefined}
+                                                            role="menuitem"
+                                                            className="flex items-center px-3 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200 group"
+                                                            onClick={closeMobileMenu}
                                                         >
-                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                                                        </svg>
-                                                    </Link>
-                                                ))}
+                                                            <span className="mr-3">{dropdownItem.icon}</span>
+                                                            {dropdownItem.label}
+                                                            {external && (
+                                                                <svg
+                                                                    className="w-3 h-3 ml-auto text-gray-400 group-hover:text-blue-500 transition-colors"
+                                                                    fill="none"
+                                                                    stroke="currentColor"
+                                                                    viewBox="0 0 24 24"
+                                                                    aria-hidden="true"
+                                                                >
+                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                                                </svg>
+                                                            )}
+                                                        </Link>
+                                                    )
+                                                })}
                                             </div>
                                         )}
                                     </>
@@ -317,4 +364,3 @@ export default function Navigation() {
         </nav>
     )
 }
-
