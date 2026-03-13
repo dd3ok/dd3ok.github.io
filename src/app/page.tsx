@@ -1,7 +1,5 @@
-'use client'
-
-import { useEffect, useState } from 'react'
 import Navigation from '@/components/layout/Navigation'
+import { HealthcheckInitializer } from '@/components/HealthcheckInitializer'
 import HeroSection from '@/components/sections/HeroSection'
 import AboutSection from '@/components/sections/AboutSection'
 import ProjectsSection from '@/components/sections/ProjectsSection'
@@ -11,14 +9,9 @@ import ContactSection from '@/components/sections/ContactSection'
 import Footer from '@/components/layout/Footer'
 
 export default function Home() {
-  const [isLoaded, setIsLoaded] = useState(false)
-
-  useEffect(() => {
-    setIsLoaded(true)
-  }, [])
-
   return (
-      <main className={`transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
+      <main className="page-enter">
+        <HealthcheckInitializer />
         <Navigation />
         <HeroSection />
         <AboutSection />

@@ -47,6 +47,16 @@ Establish a repeatable development workflow and then improve the portfolio in sm
 - Keep interactive sections client-side only where necessary
 - Re-check bundle impact after changes
 
+### Ticket 7: Interactive island split
+- Defer heavyweight home interactions where possible
+- Keep AI chat, project modal, and contact form as localized client islands
+- Re-check home bundle impact after splitting
+
+### Ticket 8: Config and runtime cleanup
+- Scope wake-up logic to routes that actually need it
+- Align local preview commands with static export behavior
+- Remove dead utilities and simplify active section tracking
+
 ## Acceptance Criteria
 - Every active change starts from a small ticket in this file or a follow-up plan
 - Workflow documents remain in sync with the current repo state
@@ -64,3 +74,10 @@ Establish a repeatable development workflow and then improve the portfolio in sm
 - 2026-03-12: Moved about, skills, experience, projects, and services metadata into `src/data/portfolio.ts` so section components can stay focused on rendering
 - 2026-03-13: Started Ticket 5 on branch `codex/polish-portfolio-ui` to fix small UX regressions in service cards, image modal fallback handling, and mobile navigation accessibility
 - 2026-03-13: Completed Ticket 5 by fixing service link polish, replacing the broken image modal fallback with an inline placeholder, and tightening mobile navigation link behavior and accessibility before verifying with `npm run build`
+- 2026-03-13: Started Ticket 6 on branch `codex/performance-cleanup` to narrow the home page client boundary and move static sections back toward server rendering
+- 2026-03-13: Completed Ticket 6 by making `src/app/page.tsx` server-rendered again, moving Hero/About/Experience/Pages/Footer back toward server components, and keeping scroll reveals in smaller client wrappers; verified with `npm run build`, which reduced `/` from `72.6 kB / 174 kB` to `68.9 kB / 171 kB`
+- 2026-03-13: Started Ticket 7 on branch `codex/performance-cleanup` to defer AI chat and split remaining home interactions into smaller client islands
+- 2026-03-13: Completed Ticket 7 by deferring AI chat loading, extracting project modal behavior and contact form logic into localized client islands, and reducing `/` from `68.9 kB / 171 kB` to `16.7 kB / 119 kB` after `npm run build`
+- 2026-03-13: Started Ticket 8 on branch `codex/performance-cleanup` to narrow healthcheck scope, align static preview tooling, and clean up stale runtime utilities
+- 2026-03-13: Completed Ticket 8 by moving health checks from the root layout to the home page, aligning preview scripts and README with static export, deleting the unused `SectionWrapper`, and switching active-section tracking to `IntersectionObserver`; verified with `npm run build`
+- 2026-03-13: Patched direct and transitive dependency vulnerabilities by updating `next` to `15.5.10`, aligning related Next tooling, updating `serve`, and applying `npm audit fix`; verified with `npm run lint`, `npx tsc --noEmit`, `npm run build`, and a clean `npm audit`

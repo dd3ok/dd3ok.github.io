@@ -4,29 +4,44 @@ export function useActiveSection() {
     const [activeSection, setActiveSection] = useState('')
 
     useEffect(() => {
-        const sections = ['hero', 'about', 'projects', 'experience', 'services', 'contact']
+        const sectionIds = ['hero', 'about', 'experience', 'projects', 'services', 'contact']
+        const sectionElements = sectionIds
+            .map((id) => document.getElementById(id))
+            .filter((element): element is HTMLElement => element !== null)
 
-        const handleScroll = () => {
-            const scrollPosition = window.scrollY + 100
-
-            for (const section of sections) {
-                const element = document.getElementById(section)
-                if (element) {
-                    const offsetTop = element.offsetTop
-                    const height = element.offsetHeight
-
-                    if (scrollPosition >= offsetTop && scrollPosition < offsetTop + height) {
-                        setActiveSection(section)
-                        break
-                    }
-                }
-            }
+        if (sectionElements.length === 0) {
+            return
         }
 
-        window.addEventListener('scroll', handleScroll)
-        handleScroll() // 초기 실행
+        const visibleSections = new Map<string, number>()
 
-        return () => window.removeEventListener('scroll', handleScroll)
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    const sectionId = entry.target.id
+
+                    if (entry.isIntersecting) {
+                        visibleSections.set(sectionId, entry.intersectionRatio)
+                    } else {
+                        visibleSections.delete(sectionId)
+                    }
+                })
+
+                const nextActiveSection = sectionIds.find((id) => visibleSections.has(id))
+
+                if (nextActiveSection) {
+                    setActiveSection(nextActiveSection)
+                }
+            },
+            {
+                rootMargin: '-45% 0px -45% 0px',
+                threshold: [0, 0.1, 0.25, 0.5],
+            }
+        )
+
+        sectionElements.forEach((section) => observer.observe(section))
+
+        return () => observer.disconnect()
     }, [])
 
     return activeSection

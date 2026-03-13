@@ -13,9 +13,6 @@ export function useUserIdentifier(): string | null {
             // 저장된 ID가 없으면 새로 생성하고 localStorage에 저장합니다.
             storedUserId = crypto.randomUUID();
             localStorage.setItem(USER_ID_KEY, storedUserId);
-            console.log('New user ID generated and stored:', storedUserId);
-        } else {
-            console.log('Existing user ID found:', storedUserId);
         }
 
         setUserId(storedUserId);
