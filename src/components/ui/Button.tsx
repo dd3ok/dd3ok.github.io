@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 interface ButtonProps {
     children: React.ReactNode
     variant?: 'primary' | 'outline' | 'ghost'
@@ -5,6 +7,7 @@ interface ButtonProps {
     className?: string
     onClick?: () => void
     type?: 'button' | 'submit'
+    href?: string
 }
 
 export default function Button({
@@ -13,7 +16,8 @@ export default function Button({
                                    size = 'md',
                                    className = '',
                                    onClick,
-                                   type = 'button'
+                                   type = 'button',
+                                   href
                                }: ButtonProps) {
     const baseClasses = 'font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2'
 
@@ -29,11 +33,29 @@ export default function Button({
         lg: 'px-8 py-4 text-lg'
     }
 
+    const composedClassName = `${baseClasses} ${variants[variant]} ${sizes[size]} ${className}`
+
+    if (href) {
+        if (href.startsWith('/')) {
+            return (
+                <Link href={href} className={composedClassName}>
+                    {children}
+                </Link>
+            )
+        }
+
+        return (
+            <a href={href} className={composedClassName}>
+                {children}
+            </a>
+        )
+    }
+
     return (
         <button
             type={type}
             onClick={onClick}
-            className={`${baseClasses} ${variants[variant]} ${sizes[size]} ${className}`}
+            className={composedClassName}
         >
             {children}
         </button>

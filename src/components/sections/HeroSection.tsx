@@ -1,24 +1,7 @@
-'use client'
-
-import { useEffect, useState } from 'react'
 import Button from '@/components/ui/Button'
-import AIChat from '@/components/sections/AIChat'
+import DeferredAIChat from '@/components/sections/DeferredAIChat'
 
 export default function HeroSection() {
-    const [isVisible, setIsVisible] = useState(false)
-
-    useEffect(() => {
-        const timer = setTimeout(() => setIsVisible(true), 300)
-        return () => clearTimeout(timer)
-    }, [])
-
-    const scrollToSection = (sectionId: string) => {
-        const element = document.getElementById(sectionId)
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' })
-        }
-    }
-
     return (
         <section
             id="hero"
@@ -35,7 +18,7 @@ export default function HeroSection() {
                 <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-8 lg:gap-12">
 
                     <div className="text-center lg:text-left lg:justify-self-end lg:max-w-xl">
-                        <div className={`transition-[opacity,transform] duration-1000 delay-100 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+                        <div className="enter-up enter-delay-100">
                             <div className="text-4xl md:text-5xl font-bold leading-tight text-gray-900 mb-6">
                                 <div className="mb-4">안녕하세요,</div>
                                 <div className="text-blue-600 mb-4">Backend Engineer</div>
@@ -43,26 +26,26 @@ export default function HeroSection() {
                             </div>
                         </div>
 
-                        <div className={`transition-[opacity,transform] duration-1000 delay-300 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+                        <div className="enter-up enter-delay-300">
                             <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
                                 스프링 기반 백엔드 경험을 바탕으로,<br />
                                 확장성·안정성을 갖춘 서비스를 설계하고 개발합니다.
                             </p>
                         </div>
 
-                        <div className={`transition-[opacity,transform] duration-1000 delay-500 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+                        <div className="enter-up enter-delay-500">
                             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center">
                                 <Button
                                     variant="primary"
                                     size="lg"
-                                    onClick={() => scrollToSection('projects')}
+                                    href="#projects"
                                 >
                                     프로젝트 보기
                                 </Button>
                                 <Button
                                     variant="outline"
                                     size="lg"
-                                    onClick={() => scrollToSection('contact')}
+                                    href="#contact"
                                 >
                                     연락하기
                                 </Button>
@@ -70,8 +53,8 @@ export default function HeroSection() {
                         </div>
                     </div>
 
-                    <div className={`w-full max-w-md justify-self-start lg:ml-8 transition-[opacity,transform] duration-1000 delay-100 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
-                        <AIChat />
+                    <div className="w-full max-w-md justify-self-start lg:ml-8 enter-up enter-delay-200">
+                        <DeferredAIChat />
                     </div>
                 </div>
             </div>

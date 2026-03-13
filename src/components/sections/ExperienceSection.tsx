@@ -1,53 +1,29 @@
-'use client'
-
-import { useEffect, useRef, useState } from 'react'
+import ScrollAnimation from '@/components/animations/ScrollAnimations'
 import { experiences } from '@/data/portfolio'
 
 export default function ExperienceSection() {
-    const [isVisible, setIsVisible] = useState(false)
-    const sectionRef = useRef<HTMLDivElement>(null)
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setIsVisible(true)
-                }
-            },
-            { threshold: 0.1 }
-        )
-
-        if (sectionRef.current) {
-            observer.observe(sectionRef.current)
-        }
-
-        return () => observer.disconnect()
-    }, [])
-
     return (
         <section
             id="experience"
-            ref={sectionRef}
             className="section-padding bg-gray-50"
         >
             <div className="container">
-                <div className={`text-center mb-16 ${isVisible ? 'fade-in visible' : 'fade-in'}`}>
+                <ScrollAnimation className="text-center mb-16">
                     <h2 className="text-3xl md:text-4xl font-bold text-blue-600 mb-4">
                         Experience
                     </h2>
                     <p className="text-lg text-gray-600 max-w-2xl mx-auto">
                         다양한 환경에서 개발을 경험했습니다.
                     </p>
-                </div>
+                </ScrollAnimation>
 
                 <div className="max-w-3xl mx-auto">
                     {experiences.map((exp, index) => (
-                        <div
+                        <ScrollAnimation
                             key={exp.company}
-                            className={`relative pl-12 pb-12 ${
-                                isVisible ? 'slide-in-left visible' : 'slide-in-left'
-                            }`}
-                            style={{ transitionDelay: `${index * 200}ms` }}
+                            animation="slideLeft"
+                            delay={index * 180}
+                            className="relative pl-12 pb-12"
                         >
                             {/* 타임라인 선 */}
                             {index !== experiences.length - 1 && (
@@ -82,7 +58,7 @@ export default function ExperienceSection() {
                                     ))}
                                 </ul>
                             </div>
-                        </div>
+                        </ScrollAnimation>
                     ))}
                 </div>
             </div>

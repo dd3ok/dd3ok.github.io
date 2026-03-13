@@ -12,8 +12,6 @@ interface HealthCheckTarget {
 const useHealthCheck = (): void => {
     useEffect(() => {
         const performHealthCheck = async (): Promise<void> => {
-            console.log('Attempting health check...');
-
             try {
                 const config = getEnvConfig();
                 const healthCheckTargets: HealthCheckTarget[] = [
@@ -62,7 +60,7 @@ const useHealthCheck = (): void => {
             const lastCalledTime = lastCalled ? parseInt(lastCalled, 10) : 0;
             const currentTime = Date.now();
 
-            // 2. 현재 시간과 마지막 호출 시간의 차이가 3분을 초과하는지 확인
+            // 2. 현재 시간과 마지막 호출 시간의 차이가 캐시 시간(2분)을 초과하는지 확인
             if (currentTime - lastCalledTime > CACHE_DURATION_MS) {
                 performHealthCheck();
             }

@@ -143,6 +143,52 @@ body {
   transform: scale(1);
 }
 
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.page-enter {
+  animation: pageEnter 0.8s ease-out both;
+}
+
+@keyframes enterUp {
+  from {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.enter-up {
+  opacity: 0;
+  transform: translateY(2rem);
+  animation: enterUp 0.9s ease-out forwards;
+}
+
+.enter-delay-100 {
+  animation-delay: 0.1s;
+}
+
+.enter-delay-200 {
+  animation-delay: 0.2s;
+}
+
+.enter-delay-300 {
+  animation-delay: 0.3s;
+}
+
+.enter-delay-500 {
+  animation-delay: 0.5s;
+}
+
 .hover-lift {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }

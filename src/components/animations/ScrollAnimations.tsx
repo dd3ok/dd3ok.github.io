@@ -27,6 +27,7 @@ export default function ScrollAnimation({
                     setTimeout(() => {
                         element.classList.add('visible')
                     }, delay)
+                    observer.disconnect()
                 }
             },
             { threshold: 0.1 }
