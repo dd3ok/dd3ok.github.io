@@ -19,4 +19,4 @@
 
 ### Notes
 - The site is exported statically, so local preview should serve the generated `out/` directory.
-- Repository linting is enforced before build because Next.js 15.5.2 built-in linting still conflicts with the current flat config path.
+- Repository linting is enforced before build because Next.js 15.5.10 built-in linting still conflicts with the current flat config path.

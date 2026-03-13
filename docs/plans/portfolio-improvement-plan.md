@@ -69,7 +69,8 @@ Establish a repeatable development workflow and then improve the portfolio in sm
 - 2026-03-12: Completed Ticket 2 by migrating lint to ESLint CLI, aligning `eslint-config-next` with Next 15, and excluding generated output from lint scope
 - 2026-03-12: Cleaned current lint violations in source files and verified with `npm run lint`, `npx tsc --noEmit`, and `npm run build`
 - 2026-03-12: Ticket 3 removed the TypeScript build bypass and restored a build-time quality gate through `npm run validate && next build`
-- 2026-03-12: Kept `eslint.ignoreDuringBuilds` temporarily because Next 15.5.2 built-in linting still conflicts with the current flat config path; repository lint is enforced before build instead
+- 2026-03-12: Kept `eslint.ignoreDuringBuilds` temporarily because Next 15.5.10 built-in linting still conflicts with the current flat config path; repository lint is enforced before build instead
+- 2026-03-13: Addressed PR review feedback on `codex/performance-cleanup` by removing the redundant `export` script, renaming `ServicesSection` to `PagesSection`, and updating stale Next.js version notes
 - 2026-03-12: Started Ticket 4 on branch `codex/extract-portfolio-content-data`
 - 2026-03-12: Moved about, skills, experience, projects, and services metadata into `src/data/portfolio.ts` so section components can stay focused on rendering
 - 2026-03-13: Started Ticket 5 on branch `codex/polish-portfolio-ui` to fix small UX regressions in service cards, image modal fallback handling, and mobile navigation accessibility

@@ -4,7 +4,7 @@ import Card from '@/components/ui/Card'
 import { services } from '@/data/portfolio'
 import { isExternalLink } from '@/utils/links'
 
-export default function ServicesSection() {
+export default function PagesSection() {
     return (
         <section
             id="services"

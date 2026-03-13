@@ -8,7 +8,6 @@
     "start": "serve out -l 3000",
     "lint": "eslint . --max-warnings=0",
     "validate": "npm run lint && npx tsc --noEmit",
-    "export": "npm run validate && next build",
     "preview": "npm run build && serve out -l 3000"
   },
   "dependencies": {
