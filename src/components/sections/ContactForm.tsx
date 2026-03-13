@@ -15,6 +15,9 @@ interface FormErrors {
     message?: string
 }
 
+const MESSAGE_MIN_LENGTH = 10
+const MESSAGE_MAX_LENGTH = 1000
+
 export default function ContactForm() {
     const [formData, setFormData] = useState<ContactFormData>({
         name: '',
@@ -43,8 +46,10 @@ export default function ContactForm() {
 
         if (!data.message.trim()) {
             errors.message = '메시지를 입력해주세요.'
-        } else if (data.message.trim().length < 10) {
-            errors.message = '메시지는 10글자 이상 입력해주세요.'
+        } else if (data.message.trim().length < MESSAGE_MIN_LENGTH) {
+            errors.message = `메시지는 ${MESSAGE_MIN_LENGTH}글자 이상 입력해주세요.`
+        } else if (data.message.length > MESSAGE_MAX_LENGTH) {
+            errors.message = `메시지는 ${MESSAGE_MAX_LENGTH}자 이하로 입력해주세요.`
         }
 
         return errors
@@ -164,6 +169,7 @@ export default function ContactForm() {
                     value={formData.message}
                     onChange={handleInputChange}
                     required
+                    maxLength={MESSAGE_MAX_LENGTH}
                     rows={4}
                     className={`w-full px-3 md:px-4 py-2.5 md:py-3 bg-white border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 resize-none text-base ${
                         formErrors.message ? 'border-red-500' : 'border-gray-300'
@@ -174,7 +180,7 @@ export default function ContactForm() {
                     <p className="mt-1 text-sm text-red-600">{formErrors.message}</p>
                 )}
                 <p className="mt-1 text-xs text-gray-500">
-                    {formData.message.length}/1000 (최소 10자)
+                    {formData.message.length}/{MESSAGE_MAX_LENGTH} (최소 {MESSAGE_MIN_LENGTH}자)
                 </p>
             </div>
 

@@ -6,6 +6,8 @@ import { ImageUploader } from './components/ImageUploader';
 import { ResultDisplay } from './components/ResultDisplay';
 
 const AIFittingPage: React.FC = () => {
+    const currentYear = new Date().getFullYear();
+
     // 1. 상태 선언 (생략)
     const [personImageFile, setPersonImageFile] = useState<File | null>(null);
     const [personImageUrl, setPersonImageUrl] = useState<string | null>(null);
@@ -191,7 +193,7 @@ const AIFittingPage: React.FC = () => {
             <footer className="w-full border-t border-slate-200 mt-12">
                 <div className="container mx-auto flex justify-between items-center p-4 text-slate-500 text-xs md:text-sm">
         <span>
-            © 2025 dd3ok. All rights reserved.
+            © {currentYear} dd3ok. All rights reserved.
         </span>
                     <span>
             Powered by Gemini
