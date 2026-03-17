@@ -3,6 +3,7 @@
 import { useState, FormEvent, useRef, useEffect } from 'react'
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { useUserIdentifier } from '@/hooks/useUserIdentifier';
+import { getEnvConfig } from '@/utils/EnvConfig';
 import Image from 'next/image';
 import ReactMarkdown, { type Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -108,7 +109,26 @@ const markdownComponents: Components = {
     ),
 };
 
-export default function AIChat() {
+function AIChatUnavailable() {
+    return (
+        <div className="w-full max-w-md mx-auto bg-white/70 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/50 flex flex-col h-[36rem] overflow-hidden">
+            <div className="p-4 border-b border-gray-200/50 flex items-center justify-center gap-2">
+                <span className="h-3 w-3 rounded-full bg-amber-400" />
+                <h3 className="text-md font-semibold text-gray-700">AI 소개 비활성화</h3>
+            </div>
+            <div className="flex-1 p-6 flex flex-col items-center justify-center text-center space-y-4 bg-white/40">
+                <p className="text-sm leading-6 text-gray-600">
+                    현재 환경에서는 AI 소개 기능 설정이 연결되지 않았습니다.
+                </p>
+                <p className="text-xs leading-5 text-gray-500 max-w-xs">
+                    포트폴리오 본문과 프로젝트 섹션은 계속 확인하실 수 있고, AI 소개는 배포 환경에서만 활성화될 수 있습니다.
+                </p>
+            </div>
+        </div>
+    )
+}
+
+function ConfiguredAIChat({ socketUrl }: { socketUrl: string }) {
     const userId = useUserIdentifier();
     const [messages, setMessages] = useState<Message[]>([
         { text: "안녕하세요! 인재 AI입니다 👋\n\n경력, 프로젝트, 기술에 관해 무엇이든 물어보세요.", isUser: false }
@@ -122,7 +142,6 @@ export default function AIChat() {
     const isFirstToken = useRef(false);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-    const socketUrl = process.env.NEXT_PUBLIC_WHO_AM_AI_WS + '/ws/chat';
     const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
 
     useEffect(() => {
@@ -160,7 +179,6 @@ export default function AIChat() {
     }, [lastMessage]);
 
     const handleTimeout = () => {
-        console.log('10초 타임아웃 발생');
         setIsResponding(false);
         setIsTimeout(true);
         if (timeoutRef.current) {
@@ -191,7 +209,7 @@ export default function AIChat() {
         [ReadyState.OPEN]: '연결됨',
         [ReadyState.CLOSING]: '연결 종료 중...',
         [ReadyState.CLOSED]: '연결 끊김',
-        [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
+        [ReadyState.UNINSTANTIATED]: '준비 중',
     }[readyState];
 
     useEffect(() => {
@@ -314,4 +332,15 @@ export default function AIChat() {
             </div>
         </div>
     )
+}
+
+export default function AIChat() {
+    const config = getEnvConfig()
+    const socketUrl = config.whoAmAiWs?.baseUrl
+
+    if (!socketUrl) {
+        return <AIChatUnavailable />
+    }
+
+    return <ConfiguredAIChat socketUrl={`${socketUrl}/ws/chat`} />
 }

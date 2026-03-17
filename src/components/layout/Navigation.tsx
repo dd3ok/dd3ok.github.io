@@ -5,9 +5,9 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useActiveSection } from '@/hooks/useActiveSection'
+import { services } from '@/data/portfolio'
 import { isExternalLink } from '@/utils/links'
 
-// 네비게이션 아이템 구조
 const navItems = [
     { id: 'hero', label: 'Home', type: 'section' },
     { id: 'about', label: 'About', type: 'section' },
@@ -17,15 +17,12 @@ const navItems = [
         id: 'services',
         label: 'Toys',
         type: 'dropdown',
-        dropdown: [
-            { id: 'wedding', label: '모바일 청첩장(작업중)', path: '/wedding', icon: '🧑‍❤️‍👩' },
-            { id: 'nopairprgm', label: '코드리뷰 AI', path: 'https://github.com/dd3ok/no-pair-prgm', icon: '🤖' },
-            { id: 'fpsxyz', label: '마인크래프트 HUD', path: 'https://github.com/dd3ok/fabric-fpsxyzs', icon: '⛏️' },
-            { id: 'oauth', label: 'OAuth/토큰/세션', path: 'https://github.com/dd3ok/auth-service', icon: '🔐' },
-            { id: 'whoamai', label: '채팅 AI', path: 'https://github.com/dd3ok/who-am-ai', icon: '🤖' },
-            { id: 'repoclip', label: '레포지토리 요약', path: 'https://repoclip.onrender.com/', icon: '📦' },
-            { id: 'ai-fitting', label: '입어보기+', path: 'https://dd3ok.github.io/ai-fitting', icon: '👕' }
-        ]
+        dropdown: services.map((service) => ({
+            id: service.id,
+            label: service.navLabel ?? service.title,
+            path: service.path,
+            icon: service.icon,
+        }))
     },
     { id: 'contact', label: 'Contact', type: 'section' }
 ]

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { getEnvConfig } from '@/utils/EnvConfig'
 
 interface ContactFormData {
@@ -15,6 +15,15 @@ interface FormErrors {
     message?: string
 }
 
+interface SubmitFeedback {
+    title: string
+    detail: string
+}
+
+type SubmitError = Error & {
+    status?: number
+}
+
 const MESSAGE_MIN_LENGTH = 10
 const MESSAGE_MAX_LENGTH = 1000
 
@@ -27,7 +36,69 @@ export default function ContactForm() {
     const [formErrors, setFormErrors] = useState<FormErrors>({})
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
+    const [submitFeedback, setSubmitFeedback] = useState<SubmitFeedback | null>(null)
+    const resetTimerRef = useRef<number | null>(null)
     const config = getEnvConfig()
+
+    useEffect(() => {
+        return () => {
+            if (resetTimerRef.current !== null) {
+                window.clearTimeout(resetTimerRef.current)
+            }
+        }
+    }, [])
+
+    const clearResetTimer = () => {
+        if (resetTimerRef.current !== null) {
+            window.clearTimeout(resetTimerRef.current)
+            resetTimerRef.current = null
+        }
+    }
+
+    const scheduleFeedbackReset = () => {
+        clearResetTimer()
+        resetTimerRef.current = window.setTimeout(() => {
+            setSubmitStatus('idle')
+            setSubmitFeedback(null)
+            resetTimerRef.current = null
+        }, 5000)
+    }
+
+    const getErrorStatus = (error: unknown) => {
+        if (error instanceof Error && 'status' in error && typeof error.status === 'number') {
+            return error.status
+        }
+
+        return undefined
+    }
+
+    const getErrorFeedback = (status?: number): SubmitFeedback => {
+        if (typeof navigator !== 'undefined' && !navigator.onLine) {
+            return {
+                title: '오프라인 상태입니다.',
+                detail: '인터넷 연결을 확인한 뒤 다시 시도해주세요. 급하면 이메일로 바로 연락하셔도 됩니다.',
+            }
+        }
+
+        if (status === 429) {
+            return {
+                title: '요청이 잠시 제한되었습니다.',
+                detail: '잠시 후 다시 시도해주세요. 급한 문의는 이메일로 바로 보내주셔도 좋습니다.',
+            }
+        }
+
+        if (status && status >= 500) {
+            return {
+                title: '연락 서비스가 아직 준비 중일 수 있습니다.',
+                detail: '외부 API가 잠들어 있다가 깨어나는 중일 수 있습니다. 30~60초 후 다시 시도하거나 이메일로 직접 연락해주세요.',
+            }
+        }
+
+        return {
+            title: '메시지 전송 중 오류가 발생했습니다.',
+            detail: '잠시 후 다시 시도해주세요. 문제가 계속되면 이메일로 직접 연락주시면 가장 빠릅니다.',
+        }
+    }
 
     const validateForm = (data: ContactFormData): FormErrors => {
         const errors: FormErrors = {}
@@ -68,6 +139,12 @@ export default function ContactForm() {
                 [name]: undefined
             }))
         }
+
+        if (submitStatus !== 'idle') {
+            clearResetTimer()
+            setSubmitStatus('idle')
+            setSubmitFeedback(null)
+        }
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -81,6 +158,7 @@ export default function ContactForm() {
 
         setIsSubmitting(true)
         setSubmitStatus('idle')
+        setSubmitFeedback(null)
         setFormErrors({})
 
         try {
@@ -94,22 +172,25 @@ export default function ContactForm() {
 
             if (!response.ok) {
                 const errorData = await response.json().catch(() => null)
-                throw new Error(errorData?.message || `HTTP error! status: ${response.status}`)
+                const submitError: SubmitError = new Error(
+                    errorData?.message || `HTTP error! status: ${response.status}`
+                )
+                submitError.status = response.status
+                throw submitError
             }
 
             setSubmitStatus('success')
+            setSubmitFeedback({
+                title: '메시지가 성공적으로 전송되었습니다! 🎉',
+                detail: '빠른 시일 내에 연락드리겠습니다.',
+            })
             setFormData({ name: '', email: '', message: '' })
-
-            window.setTimeout(() => {
-                setSubmitStatus('idle')
-            }, 5000)
+            scheduleFeedbackReset()
         } catch (error) {
             console.error('Contact form error:', error)
             setSubmitStatus('error')
-
-            window.setTimeout(() => {
-                setSubmitStatus('idle')
-            }, 5000)
+            setSubmitFeedback(getErrorFeedback(getErrorStatus(error)))
+            scheduleFeedbackReset()
         } finally {
             setIsSubmitting(false)
         }
@@ -194,10 +275,10 @@ export default function ContactForm() {
                         </div>
                         <div className="ml-3">
                             <p className="text-sm font-medium text-green-800">
-                                메시지가 성공적으로 전송되었습니다! 🎉
+                                {submitFeedback?.title ?? '메시지가 성공적으로 전송되었습니다! 🎉'}
                             </p>
                             <p className="text-xs md:text-sm text-green-700 mt-1">
-                                빠른 시일 내에 연락드리겠습니다.
+                                {submitFeedback?.detail ?? '빠른 시일 내에 연락드리겠습니다.'}
                             </p>
                         </div>
                     </div>
@@ -214,10 +295,10 @@ export default function ContactForm() {
                         </div>
                         <div className="ml-3">
                             <p className="text-sm font-medium text-red-800">
-                                메시지 전송 중 오류가 발생했습니다.
+                                {submitFeedback?.title ?? '메시지 전송 중 오류가 발생했습니다.'}
                             </p>
                             <p className="text-xs md:text-sm text-red-700 mt-1">
-                                잠시 후 다시 시도해주세요. 문제가 지속되면 이메일로 직접 연락주세요.
+                                {submitFeedback?.detail ?? '잠시 후 다시 시도해주세요. 문제가 지속되면 이메일로 직접 연락주세요.'}
                             </p>
                         </div>
                     </div>
@@ -238,6 +319,10 @@ export default function ContactForm() {
                     '메시지 보내기'
                 )}
             </button>
+
+            <p className="text-xs text-gray-500 text-center">
+                응답이 늦으면 외부 서비스가 깨어나는 중일 수 있습니다. 급한 문의는 이메일로 바로 연락해주세요.
+            </p>
         </form>
     )
 }

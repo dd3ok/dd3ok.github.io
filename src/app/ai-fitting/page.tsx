@@ -1,12 +1,15 @@
 'use client';
 import React, { useCallback, useEffect, useState } from 'react';
 import Resizer from 'react-image-file-resizer';
+import { getEnvConfig } from '@/utils/EnvConfig';
 import { Header } from './components/Header';
 import { ImageUploader } from './components/ImageUploader';
 import { ResultDisplay } from './components/ResultDisplay';
 
 const AIFittingPage: React.FC = () => {
     const currentYear = new Date().getFullYear();
+    const config = getEnvConfig();
+    const aiFittingApiBaseUrl = config.whoAmAiApi?.baseUrl;
 
     // 1. 상태 선언 (생략)
     const [personImageFile, setPersonImageFile] = useState<File | null>(null);
@@ -46,6 +49,11 @@ const AIFittingPage: React.FC = () => {
 
     // 4. AI 피팅 생성 핸들러 (생략)
     const handleGenerate = useCallback(async () => {
+        if (!aiFittingApiBaseUrl) {
+            setError('현재 환경에서는 AI 피팅 기능이 설정되어 있지 않습니다.');
+            return;
+        }
+
         if (!personImageFile || !clothingImageFile) {
             setError('인물과 의류 사진을 모두 업로드해주세요.');
             return;
@@ -63,7 +71,7 @@ const AIFittingPage: React.FC = () => {
             formData.append('personImage', personImageBlob, 'person.jpg');
             formData.append('clothingImage', clothingImageBlob, 'clothing.jpg');
 
-            const apiUrl = process.env.NEXT_PUBLIC_WHO_AM_AI_API + '/api/ai-fitting';
+            const apiUrl = `${aiFittingApiBaseUrl}/api/ai-fitting`;
             const response = await fetch(apiUrl, { method: 'POST', body: formData });
 
             if (!response.ok) {
@@ -90,7 +98,7 @@ const AIFittingPage: React.FC = () => {
         } finally {
             setLoading(false);
         }
-    }, [personImageFile, clothingImageFile]);
+    }, [aiFittingApiBaseUrl, personImageFile, clothingImageFile]);
 
 
     // 5. 컴포넌트 언마운트 시 URL 정리 (생략)
@@ -114,6 +122,14 @@ const AIFittingPage: React.FC = () => {
                 <p className="text-center text-slate-500 mb-4 sm:mb-6 max-w-2xl mx-auto text-xs">
                     * 이미지는 저장되지 않습니다.
                 </p>
+
+                {!aiFittingApiBaseUrl && (
+                    <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6 max-w-2xl mx-auto">
+                        <p className="text-sm text-amber-800 text-center">
+                            현재 환경에서는 AI 피팅 API가 연결되어 있지 않아 업로드와 결과 생성이 비활성화됩니다.
+                        </p>
+                    </div>
+                )}
 
                 {/* 에러 메시지 (생략) */}
                 {error && (
@@ -173,7 +189,7 @@ const AIFittingPage: React.FC = () => {
                 <div className="flex justify-center mt-6 mb-6 sm:mt-16 sm:mb-12 md:mt-24 md:mb-8">
                     <button
                         onClick={handleGenerate}
-                        disabled={loading || !personImageFile || !clothingImageFile}
+                        disabled={loading || !personImageFile || !clothingImageFile || !aiFittingApiBaseUrl}
                         className="bg-sky-600 text-white font-bold py-3 px-8 rounded-full hover:bg-sky-700 disabled:bg-slate-400 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 shadow-lg text-sm md:text-base w-full max-w-xs mx-4"
                     >
                         {loading ? '생성 중...' : '입어보기'}

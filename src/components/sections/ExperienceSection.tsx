@@ -48,7 +48,6 @@ export default function ExperienceSection() {
                   </span>
                                 </div>
 
-                                {/* 불릿 포인트와 텍스트 정렬 개선 */}
                                 <ul className="space-y-3">
                                     {exp.description.map((item, idx) => (
                                         <li key={idx} className="text-gray-600 flex items-start leading-relaxed">
