@@ -8,8 +8,8 @@ It already communicates backend experience well, but several areas can be improv
 - Build works and static export succeeds
 - Validation works through `npm run validate`
 - Home interactions are already split into smaller client islands
-- External AI features still need clearer runtime fallback behavior when services are unavailable
-- Some navigation/data/documentation details can still be tightened for maintainability
+- Runtime fallbacks and smoke checks are in place, but a few maintenance details still remain
+- Unreleased internal destinations and tooling/documentation drift should still be tightened
 
 ## Active Objective
 Establish a repeatable development workflow and then improve the portfolio in small, reviewable steps.
@@ -70,6 +70,11 @@ Establish a repeatable development workflow and then improve the portfolio in sm
 - Add clearer project scope/impact context to featured work
 - Extend smoke checks to cover metadata and key exported links
 
+### Ticket 12: Follow-up maintenance cleanup
+- Hide or disable unreleased internal destinations until routes exist
+- Tighten `/ai-fitting` runtime cleanup for repeated image generation
+- Align tooling metadata and refresh plan notes after recent merges
+
 ## Acceptance Criteria
 - Every active change starts from a small ticket in this file or a follow-up plan
 - Workflow documents remain in sync with the current repo state
@@ -103,3 +108,5 @@ Establish a repeatable development workflow and then improve the portfolio in sm
 - 2026-03-17: Started Ticket 11 on branch `codex/runtime-accessibility-cleanup` to deepen project proof points and extend smoke coverage to exported metadata and key links
 - 2026-03-17: Completed Ticket 11 by adding scope/impact context to key projects and extending the smoke check to assert canonical metadata and core exported links; verified with `npm run validate`, `npm run build`, and `npm run smoke`
 - 2026-03-17: Rolled back the visible page UI/content polish from Tickets 10-12 on request while keeping runtime/accessibility hardening and static smoke checks in place
+- 2026-03-17: Started Ticket 12 on branch `codex/follow-up-maintenance` to clean up unreleased internal links, tighten `/ai-fitting` runtime cleanup, align React type metadata, and refresh stale plan notes
+- 2026-03-17: Completed Ticket 12 by disabling the unreleased `wedding` destination in visible UI, teaching the smoke check to verify referenced internal routes exist, revoking stale `/ai-fitting` blob URLs on repeated generations, aligning React 19 type packages, and refreshing the plan summary; verified with `npm run validate`, `npm run build`, and `npm run smoke`

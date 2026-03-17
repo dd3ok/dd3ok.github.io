@@ -104,12 +104,13 @@ export const services: Service[] = [
     {
         id: 'wedding',
         title: '모바일 청첩장(작업중)',
+        status: 'coming_soon',
         description: '미리보는 모바일 청첩장',
         icon: '🤵‍♂️❤️👰‍♀️',
         path: '/wedding',
         features: ['모바일 청첩장', '포토 갤러리', '방명록'],
         color: 'from-pink-500 to-rose-500',
-        buttonText: '서비스 이용하기',
+        buttonText: '준비 중',
         buttonType: 'service',
     },
     {
