@@ -8,6 +8,22 @@ const requiredFiles = [
   'out/_next',
 ]
 
+const contentChecks = {
+  'out/index.html': [
+    '유인재입니다',
+    'Projects',
+    'Contact',
+    'href="#projects"',
+    'href="#contact"',
+    'https://dd3ok.github.io/',
+  ],
+  'out/ai-fitting/index.html': [
+    '입어보기+',
+    '입어보기 결과',
+    'https://dd3ok.github.io/ai-fitting',
+  ],
+}
+
 for (const relativePath of requiredFiles) {
   const absolutePath = resolve(relativePath)
 
@@ -16,32 +32,13 @@ for (const relativePath of requiredFiles) {
   }
 }
 
-const homepage = readFileSync(resolve('out/index.html'), 'utf8')
-const aiFittingPage = readFileSync(resolve('out/ai-fitting/index.html'), 'utf8')
+for (const [relativePath, expectedTexts] of Object.entries(contentChecks)) {
+  const pageContent = readFileSync(resolve(relativePath), 'utf8')
 
-const homepageChecks = [
-  '유인재입니다',
-  'Projects',
-  'Contact',
-  'href="#projects"',
-  'href="#contact"',
-  'https://dd3ok.github.io/',
-]
-const aiFittingChecks = [
-  '입어보기+',
-  '입어보기 결과',
-  'https://dd3ok.github.io/ai-fitting',
-]
-
-for (const text of homepageChecks) {
-  if (!homepage.includes(text)) {
-    throw new Error(`Home page is missing expected content: ${text}`)
-  }
-}
-
-for (const text of aiFittingChecks) {
-  if (!aiFittingPage.includes(text)) {
-    throw new Error(`AI fitting page is missing expected content: ${text}`)
+  for (const text of expectedTexts) {
+    if (!pageContent.includes(text)) {
+      throw new Error(`${relativePath} is missing expected content: ${text}`)
+    }
   }
 }
 

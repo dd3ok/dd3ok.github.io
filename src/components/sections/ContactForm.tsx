@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { getEnvConfig } from '@/utils/EnvConfig'
 
 interface ContactFormData {
@@ -20,6 +20,10 @@ interface SubmitFeedback {
     detail: string
 }
 
+type SubmitError = Error & {
+    status?: number
+}
+
 const MESSAGE_MIN_LENGTH = 10
 const MESSAGE_MAX_LENGTH = 1000
 
@@ -33,7 +37,40 @@ export default function ContactForm() {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
     const [submitFeedback, setSubmitFeedback] = useState<SubmitFeedback | null>(null)
+    const resetTimerRef = useRef<number | null>(null)
     const config = getEnvConfig()
+
+    useEffect(() => {
+        return () => {
+            if (resetTimerRef.current !== null) {
+                window.clearTimeout(resetTimerRef.current)
+            }
+        }
+    }, [])
+
+    const clearResetTimer = () => {
+        if (resetTimerRef.current !== null) {
+            window.clearTimeout(resetTimerRef.current)
+            resetTimerRef.current = null
+        }
+    }
+
+    const scheduleFeedbackReset = () => {
+        clearResetTimer()
+        resetTimerRef.current = window.setTimeout(() => {
+            setSubmitStatus('idle')
+            setSubmitFeedback(null)
+            resetTimerRef.current = null
+        }, 5000)
+    }
+
+    const getErrorStatus = (error: unknown) => {
+        if (error instanceof Error && 'status' in error && typeof error.status === 'number') {
+            return error.status
+        }
+
+        return undefined
+    }
 
     const getErrorFeedback = (status?: number): SubmitFeedback => {
         if (typeof navigator !== 'undefined' && !navigator.onLine) {
@@ -104,6 +141,7 @@ export default function ContactForm() {
         }
 
         if (submitStatus !== 'idle') {
+            clearResetTimer()
             setSubmitStatus('idle')
             setSubmitFeedback(null)
         }
@@ -134,7 +172,11 @@ export default function ContactForm() {
 
             if (!response.ok) {
                 const errorData = await response.json().catch(() => null)
-                throw new Error(errorData?.message || `HTTP error! status: ${response.status}`)
+                const submitError: SubmitError = new Error(
+                    errorData?.message || `HTTP error! status: ${response.status}`
+                )
+                submitError.status = response.status
+                throw submitError
             }
 
             setSubmitStatus('success')
@@ -143,24 +185,12 @@ export default function ContactForm() {
                 detail: '빠른 시일 내에 연락드리겠습니다.',
             })
             setFormData({ name: '', email: '', message: '' })
-
-            window.setTimeout(() => {
-                setSubmitStatus('idle')
-                setSubmitFeedback(null)
-            }, 5000)
+            scheduleFeedbackReset()
         } catch (error) {
             console.error('Contact form error:', error)
             setSubmitStatus('error')
-            const statusMatch = error instanceof Error
-                ? error.message.match(/status:\s*(\d{3})/)
-                : null
-            const statusCode = statusMatch ? Number(statusMatch[1]) : undefined
-            setSubmitFeedback(getErrorFeedback(statusCode))
-
-            window.setTimeout(() => {
-                setSubmitStatus('idle')
-                setSubmitFeedback(null)
-            }, 5000)
+            setSubmitFeedback(getErrorFeedback(getErrorStatus(error)))
+            scheduleFeedbackReset()
         } finally {
             setIsSubmitting(false)
         }
