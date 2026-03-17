@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm run validate && next build",
+    "build": "npm run validate && next build && npm run smoke",
     "start": "serve out -l 3000",
     "lint": "eslint . --max-warnings=0",
     "smoke": "node scripts/smoke-check.mjs",

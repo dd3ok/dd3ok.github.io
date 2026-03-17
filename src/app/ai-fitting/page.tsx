@@ -24,6 +24,18 @@ const AIFittingPage: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
+    const clearGeneratedImage = useCallback(() => {
+        setGeneratedImage(prevImage => {
+            if (prevImage) URL.revokeObjectURL(prevImage);
+            return null;
+        });
+    }, []);
+
+    const resetTransientState = useCallback(() => {
+        setError(null);
+        clearGeneratedImage();
+    }, [clearGeneratedImage]);
+
     const getErrorMessage = (status?: number): string => {
         if (typeof navigator !== 'undefined' && !navigator.onLine) {
             return '오프라인 상태입니다. 인터넷 연결을 확인한 뒤 다시 시도해주세요.';
@@ -52,6 +64,7 @@ const AIFittingPage: React.FC = () => {
 
     // 3. 각 이미지에 대한 핸들러를 명확하게 분리 (생략)
     const handlePersonImageChange = (file: File) => {
+        resetTransientState();
         setPersonImageFile(file);
         setPersonImageUrl(prevUrl => {
             if (prevUrl) URL.revokeObjectURL(prevUrl);
@@ -60,6 +73,7 @@ const AIFittingPage: React.FC = () => {
     };
 
     const handleClothingImageChange = (file: File) => {
+        resetTransientState();
         setClothingImageFile(file);
         setClothingImageUrl(prevUrl => {
             if (prevUrl) URL.revokeObjectURL(prevUrl);
@@ -81,10 +95,7 @@ const AIFittingPage: React.FC = () => {
 
         setLoading(true);
         setError(null);
-        setGeneratedImage(prevImage => {
-            if (prevImage) URL.revokeObjectURL(prevImage);
-            return null;
-        });
+        clearGeneratedImage();
 
         try {
             const personImageBlob = await resizeFile(personImageFile);
@@ -120,7 +131,7 @@ const AIFittingPage: React.FC = () => {
         } finally {
             setLoading(false);
         }
-    }, [aiFittingApiBaseUrl, personImageFile, clothingImageFile]);
+    }, [aiFittingApiBaseUrl, clearGeneratedImage, personImageFile, clothingImageFile]);
 
 
     // 5. 컴포넌트 언마운트 시 URL 정리 (생략)
@@ -146,7 +157,7 @@ const AIFittingPage: React.FC = () => {
                 </p>
 
                 {!aiFittingApiBaseUrl && (
-                    <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6 max-w-2xl mx-auto">
+                    <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6 max-w-2xl mx-auto" role="status" aria-live="polite">
                         <p className="text-sm text-amber-800 text-center">
                             현재 환경에서는 AI 피팅 API가 연결되어 있지 않아 업로드와 결과 생성이 비활성화됩니다.
                         </p>
@@ -155,7 +166,7 @@ const AIFittingPage: React.FC = () => {
 
                 {/* 에러 메시지 (생략) */}
                 {error && (
-                    <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-6 max-w-2xl mx-auto">
+                    <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-6 max-w-2xl mx-auto" role="alert" aria-live="assertive">
                         <div className="flex">
                             <div className="flex-shrink-0">
                                 <svg className="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
