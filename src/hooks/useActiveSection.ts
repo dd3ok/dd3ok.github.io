@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 export function useActiveSection() {
-    const [activeSection, setActiveSection] = useState('')
+    const [activeSection, setActiveSection] = useState('hero')
 
     useEffect(() => {
         const sectionIds = ['hero', 'about', 'experience', 'projects', 'services', 'contact']
@@ -27,7 +27,17 @@ export function useActiveSection() {
                     }
                 })
 
-                const nextActiveSection = sectionIds.find((id) => visibleSections.has(id))
+                let nextActiveSection: string | null = null
+                let maxRatio = -1
+
+                sectionIds.forEach((id) => {
+                    const ratio = visibleSections.get(id)
+
+                    if (ratio !== undefined && ratio > maxRatio) {
+                        maxRatio = ratio
+                        nextActiveSection = id
+                    }
+                })
 
                 if (nextActiveSection) {
                     setActiveSection(nextActiveSection)

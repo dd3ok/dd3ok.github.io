@@ -5,12 +5,16 @@ export interface EnvConfig {
     whoAmAiApi?: {
         baseUrl: string
     }
+    whoAmAiWs?: {
+        baseUrl: string
+    }
     isDevelopment: boolean
 }
 
 export const getEnvConfig = (): EnvConfig => {
     const isDevelopment = process.env.NODE_ENV === 'development'
     const whoAmAiApiBaseUrl = process.env.NEXT_PUBLIC_WHO_AM_AI_API || undefined
+    const whoAmAiWsBaseUrl = process.env.NEXT_PUBLIC_WHO_AM_AI_WS || undefined
 
     return {
         pagesApi: {
@@ -19,6 +23,11 @@ export const getEnvConfig = (): EnvConfig => {
         whoAmAiApi: whoAmAiApiBaseUrl
             ? {
                 baseUrl: whoAmAiApiBaseUrl,
+            }
+            : undefined,
+        whoAmAiWs: whoAmAiWsBaseUrl
+            ? {
+                baseUrl: whoAmAiWsBaseUrl,
             }
             : undefined,
         isDevelopment

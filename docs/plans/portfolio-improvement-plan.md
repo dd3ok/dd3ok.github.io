@@ -6,11 +6,10 @@ It already communicates backend experience well, but several areas can be improv
 
 ## Current Findings
 - Build works and static export succeeds
-- Type check passes with `npx tsc --noEmit`
-- Lint script is outdated and currently fails because `next lint` no longer matches the installed setup
-- Main page uses a broad client boundary, which increases first-load JavaScript
-- Portfolio content is embedded directly inside section components
-- There are a few small UI and configuration issues that should be cleaned up
+- Validation works through `npm run validate`
+- Home interactions are already split into smaller client islands
+- External AI features still need clearer runtime fallback behavior when services are unavailable
+- Some navigation/data/documentation details can still be tightened for maintainability
 
 ## Active Objective
 Establish a repeatable development workflow and then improve the portfolio in small, reviewable steps.
@@ -57,6 +56,20 @@ Establish a repeatable development workflow and then improve the portfolio in sm
 - Align local preview commands with static export behavior
 - Remove dead utilities and simplify active section tracking
 
+### Ticket 9: Runtime and maintenance hardening
+- Reuse shared runtime config for external AI features
+- Improve modal and section-navigation interaction details
+- Deduplicate shared Toys metadata and refresh project documentation
+
+### Ticket 10: Content polish and smoke checks
+- Improve contact failure messaging for sleepy external services
+- Strengthen project case-study context without a large redesign
+- Add a lightweight static smoke check to catch broken exports early
+
+### Ticket 11: Project proof and smoke coverage
+- Add clearer project scope/impact context to featured work
+- Extend smoke checks to cover metadata and key exported links
+
 ## Acceptance Criteria
 - Every active change starts from a small ticket in this file or a follow-up plan
 - Workflow documents remain in sync with the current repo state
@@ -83,3 +96,10 @@ Establish a repeatable development workflow and then improve the portfolio in sm
 - 2026-03-13: Completed Ticket 8 by moving health checks from the root layout to the home page, aligning preview scripts and README with static export, deleting the unused `SectionWrapper`, and switching active-section tracking to `IntersectionObserver`; verified with `npm run build`
 - 2026-03-13: Patched direct and transitive dependency vulnerabilities by updating `next` to `15.5.10`, aligning related Next tooling, updating `serve`, and applying `npm audit fix`; verified with `npm run lint`, `npx tsc --noEmit`, `npm run build`, and a clean `npm audit`
 - 2026-03-13: Added follow-up polish on `codex/performance-cleanup` by restoring zoom support on `/ai-fitting`, enforcing the contact form message limit in the UI, refreshing the AI fitting footer year, and enriching site metadata for social sharing
+- 2026-03-17: Started Ticket 9 on branch `codex/runtime-accessibility-cleanup` to harden external runtime fallbacks, refine modal/section UX details, and reduce duplicated Toys metadata
+- 2026-03-17: Completed Ticket 9 by routing AI features through shared env config, adding clear unavailable states for missing AI services, trapping/restoring focus in the image modal, deduplicating Toys navigation data, and refreshing README/package metadata; verified with `npm run validate` and `npm run build`
+- 2026-03-17: Started Ticket 10 on branch `codex/runtime-accessibility-cleanup` to improve contact failure UX, strengthen project storytelling, lightly polish the home UI, and add a static export smoke check
+- 2026-03-17: Completed Ticket 10 by clarifying contact failure states for sleeping/offline APIs, enriching project cards with role/outcome context, lightly polishing the hero/projects presentation, and adding `npm run smoke` to assert key static export output; verified with `npm run validate`, `npm run build`, and `npm run smoke`
+- 2026-03-17: Started Ticket 11 on branch `codex/runtime-accessibility-cleanup` to deepen project proof points and extend smoke coverage to exported metadata and key links
+- 2026-03-17: Completed Ticket 11 by adding scope/impact context to key projects and extending the smoke check to assert canonical metadata and core exported links; verified with `npm run validate`, `npm run build`, and `npm run smoke`
+- 2026-03-17: Rolled back the visible page UI/content polish from Tickets 10-12 on request while keeping runtime/accessibility hardening and static smoke checks in place

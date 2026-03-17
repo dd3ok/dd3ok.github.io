@@ -102,6 +102,7 @@ export const projects: Project[] = [
 
 export const services: Service[] = [
     {
+        id: 'wedding',
         title: '모바일 청첩장(작업중)',
         description: '미리보는 모바일 청첩장',
         icon: '🤵‍♂️❤️👰‍♀️',
@@ -112,6 +113,7 @@ export const services: Service[] = [
         buttonType: 'service',
     },
     {
+        id: 'nopairprgm',
         title: '코드리뷰 AI',
         description: 'PR을 올려 Gemini 한테 리뷰를 받자',
         icon: '🤖',
@@ -122,6 +124,7 @@ export const services: Service[] = [
         buttonType: 'repo',
     },
     {
+        id: 'fpsxyz',
         title: '마인크래프트 HUD',
         description: 'Minecraft Mod로 현재 내 상태를 표시합니다',
         icon: '⛏️',
@@ -132,6 +135,7 @@ export const services: Service[] = [
         buttonType: 'repo',
     },
     {
+        id: 'oauth',
         title: 'OAuth 로그인 + 세션/토큰 관리',
         description: 'Naver, Kakao, Google OAuth로 간편하게 로그인하세요',
         icon: '🔐',
@@ -142,7 +146,9 @@ export const services: Service[] = [
         buttonType: 'repo',
     },
     {
+        id: 'whoamai',
         title: 'Who am AI',
+        navLabel: '채팅 AI',
         description: '저에 대해 궁금한 점을 직접 물어보세요.',
         icon: '🤖',
         path: 'https://github.com/dd3ok/who-am-ai',
@@ -152,6 +158,7 @@ export const services: Service[] = [
         buttonType: 'repo',
     },
     {
+        id: 'repoclip',
         title: 'Repoclip',
         description: 'LLM을 위한 Repository 요약 도구',
         icon: '📦',
@@ -162,6 +169,7 @@ export const services: Service[] = [
         buttonType: 'service',
     },
     {
+        id: 'ai-fitting',
         title: '입어보기+',
         description: '잘 어울릴까? 편하게 입어보세요.',
         icon: '👕',

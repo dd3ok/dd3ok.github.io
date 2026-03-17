@@ -5,11 +5,12 @@ export interface Project {
     image: string
     github: string
     demo: string
-    featured?: boolean
 }
 
 export interface Service {
+    id: string
     title: string
+    navLabel?: string
     description: string
     icon: string
     path: string

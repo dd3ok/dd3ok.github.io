@@ -25,25 +25,67 @@ const FALLBACK_IMAGE_SRC = `data:image/svg+xml;charset=UTF-8,${encodeURIComponen
 
 export default function ImageModal({ isOpen, imageSrc, imageAlt, onClose }: ImageModalProps) {
     const titleId = useId()
+    const dialogRef = useRef<HTMLDivElement>(null)
     const closeButtonRef = useRef<HTMLButtonElement>(null)
+    const previousFocusedElementRef = useRef<HTMLElement | null>(null)
     const [hasImageError, setHasImageError] = useState(false)
 
-    // ESC 키로 모달 닫기
     useEffect(() => {
+        if (!isOpen) {
+            return
+        }
+
+        previousFocusedElementRef.current =
+            document.activeElement instanceof HTMLElement ? document.activeElement : null
+
         const handleEsc = (e: KeyboardEvent) => {
-            if (e.key === 'Escape' && isOpen) {
+            if (e.key === 'Escape') {
                 onClose()
+                return
+            }
+
+            if (e.key !== 'Tab') {
+                return
+            }
+
+            const dialog = dialogRef.current
+            if (!dialog) {
+                return
+            }
+
+            const focusableElements = Array.from(
+                dialog.querySelectorAll<HTMLElement>(
+                    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+                )
+            )
+
+            if (focusableElements.length === 0) {
+                e.preventDefault()
+                return
+            }
+
+            const firstElement = focusableElements[0]
+            const lastElement = focusableElements[focusableElements.length - 1]
+            const activeElement = document.activeElement
+
+            if (e.shiftKey && activeElement === firstElement) {
+                e.preventDefault()
+                lastElement.focus()
+            } else if (!e.shiftKey && activeElement === lastElement) {
+                e.preventDefault()
+                firstElement.focus()
             }
         }
 
-        if (isOpen) {
-            document.addEventListener('keydown', handleEsc)
-            document.body.style.overflow = 'hidden'
-        }
+        document.addEventListener('keydown', handleEsc)
+        document.body.style.overflow = 'hidden'
+        closeButtonRef.current?.focus()
 
         return () => {
             document.removeEventListener('keydown', handleEsc)
             document.body.style.overflow = 'unset'
+            previousFocusedElementRef.current?.focus()
+            previousFocusedElementRef.current = null
         }
     }, [isOpen, onClose])
 
@@ -53,7 +95,6 @@ export default function ImageModal({ isOpen, imageSrc, imageAlt, onClose }: Imag
         }
 
         setHasImageError(false)
-        closeButtonRef.current?.focus()
     }, [imageSrc, isOpen])
 
     if (!isOpen) return null
@@ -67,6 +108,7 @@ export default function ImageModal({ isOpen, imageSrc, imageAlt, onClose }: Imag
             aria-labelledby={titleId}
         >
             <div
+                ref={dialogRef}
                 className="relative bg-white rounded-xl shadow-2xl max-w-5xl max-h-[90vh] overflow-hidden"
                 onClick={e => e.stopPropagation()}
             >
