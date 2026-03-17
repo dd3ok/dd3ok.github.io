@@ -11,6 +11,7 @@ export interface Service {
     id: string
     title: string
     navLabel?: string
+    status?: 'active' | 'coming_soon'
     description: string
     icon: string
     path: string

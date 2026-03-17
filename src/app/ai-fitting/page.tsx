@@ -6,6 +6,10 @@ import { Header } from './components/Header';
 import { ImageUploader } from './components/ImageUploader';
 import { ResultDisplay } from './components/ResultDisplay';
 
+type FittingError = Error & {
+    status?: number
+};
+
 const AIFittingPage: React.FC = () => {
     const currentYear = new Date().getFullYear();
     const config = getEnvConfig();
@@ -19,6 +23,22 @@ const AIFittingPage: React.FC = () => {
     const [generatedImage, setGeneratedImage] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
+
+    const getErrorMessage = (status?: number): string => {
+        if (typeof navigator !== 'undefined' && !navigator.onLine) {
+            return '오프라인 상태입니다. 인터넷 연결을 확인한 뒤 다시 시도해주세요.';
+        }
+
+        if (status === 429) {
+            return '1시간에 최대 10번 호출할 수 있어요.';
+        }
+
+        if (status && status >= 500) {
+            return 'AI 피팅 서비스가 아직 준비 중일 수 있습니다. 잠시 후 다시 시도해주세요.';
+        }
+
+        return '이미지 생성 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
+    };
 
     // 2. 이미지 리사이징 함수 (생략)
     const resizeFile = (file: File): Promise<Blob> =>
@@ -61,7 +81,10 @@ const AIFittingPage: React.FC = () => {
 
         setLoading(true);
         setError(null);
-        setGeneratedImage(null);
+        setGeneratedImage(prevImage => {
+            if (prevImage) URL.revokeObjectURL(prevImage);
+            return null;
+        });
 
         try {
             const personImageBlob = await resizeFile(personImageFile);
@@ -75,23 +98,22 @@ const AIFittingPage: React.FC = () => {
             const response = await fetch(apiUrl, { method: 'POST', body: formData });
 
             if (!response.ok) {
-                if (response.status === 429) {
-                    throw new Error('1시간에 최대 10번 호출할 수 있어요.');
-                }
-
-                const errorBody = await response.text();
-                throw new Error(`이미지 생성에 실패했습니다: ${errorBody || response.statusText}`);
+                const fittingError: FittingError = new Error(response.statusText || '이미지 생성 요청에 실패했습니다.');
+                fittingError.status = response.status;
+                throw fittingError;
             }
 
             const imageBlob = await response.blob();
             const imageUrl = URL.createObjectURL(imageBlob);
-            setGeneratedImage(imageUrl);
+            setGeneratedImage(prevImage => {
+                if (prevImage) URL.revokeObjectURL(prevImage);
+                return imageUrl;
+            });
         } catch (err: unknown) {
-            // 네트워크 에러 등 다른 에러들에 대한 처리
-            if (err instanceof TypeError && err.message === 'Failed to fetch') {
-                setError('네트워크 연결에 문제가 있습니다. 인터넷 연결을 확인하고 다시 시도해주세요.');
-            } else if (err instanceof Error) {
-                setError(err.message || '알 수 없는 오류가 발생했습니다.');
+            if (err instanceof Error && 'status' in err && typeof err.status === 'number') {
+                setError(getErrorMessage(err.status));
+            } else if (err instanceof TypeError && err.message === 'Failed to fetch') {
+                setError(getErrorMessage());
             } else {
                 setError('알 수 없는 오류가 발생했습니다.');
             }

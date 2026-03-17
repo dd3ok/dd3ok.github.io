@@ -8,6 +8,8 @@ import { useActiveSection } from '@/hooks/useActiveSection'
 import { services } from '@/data/portfolio'
 import { isExternalLink } from '@/utils/links'
 
+const navigableServices = services.filter((service) => service.status !== 'coming_soon')
+
 const navItems = [
     { id: 'hero', label: 'Home', type: 'section' },
     { id: 'about', label: 'About', type: 'section' },
@@ -17,7 +19,7 @@ const navItems = [
         id: 'services',
         label: 'Toys',
         type: 'dropdown',
-        dropdown: services.map((service) => ({
+        dropdown: navigableServices.map((service) => ({
             id: service.id,
             label: service.navLabel ?? service.title,
             path: service.path,

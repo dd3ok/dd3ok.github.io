@@ -24,6 +24,39 @@ const contentChecks = {
   ],
 }
 
+const findInternalRouteHrefs = (pageContent) => {
+  const hrefMatches = pageContent.matchAll(/href="([^"]+)"/g)
+  const internalRoutes = new Set()
+
+  for (const [, href] of hrefMatches) {
+    if (!href.startsWith('/')) {
+      continue
+    }
+
+    if (href.startsWith('/_next') || href.includes('.')) {
+      continue
+    }
+
+    const [pathname] = href.split('#')
+
+    if (!pathname) {
+      continue
+    }
+
+    internalRoutes.add(pathname)
+  }
+
+  return internalRoutes
+}
+
+const toExportedHtmlPath = (pathname) => {
+  if (pathname === '/') {
+    return 'out/index.html'
+  }
+
+  return resolve('out', pathname.slice(1), 'index.html')
+}
+
 for (const relativePath of requiredFiles) {
   const absolutePath = resolve(relativePath)
 
@@ -38,6 +71,14 @@ for (const [relativePath, expectedTexts] of Object.entries(contentChecks)) {
   for (const text of expectedTexts) {
     if (!pageContent.includes(text)) {
       throw new Error(`${relativePath} is missing expected content: ${text}`)
+    }
+  }
+
+  for (const pathname of findInternalRouteHrefs(pageContent)) {
+    const exportedHtmlPath = toExportedHtmlPath(pathname)
+
+    if (!existsSync(exportedHtmlPath)) {
+      throw new Error(`${relativePath} references a missing exported route: ${pathname}`)
     }
   }
 }

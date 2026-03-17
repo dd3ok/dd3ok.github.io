@@ -66,17 +66,26 @@ export default function PagesSection() {
                                     </div>
 
                                     <div className="mt-auto">
-                                        <Link
-                                            href={service.path}
-                                            className="inline-flex items-center justify-center w-full px-4 py-3 rounded-lg transition-all duration-300 group-hover:scale-105 font-medium bg-gray-900 text-white hover:bg-blue-600"
-                                            target={isExternalLink(service.path) ? '_blank' : undefined}
-                                            rel={isExternalLink(service.path) ? 'noopener noreferrer' : undefined}
-                                        >
-                                            {service.buttonText}
-                                            <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                                            </svg>
-                                        </Link>
+                                        {service.status === 'coming_soon' ? (
+                                            <span
+                                                className="inline-flex items-center justify-center w-full px-4 py-3 rounded-lg font-medium bg-gray-200 text-gray-500 cursor-not-allowed"
+                                                aria-disabled="true"
+                                            >
+                                                {service.buttonText}
+                                            </span>
+                                        ) : (
+                                            <Link
+                                                href={service.path}
+                                                className="inline-flex items-center justify-center w-full px-4 py-3 rounded-lg transition-all duration-300 group-hover:scale-105 font-medium bg-gray-900 text-white hover:bg-blue-600"
+                                                target={isExternalLink(service.path) ? '_blank' : undefined}
+                                                rel={isExternalLink(service.path) ? 'noopener noreferrer' : undefined}
+                                            >
+                                                {service.buttonText}
+                                                <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                                                </svg>
+                                            </Link>
+                                        )}
                                     </div>
                                 </div>
                             </Card>
