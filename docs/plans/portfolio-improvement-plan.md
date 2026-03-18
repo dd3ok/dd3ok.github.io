@@ -151,5 +151,5 @@ Establish a repeatable development workflow and then improve the portfolio in sm
 - 2026-03-18: Started Ticket 17 on branch `codex/quality-gates-ai-chat` to simplify the GitHub Pages deployment workflow and remove redundant post-build export assembly
 - 2026-03-18: Completed Ticket 17 by deleting the manual `out/` reconstruction step from the Pages workflow, adding a direct export verification step, and keeping deployment pointed at the generated static artifact; verified with `npm run build`
 - 2026-03-18: Addressed PR #8 review feedback by preserving AI chat conversation history across retry reconnects instead of resetting the widget state on remount; verified with `npm run validate` and `npm run build`
-- 2026-03-18: Started Ticket 18 on branch `codex/github-pages-workflow-fix` after GitHub Actions logs showed `configure-pages` mutating the Next.js build path and breaking the export smoke check in CI
-- 2026-03-18: Completed Ticket 18 by removing the `static_site_generator: next` mode from `actions/configure-pages`, so the workflow uses the repository's own static-export config and `out/` verification path again; verified with local workflow YAML parsing and `npm run build`
+- 2026-03-18: Started Ticket 18 on branch `codex/github-pages-workflow-fix` to resolve a CI smoke-check failure caused by a mutated Next.js build path
+- 2026-03-18: Completed Ticket 18 by removing `static_site_generator: next` from `actions/configure-pages`, restoring the repository's static export config in CI; verified with `npm run build` and workflow YAML parsing
