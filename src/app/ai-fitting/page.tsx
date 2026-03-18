@@ -1,236 +1,100 @@
-'use client';
-import React, { useCallback, useEffect, useState } from 'react';
-import Resizer from 'react-image-file-resizer';
-import { getEnvConfig } from '@/utils/EnvConfig';
-import { Header } from './components/Header';
-import { ImageUploader } from './components/ImageUploader';
-import { ResultDisplay } from './components/ResultDisplay';
+'use client'
 
-type FittingError = Error & {
-    status?: number
-};
+import { Header } from './components/Header'
+import { ImageUploader } from './components/ImageUploader'
+import { ResultDisplay } from './components/ResultDisplay'
+import { useAIFitting } from './hooks/useAIFitting'
+import StatusBanner from '@/components/ui/StatusBanner'
 
-const AIFittingPage: React.FC = () => {
-    const currentYear = new Date().getFullYear();
-    const config = getEnvConfig();
-    const aiFittingApiBaseUrl = config.whoAmAiApi?.baseUrl;
+const uploadGuides = [
+    {
+        id: 'person-uploader',
+        title: '1. 인물 사진',
+        guide: '단독 사진, 배경과 구분이 명확한 사진이 좋아요.',
+        field: 'person' as const,
+    },
+    {
+        id: 'clothing-uploader',
+        title: '2. 의류 사진',
+        guide: '배경과 구분이 뚜렷하거나 누끼 제거 후 사용해주세요.',
+        field: 'clothing' as const,
+    },
+]
 
-    // 1. 상태 선언 (생략)
-    const [personImageFile, setPersonImageFile] = useState<File | null>(null);
-    const [personImageUrl, setPersonImageUrl] = useState<string | null>(null);
-    const [clothingImageFile, setClothingImageFile] = useState<File | null>(null);
-    const [clothingImageUrl, setClothingImageUrl] = useState<string | null>(null);
-    const [generatedImage, setGeneratedImage] = useState<string | null>(null);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
+export default function AIFittingPage() {
+    const currentYear = new Date().getFullYear()
+    const {
+        canGenerate,
+        clothingImageUrl,
+        error,
+        generatedImage,
+        handleClothingImageChange,
+        handleGenerate,
+        handlePersonImageChange,
+        isConfigured,
+        loading,
+        personImageUrl,
+    } = useAIFitting()
 
-    const clearGeneratedImage = useCallback(() => {
-        setGeneratedImage(prevImage => {
-            if (prevImage) URL.revokeObjectURL(prevImage);
-            return null;
-        });
-    }, []);
-
-    const resetTransientState = useCallback(() => {
-        setError(null);
-        clearGeneratedImage();
-    }, [clearGeneratedImage]);
-
-    const getErrorMessage = (status?: number): string => {
-        if (typeof navigator !== 'undefined' && !navigator.onLine) {
-            return '오프라인 상태입니다. 인터넷 연결을 확인한 뒤 다시 시도해주세요.';
-        }
-
-        if (status === 429) {
-            return '1시간에 최대 10번 호출할 수 있어요.';
-        }
-
-        if (status && status >= 500) {
-            return 'AI 피팅 서비스가 아직 준비 중일 수 있습니다. 잠시 후 다시 시도해주세요.';
-        }
-
-        return '이미지 생성 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
-    };
-
-    // 2. 이미지 리사이징 함수 (생략)
-    const resizeFile = (file: File): Promise<Blob> =>
-        new Promise((resolve) => {
-            Resizer.imageFileResizer(
-                file, 1024, 1024, "JPEG", 90, 0,
-                (blob) => { resolve(blob as Blob); },
-                "blob"
-            );
-        });
-
-    // 3. 각 이미지에 대한 핸들러를 명확하게 분리 (생략)
-    const handlePersonImageChange = (file: File) => {
-        resetTransientState();
-        setPersonImageFile(file);
-        setPersonImageUrl(prevUrl => {
-            if (prevUrl) URL.revokeObjectURL(prevUrl);
-            return URL.createObjectURL(file);
-        });
-    };
-
-    const handleClothingImageChange = (file: File) => {
-        resetTransientState();
-        setClothingImageFile(file);
-        setClothingImageUrl(prevUrl => {
-            if (prevUrl) URL.revokeObjectURL(prevUrl);
-            return URL.createObjectURL(file);
-        });
-    };
-
-    // 4. AI 피팅 생성 핸들러 (생략)
-    const handleGenerate = useCallback(async () => {
-        if (!aiFittingApiBaseUrl) {
-            setError('현재 환경에서는 AI 피팅 기능이 설정되어 있지 않습니다.');
-            return;
-        }
-
-        if (!personImageFile || !clothingImageFile) {
-            setError('인물과 의류 사진을 모두 업로드해주세요.');
-            return;
-        }
-
-        setLoading(true);
-        setError(null);
-        clearGeneratedImage();
-
-        try {
-            const personImageBlob = await resizeFile(personImageFile);
-            const clothingImageBlob = await resizeFile(clothingImageFile);
-
-            const formData = new FormData();
-            formData.append('personImage', personImageBlob, 'person.jpg');
-            formData.append('clothingImage', clothingImageBlob, 'clothing.jpg');
-
-            const apiUrl = `${aiFittingApiBaseUrl}/api/ai-fitting`;
-            const response = await fetch(apiUrl, { method: 'POST', body: formData });
-
-            if (!response.ok) {
-                const fittingError: FittingError = new Error(response.statusText || '이미지 생성 요청에 실패했습니다.');
-                fittingError.status = response.status;
-                throw fittingError;
-            }
-
-            const imageBlob = await response.blob();
-            const imageUrl = URL.createObjectURL(imageBlob);
-            setGeneratedImage(prevImage => {
-                if (prevImage) URL.revokeObjectURL(prevImage);
-                return imageUrl;
-            });
-        } catch (err: unknown) {
-            if (err instanceof Error && 'status' in err && typeof err.status === 'number') {
-                setError(getErrorMessage(err.status));
-            } else if (err instanceof TypeError && err.message === 'Failed to fetch') {
-                setError(getErrorMessage());
-            } else {
-                setError('알 수 없는 오류가 발생했습니다.');
-            }
-        } finally {
-            setLoading(false);
-        }
-    }, [aiFittingApiBaseUrl, clearGeneratedImage, personImageFile, clothingImageFile]);
-
-
-    // 5. 컴포넌트 언마운트 시 URL 정리 (생략)
-    useEffect(() => {
-        return () => {
-            if (personImageUrl) URL.revokeObjectURL(personImageUrl);
-            if (clothingImageUrl) URL.revokeObjectURL(clothingImageUrl);
-            if (generatedImage) URL.revokeObjectURL(generatedImage);
-        };
-    }, [personImageUrl, clothingImageUrl, generatedImage]);
+    const uploadItems = uploadGuides.map((item) => ({
+        ...item,
+        imageSrc: item.field === 'person' ? personImageUrl : clothingImageUrl,
+        onImageChange: item.field === 'person' ? handlePersonImageChange : handleClothingImageChange,
+    }))
 
     return (
         <div className="min-h-screen bg-slate-100 text-slate-800 font-sans">
             <Header />
 
-            {/* 메인 컨테이너 */}
-            <main className="container mx-auto px-1 py-4 sm:px-4 sm:py-6 md:px-6 md:py-8 max-w-4xl">
-                <p className="text-center text-slate-600 mb-2 max-w-2xl mx-auto text-sm md:text-base">
+            <main className="container mx-auto max-w-4xl px-1 py-4 sm:px-4 sm:py-6 md:px-6 md:py-8">
+                <p className="mx-auto mb-2 max-w-2xl text-center text-sm text-slate-600 md:text-base">
                     인물 사진과 의류 사진을 업로드하여 가상으로 옷을 입어보세요.
                 </p>
-                <p className="text-center text-slate-500 mb-4 sm:mb-6 max-w-2xl mx-auto text-xs">
+                <p className="mx-auto mb-4 max-w-2xl text-center text-xs text-slate-500 sm:mb-6">
                     * 이미지는 저장되지 않습니다.
                 </p>
 
-                {!aiFittingApiBaseUrl && (
-                    <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6 max-w-2xl mx-auto" role="status" aria-live="polite">
-                        <p className="text-sm text-amber-800 text-center">
-                            현재 환경에서는 AI 피팅 API가 연결되어 있지 않아 업로드와 결과 생성이 비활성화됩니다.
-                        </p>
-                    </div>
+                {!isConfigured && (
+                    <StatusBanner
+                        tone="warning"
+                        title="현재 환경에서는 AI 피팅 API가 연결되어 있지 않습니다."
+                        description="배포 환경 또는 환경변수가 연결된 로컬 환경에서 업로드와 결과 생성을 사용할 수 있습니다."
+                        className="mx-auto mb-6 max-w-2xl"
+                    />
                 )}
 
-                {/* 에러 메시지 (생략) */}
-                {error && (
-                    <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-6 max-w-2xl mx-auto" role="alert" aria-live="assertive">
-                        <div className="flex">
-                            <div className="flex-shrink-0">
-                                <svg className="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                                </svg>
-                            </div>
-                            <div className="ml-3">
-                                <p className="text-sm text-red-700">
-                                    <span className="font-medium">오류:</span> {error}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                )}
-
-                {/* ------------------- ▼▼▼ 여기부터 수정 ▼▼▼ ------------------- */}
-                {/* 이미지 업로드 섹션 */}
-                <div className="max-w-3xl mx-auto mb-6">
-                    {/* 부모 컨테이너를 flexbox로 변경하고 간격을 조정합니다. */}
-                    <div className="flex flex-col lg:flex-row gap-8 px-2 sm:px-0">
-                        {/* 각 자식 요소에 데스크탑 너비를 지정합니다. */}
-                        <div className="w-full lg:w-1/2">
-                            <ImageUploader
-                                id="person-uploader"
-                                title="1. 인물 사진"
-                                imageSrc={personImageUrl}
-                                onImageChange={handlePersonImageChange}
-                            />
-                            <div className="w-full mt-3 sm:mt-4">
-                                <div className="mx-1 sm:mx-0 text-center text-xs sm:text-sm text-slate-600 bg-slate-50 py-2 px-2 sm:py-3 sm:px-4 rounded-lg">
-                                    <span className="font-medium block">단독 사진, 배경과 구분이 명확한 사진이 좋아요.</span>
+                <div className="mx-auto mb-6 max-w-3xl">
+                    <div className="flex flex-col gap-8 px-2 sm:px-0 lg:flex-row">
+                        {uploadItems.map((item) => (
+                            <div key={item.id} className="w-full lg:w-1/2">
+                                <ImageUploader
+                                    id={item.id}
+                                    title={item.title}
+                                    imageSrc={item.imageSrc}
+                                    onImageChange={item.onImageChange}
+                                />
+                                <div className="mt-3 w-full sm:mt-4">
+                                    <div className="mx-1 rounded-lg bg-slate-50 px-2 py-2 text-center text-xs text-slate-600 sm:mx-0 sm:px-4 sm:py-3 sm:text-sm">
+                                        <span className="block font-medium">{item.guide}</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-                        {/* 각 자식 요소에 데스크탑 너비를 지정합니다. */}
-                        <div className="w-full lg:w-1/2">
-                            <ImageUploader
-                                id="clothing-uploader"
-                                title="2. 의류 사진"
-                                imageSrc={clothingImageUrl}
-                                onImageChange={handleClothingImageChange}
-                            />
-                            <div className="w-full mt-3 sm:mt-4">
-                                <div className="mx-1 sm:mx-0 text-center text-xs sm:text-sm text-slate-600 bg-slate-50 py-2 px-2 sm:py-3 sm:px-4 rounded-lg">
-                                    <span className="block">배경과 구분이 뚜렷하거나 누끼 제거 후 사용해주세요.</span>
-                                </div>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
 
-                <div className="flex justify-center mt-6 mb-6 sm:mt-16 sm:mb-12 md:mt-24 md:mb-8">
+                <div className="mb-6 mt-6 flex justify-center sm:mb-12 sm:mt-16 md:mb-8 md:mt-24">
                     <button
+                        type="button"
                         onClick={handleGenerate}
-                        disabled={loading || !personImageFile || !clothingImageFile || !aiFittingApiBaseUrl}
-                        className="bg-sky-600 text-white font-bold py-3 px-8 rounded-full hover:bg-sky-700 disabled:bg-slate-400 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 shadow-lg text-sm md:text-base w-full max-w-xs mx-4"
+                        disabled={!canGenerate}
+                        className="mx-4 w-full max-w-xs rounded-full bg-sky-600 px-8 py-3 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-sky-700 disabled:cursor-not-allowed disabled:bg-slate-400 md:text-base"
                     >
                         {loading ? '생성 중...' : '입어보기'}
                     </button>
                 </div>
 
-                {/* 결과 섹션 (생략) */}
-                <div className="max-w-2xl mx-auto">
+                <div className="mx-auto max-w-2xl">
                     <ResultDisplay
                         imageSrc={generatedImage}
                         loading={loading}
@@ -239,18 +103,12 @@ const AIFittingPage: React.FC = () => {
                 </div>
             </main>
 
-            <footer className="w-full border-t border-slate-200 mt-12">
-                <div className="container mx-auto flex justify-between items-center p-4 text-slate-500 text-xs md:text-sm">
-        <span>
-            © {currentYear} dd3ok. All rights reserved.
-        </span>
-                    <span>
-            Powered by Gemini
-        </span>
+            <footer className="mt-12 w-full border-t border-slate-200">
+                <div className="container mx-auto flex items-center justify-between p-4 text-xs text-slate-500 md:text-sm">
+                    <span>© {currentYear} dd3ok. All rights reserved.</span>
+                    <span>Powered by Gemini</span>
                 </div>
             </footer>
         </div>
-    );
-};
-
-export default AIFittingPage;
+    )
+}
