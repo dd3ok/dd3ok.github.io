@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react'
+import { useCallback, useEffect, useRef, useState, type Dispatch, type FormEvent, type SetStateAction } from 'react'
 import useWebSocket, { ReadyState } from 'react-use-websocket'
 import { useUserIdentifier } from '@/hooks/useUserIdentifier'
 import { getEnvConfig } from '@/utils/EnvConfig'
@@ -67,9 +67,16 @@ interface Message {
     isUser: boolean
 }
 
+const INITIAL_MESSAGES: Message[] = [
+    { id: 'welcome', text: '안녕하세요! 인재 AI입니다 👋\n\n경력, 프로젝트, 기술에 관해 무엇이든 물어보세요.', isUser: false },
+]
+
 interface ConfiguredAIChatProps {
     socketUrl: string
     initialPrompt: string | null
+    messages: Message[]
+    setMessages: Dispatch<SetStateAction<Message[]>>
+    createMessageId: () => string
     onRestartSession: (prompt: string) => void
 }
 
@@ -137,28 +144,26 @@ function AIChatUnavailable() {
     )
 }
 
-function ConfiguredAIChat({ socketUrl, initialPrompt, onRestartSession }: ConfiguredAIChatProps) {
+function ConfiguredAIChat({
+    socketUrl,
+    initialPrompt,
+    messages,
+    setMessages,
+    createMessageId,
+    onRestartSession,
+}: ConfiguredAIChatProps) {
     const userId = useUserIdentifier()
-    const [messages, setMessages] = useState<Message[]>([
-        { id: 'welcome', text: '안녕하세요! 인재 AI입니다 👋\n\n경력, 프로젝트, 기술에 관해 무엇이든 물어보세요.', isUser: false },
-    ])
     const [inputValue, setInputValue] = useState('')
     const [isResponding, setIsResponding] = useState(false)
     const [isTimeout, setIsTimeout] = useState(false)
     const [lastUserMessage, setLastUserMessage] = useState('')
     const chatContainerRef = useRef<HTMLDivElement>(null)
-    const messageSequenceRef = useRef(0)
     const activeAssistantMessageIdRef = useRef<string | null>(null)
     const hasSentInitialPromptRef = useRef(false)
     const responseTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
     const settleTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
     const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl)
-
-    const createMessageId = () => {
-        messageSequenceRef.current += 1
-        return `message-${messageSequenceRef.current}`
-    }
 
     const clearResponseTimer = useCallback(() => {
         if (responseTimeoutRef.current) {
@@ -222,18 +227,21 @@ function ConfiguredAIChat({ socketUrl, initialPrompt, onRestartSession }: Config
 
             return nextMessages
         })
-    }, [])
+    }, [setMessages])
 
-    const sendChatMessage = useCallback((content: string) => {
+    const sendChatMessage = useCallback((content: string, appendUserMessage = true) => {
         if (!userId || readyState !== ReadyState.OPEN) {
             return false
         }
 
         clearSettleTimer()
-        setMessages(prev => [
-            ...prev,
-            { id: createMessageId(), text: content, isUser: true },
-        ])
+
+        if (appendUserMessage) {
+            setMessages(prev => [
+                ...prev,
+                { id: createMessageId(), text: content, isUser: true },
+            ])
+        }
 
         activeAssistantMessageIdRef.current = createMessageId()
         setLastUserMessage(content)
@@ -249,7 +257,7 @@ function ConfiguredAIChat({ socketUrl, initialPrompt, onRestartSession }: Config
 
         scheduleResponseTimeout()
         return true
-    }, [clearSettleTimer, readyState, scheduleResponseTimeout, sendMessage, userId])
+    }, [clearSettleTimer, createMessageId, readyState, scheduleResponseTimeout, sendMessage, setMessages, userId])
 
     useEffect(() => {
         if (lastMessage === null) {
@@ -298,7 +306,7 @@ function ConfiguredAIChat({ socketUrl, initialPrompt, onRestartSession }: Config
             return
         }
 
-        const sent = sendChatMessage(initialPrompt)
+        const sent = sendChatMessage(initialPrompt, false)
 
         if (sent) {
             hasSentInitialPromptRef.current = true
@@ -402,8 +410,15 @@ function ConfiguredAIChat({ socketUrl, initialPrompt, onRestartSession }: Config
 export default function AIChat() {
     const config = getEnvConfig()
     const socketUrl = config.whoAmAiWs?.baseUrl
+    const messageSequenceRef = useRef(0)
+    const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES)
     const [sessionKey, setSessionKey] = useState(0)
     const [retryPrompt, setRetryPrompt] = useState<string | null>(null)
+
+    const createMessageId = useCallback(() => {
+        messageSequenceRef.current += 1
+        return `message-${messageSequenceRef.current}`
+    }, [])
 
     if (!socketUrl) {
         return <AIChatUnavailable />
@@ -414,6 +429,9 @@ export default function AIChat() {
             key={sessionKey}
             socketUrl={`${socketUrl}/ws/chat`}
             initialPrompt={retryPrompt}
+            messages={messages}
+            setMessages={setMessages}
+            createMessageId={createMessageId}
             onRestartSession={(prompt) => {
                 setRetryPrompt(prompt)
                 setSessionKey((currentKey) => currentKey + 1)
