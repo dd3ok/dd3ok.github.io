@@ -179,13 +179,6 @@ function ConfiguredAIChat({
         }
     }, [])
 
-    const finishResponse = useCallback(() => {
-        clearResponseTimer()
-        clearSettleTimer()
-        activeAssistantMessageIdRef.current = null
-        setIsResponding(false)
-    }, [clearResponseTimer, clearSettleTimer])
-
     const scheduleResponseTimeout = useCallback(() => {
         clearResponseTimer()
         clearSettleTimer()
@@ -201,17 +194,11 @@ function ConfiguredAIChat({
         clearSettleTimer()
         settleTimeoutRef.current = setTimeout(() => {
             settleTimeoutRef.current = null
-            finishResponse()
+            setIsResponding(false)
         }, RESPONSE_SETTLE_DELAY_MS)
-    }, [clearSettleTimer, finishResponse])
+    }, [clearSettleTimer])
 
-    const appendAssistantToken = useCallback((token: string) => {
-        const assistantMessageId = activeAssistantMessageIdRef.current
-
-        if (!assistantMessageId) {
-            return
-        }
-
+    const appendAssistantToken = useCallback((assistantMessageId: string, token: string) => {
         setMessages(prev => {
             const assistantMessageIndex = prev.findIndex((message) => message.id === assistantMessageId)
 
@@ -264,10 +251,16 @@ function ConfiguredAIChat({
             return
         }
 
+        const assistantMessageId = activeAssistantMessageIdRef.current
+
+        if (!assistantMessageId) {
+            return
+        }
+
         clearResponseTimer()
         setIsTimeout(false)
         setIsResponding(true)
-        appendAssistantToken(String(lastMessage.data))
+        appendAssistantToken(assistantMessageId, String(lastMessage.data))
         scheduleSettleTimer()
     }, [appendAssistantToken, clearResponseTimer, lastMessage, scheduleSettleTimer])
 
