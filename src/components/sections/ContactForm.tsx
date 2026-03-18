@@ -209,13 +209,17 @@ export default function ContactForm() {
                     value={formData.name}
                     onChange={handleInputChange}
                     required
+                    aria-invalid={Boolean(formErrors.name)}
+                    aria-describedby={formErrors.name ? 'contact-name-error' : undefined}
                     className={`w-full px-3 md:px-4 py-2.5 md:py-3 bg-white border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 text-base ${
                         formErrors.name ? 'border-red-500' : 'border-gray-300'
                     }`}
                     placeholder="홍길동"
                 />
                 {formErrors.name && (
-                    <p className="mt-1 text-sm text-red-600">{formErrors.name}</p>
+                    <p id="contact-name-error" className="mt-1 text-sm text-red-600">
+                        {formErrors.name}
+                    </p>
                 )}
             </div>
 
@@ -230,13 +234,17 @@ export default function ContactForm() {
                     value={formData.email}
                     onChange={handleInputChange}
                     required
+                    aria-invalid={Boolean(formErrors.email)}
+                    aria-describedby={formErrors.email ? 'contact-email-error' : undefined}
                     className={`w-full px-3 md:px-4 py-2.5 md:py-3 bg-white border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 text-base ${
                         formErrors.email ? 'border-red-500' : 'border-gray-300'
                     }`}
                     placeholder="hong@example.com"
                 />
                 {formErrors.email && (
-                    <p className="mt-1 text-sm text-red-600">{formErrors.email}</p>
+                    <p id="contact-email-error" className="mt-1 text-sm text-red-600">
+                        {formErrors.email}
+                    </p>
                 )}
             </div>
 
@@ -252,21 +260,30 @@ export default function ContactForm() {
                     required
                     maxLength={MESSAGE_MAX_LENGTH}
                     rows={4}
+                    aria-invalid={Boolean(formErrors.message)}
+                    aria-describedby={`contact-message-hint${formErrors.message ? ' contact-message-error' : ''}`}
                     className={`w-full px-3 md:px-4 py-2.5 md:py-3 bg-white border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 resize-none text-base ${
                         formErrors.message ? 'border-red-500' : 'border-gray-300'
                     }`}
                     placeholder="안녕하세요! 함께 일하고 싶습니다."
                 />
                 {formErrors.message && (
-                    <p className="mt-1 text-sm text-red-600">{formErrors.message}</p>
+                    <p id="contact-message-error" className="mt-1 text-sm text-red-600">
+                        {formErrors.message}
+                    </p>
                 )}
-                <p className="mt-1 text-xs text-gray-500">
+                <p id="contact-message-hint" className="mt-1 text-xs text-gray-500">
                     {formData.message.length}/{MESSAGE_MAX_LENGTH} (최소 {MESSAGE_MIN_LENGTH}자)
                 </p>
             </div>
 
             {submitStatus === 'success' && (
-                <div className="p-3 md:p-4 bg-green-50 border border-green-200 rounded-lg animate-fadeIn">
+                <div
+                    className="p-3 md:p-4 bg-green-50 border border-green-200 rounded-lg animate-fadeIn"
+                    role="status"
+                    aria-live="polite"
+                    aria-atomic="true"
+                >
                     <div className="flex items-start">
                         <div className="flex-shrink-0 mt-0.5">
                             <svg className="h-4 w-4 md:h-5 md:w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
@@ -286,7 +303,12 @@ export default function ContactForm() {
             )}
 
             {submitStatus === 'error' && (
-                <div className="p-3 md:p-4 bg-red-50 border border-red-200 rounded-lg animate-fadeIn">
+                <div
+                    className="p-3 md:p-4 bg-red-50 border border-red-200 rounded-lg animate-fadeIn"
+                    role="alert"
+                    aria-live="assertive"
+                    aria-atomic="true"
+                >
                     <div className="flex items-start">
                         <div className="flex-shrink-0 mt-0.5">
                             <svg className="h-4 w-4 md:h-5 md:w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">

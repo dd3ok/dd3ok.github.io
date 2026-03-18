@@ -75,6 +75,31 @@ Establish a repeatable development workflow and then improve the portfolio in sm
 - Tighten `/ai-fitting` runtime cleanup for repeated image generation
 - Align tooling metadata and refresh plan notes after recent merges
 
+### Ticket 13: Quality gates and chat response isolation
+- Include export smoke coverage in the default build path
+- Isolate AI chat retries from stale websocket response state
+- Refresh docs so contributors know the stronger default verification path
+
+### Ticket 14: Navigation accessibility and fitting UX cleanup
+- Align Toys dropdown semantics with actual disclosure-style behavior
+- Improve keyboard escape and focus movement for the desktop dropdown
+- Reset stale fitting errors and generated results when uploaded inputs change
+
+### Ticket 15: Dependency and status-message cleanup
+- Clear the remaining dev-only audit vulnerability without broad dependency churn
+- Align contact form success and error feedback with accessible live-region semantics
+- Keep the stronger default quality gates green after the maintenance pass
+
+### Ticket 16: Interaction follow-up polish
+- Smooth AI chat response completion without requiring a backend protocol change
+- Make the Toys dropdown trigger behavior clearer on desktop and mobile
+- Expand README guidance for local AI checks, sleep states, and the recommended verification flow
+
+### Ticket 17: Deployment workflow cleanup
+- Stop reconstructing the static export artifact after `next build`
+- Upload the generated `out/` directory directly after a small verification step
+- Keep GitHub Pages deployment aligned with the repository's static export workflow
+
 ## Acceptance Criteria
 - Every active change starts from a small ticket in this file or a follow-up plan
 - Workflow documents remain in sync with the current repo state
@@ -110,3 +135,14 @@ Establish a repeatable development workflow and then improve the portfolio in sm
 - 2026-03-17: Rolled back the visible page UI/content polish from Tickets 10-12 on request while keeping runtime/accessibility hardening and static smoke checks in place
 - 2026-03-17: Started Ticket 12 on branch `codex/follow-up-maintenance` to clean up unreleased internal links, tighten `/ai-fitting` runtime cleanup, align React type metadata, and refresh stale plan notes
 - 2026-03-17: Completed Ticket 12 by disabling the unreleased `wedding` destination in visible UI, teaching the smoke check to verify referenced internal routes exist, revoking stale `/ai-fitting` blob URLs on repeated generations, aligning React 19 type packages, and refreshing the plan summary; verified with `npm run validate`, `npm run build`, and `npm run smoke`
+- 2026-03-17: Started Ticket 13 on branch `codex/quality-gates-ai-chat` to fold smoke checks into the default build path and keep AI chat retries from mixing with stale websocket response state
+- 2026-03-17: Completed Ticket 13 by making `npm run build` include the export smoke check, reconnecting AI chat retries through a fresh session so delayed websocket packets do not leak into the retried answer, and refreshing README guidance for the stronger default verification path; verified with `npm run validate` and `npm run build`
+- 2026-03-17: Started Ticket 14 on branch `codex/quality-gates-ai-chat` to refine Toys dropdown accessibility semantics and reset stale `/ai-fitting` errors/results when uploaded inputs change
+- 2026-03-17: Completed Ticket 14 by switching the Toys dropdown toward disclosure-style semantics with keyboard escape/arrow handling, removing mismatched menu roles from desktop/mobile navigation, and clearing stale `/ai-fitting` errors/results when users replace uploaded images; verified with `npm run validate` and `npm run build`
+- 2026-03-17: Started Ticket 15 on branch `codex/quality-gates-ai-chat` to clear the last dev-only audit finding and align contact form feedback announcements with the newer accessibility pattern
+- 2026-03-17: Completed Ticket 15 by applying the lockfile-level `flatted` security update through `npm audit fix`, connecting contact field errors with their inputs, and adding polite/assertive live-region semantics to contact success and error feedback; verified with `npm run validate`, `npm run build`, and `npm audit`
+- 2026-03-17: Started Ticket 16 on branch `codex/quality-gates-ai-chat` to polish AI chat completion behavior, clarify the Toys dropdown trigger UX, and expand local verification guidance in the README
+- 2026-03-17: Completed Ticket 16 by keeping AI chat in a responding state until streamed tokens settle, turning the desktop Toys trigger into an explicit disclosure with a dedicated section link inside the dropdown, and documenting local AI checks plus sleep-state expectations; verified with `npm run validate` and `npm run build`
+- 2026-03-18: Started Ticket 17 on branch `codex/quality-gates-ai-chat` to simplify the GitHub Pages deployment workflow and remove redundant post-build export assembly
+- 2026-03-18: Completed Ticket 17 by deleting the manual `out/` reconstruction step from the Pages workflow, adding a direct export verification step, and keeping deployment pointed at the generated static artifact; verified with `npm run build`
+- 2026-03-18: Addressed PR #8 review feedback by preserving AI chat conversation history across retry reconnects instead of resetting the widget state on remount; verified with `npm run validate` and `npm run build`

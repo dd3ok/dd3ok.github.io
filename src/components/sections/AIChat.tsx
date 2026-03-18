@@ -1,27 +1,29 @@
 'use client'
 
-import { useState, FormEvent, useRef, useEffect } from 'react'
-import useWebSocket, { ReadyState } from 'react-use-websocket';
-import { useUserIdentifier } from '@/hooks/useUserIdentifier';
-import { getEnvConfig } from '@/utils/EnvConfig';
-import Image from 'next/image';
-import ReactMarkdown, { type Components } from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import { useCallback, useEffect, useRef, useState, type Dispatch, type FormEvent, type SetStateAction } from 'react'
+import useWebSocket, { ReadyState } from 'react-use-websocket'
+import { useUserIdentifier } from '@/hooks/useUserIdentifier'
+import { getEnvConfig } from '@/utils/EnvConfig'
+import Image from 'next/image'
+import ReactMarkdown, { type Components } from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
-// 아이콘 컴포넌트들
+const RESPONSE_TIMEOUT_MS = 10000
+const RESPONSE_SETTLE_DELAY_MS = 1500
+
 const SendIcon = () => (
     <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" className="h-5 w-5">
         <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
     </svg>
-);
+)
 
 const LoadingDots = () => (
     <div className="flex space-x-1 items-center">
-        <span className="h-2 w-2 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
-        <span className="h-2 w-2 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
-        <span className="h-2 w-2 bg-slate-400 rounded-full animate-bounce"></span>
+        <span className="h-2 w-2 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.3s]" />
+        <span className="h-2 w-2 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.15s]" />
+        <span className="h-2 w-2 bg-slate-400 rounded-full animate-bounce" />
     </div>
-);
+)
 
 const TimeoutMessage = ({ onRetry }: { onRetry: () => void }) => (
     <div className="flex flex-col items-center space-y-3 text-center">
@@ -31,15 +33,15 @@ const TimeoutMessage = ({ onRetry }: { onRetry: () => void }) => (
             <p>잠시후 다시 시도해주세요.</p>
         </div>
         <button
+            type="button"
             onClick={onRetry}
             className="px-4 py-2 bg-blue-500 text-white text-sm rounded-lg hover:bg-blue-600 transition-colors"
         >
-            다시 요청하기
+            새 연결로 다시 요청하기
         </button>
     </div>
-);
+)
 
-// 연결 상태 아이콘 컴포넌트
 const ConnectionStatusIcon = ({ readyState }: { readyState: ReadyState }) => {
     const statusInfo = {
         [ReadyState.CONNECTING]: { color: 'bg-yellow-500', animate: 'animate-pulse', title: '연결 중' },
@@ -47,21 +49,35 @@ const ConnectionStatusIcon = ({ readyState }: { readyState: ReadyState }) => {
         [ReadyState.CLOSING]: { color: 'bg-yellow-500', animate: '', title: '연결 종료 중' },
         [ReadyState.CLOSED]: { color: 'bg-red-500', animate: '', title: '연결 끊김' },
         [ReadyState.UNINSTANTIATED]: { color: 'bg-gray-400', animate: '', title: '초기화 안됨' },
-    }[readyState];
+    }[readyState]
 
-    if (!statusInfo) return null;
+    if (!statusInfo) return null
 
     return (
         <span
             title={statusInfo.title}
             className={`h-3 w-3 rounded-full ${statusInfo.color} ${statusInfo.animate} transition-colors`}
         />
-    );
-};
+    )
+}
 
 interface Message {
-    text: string;
-    isUser: boolean;
+    id: string
+    text: string
+    isUser: boolean
+}
+
+const INITIAL_MESSAGES: Message[] = [
+    { id: 'welcome', text: '안녕하세요! 인재 AI입니다 👋\n\n경력, 프로젝트, 기술에 관해 무엇이든 물어보세요.', isUser: false },
+]
+
+interface ConfiguredAIChatProps {
+    socketUrl: string
+    initialPrompt: string | null
+    messages: Message[]
+    setMessages: Dispatch<SetStateAction<Message[]>>
+    createMessageId: () => string
+    onRestartSession: (prompt: string) => void
 }
 
 const markdownComponents: Components = {
@@ -71,9 +87,9 @@ const markdownComponents: Components = {
         </pre>
     ),
     code: ({ node, className, children, ...props }) => {
-        void node;
-        const match = /language-(\w+)/.exec(className || '');
-        const isInline = !match;
+        void node
+        const match = /language-(\w+)/.exec(className || '')
+        const isInline = !match
 
         return isInline ? (
             <code className="!text-xs !px-1 !py-0.5 !bg-slate-200 !text-slate-800 !rounded" {...props}>
@@ -83,7 +99,7 @@ const markdownComponents: Components = {
             <code className="!text-xs" {...props}>
                 {children}
             </code>
-        );
+        )
     },
     h1: ({ children }) => <h1 className="!text-sm !font-bold !my-2">{children}</h1>,
     h2: ({ children }) => <h2 className="!text-sm !font-semibold !my-1">{children}</h2>,
@@ -107,7 +123,7 @@ const markdownComponents: Components = {
             {children}
         </a>
     ),
-};
+}
 
 function AIChatUnavailable() {
     return (
@@ -128,81 +144,133 @@ function AIChatUnavailable() {
     )
 }
 
-function ConfiguredAIChat({ socketUrl }: { socketUrl: string }) {
-    const userId = useUserIdentifier();
-    const [messages, setMessages] = useState<Message[]>([
-        { text: "안녕하세요! 인재 AI입니다 👋\n\n경력, 프로젝트, 기술에 관해 무엇이든 물어보세요.", isUser: false }
-    ]);
-    const [inputValue, setInputValue] = useState('');
-    const [isResponding, setIsResponding] = useState(false);
-    const [isTimeout, setIsTimeout] = useState(false);
-    const [lastUserMessage, setLastUserMessage] = useState('');
-    const chatContainerRef = useRef<HTMLDivElement>(null);
+function ConfiguredAIChat({
+    socketUrl,
+    initialPrompt,
+    messages,
+    setMessages,
+    createMessageId,
+    onRestartSession,
+}: ConfiguredAIChatProps) {
+    const userId = useUserIdentifier()
+    const [inputValue, setInputValue] = useState('')
+    const [isResponding, setIsResponding] = useState(false)
+    const [isTimeout, setIsTimeout] = useState(false)
+    const [lastUserMessage, setLastUserMessage] = useState('')
+    const chatContainerRef = useRef<HTMLDivElement>(null)
+    const activeAssistantMessageIdRef = useRef<string | null>(null)
+    const hasSentInitialPromptRef = useRef(false)
+    const responseTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+    const settleTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-    const isFirstToken = useRef(false);
-    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl)
 
-    const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
+    const clearResponseTimer = useCallback(() => {
+        if (responseTimeoutRef.current) {
+            clearTimeout(responseTimeoutRef.current)
+            responseTimeoutRef.current = null
+        }
+    }, [])
+
+    const clearSettleTimer = useCallback(() => {
+        if (settleTimeoutRef.current) {
+            clearTimeout(settleTimeoutRef.current)
+            settleTimeoutRef.current = null
+        }
+    }, [])
+
+    const scheduleResponseTimeout = useCallback(() => {
+        clearResponseTimer()
+        clearSettleTimer()
+        responseTimeoutRef.current = setTimeout(() => {
+            activeAssistantMessageIdRef.current = null
+            setIsResponding(false)
+            setIsTimeout(true)
+            responseTimeoutRef.current = null
+        }, RESPONSE_TIMEOUT_MS)
+    }, [clearResponseTimer, clearSettleTimer])
+
+    const scheduleSettleTimer = useCallback(() => {
+        clearSettleTimer()
+        settleTimeoutRef.current = setTimeout(() => {
+            settleTimeoutRef.current = null
+            setIsResponding(false)
+        }, RESPONSE_SETTLE_DELAY_MS)
+    }, [clearSettleTimer])
+
+    const appendAssistantToken = useCallback((assistantMessageId: string, token: string) => {
+        setMessages(prev => {
+            const assistantMessageIndex = prev.findIndex((message) => message.id === assistantMessageId)
+
+            if (assistantMessageIndex === -1) {
+                return [...prev, { id: assistantMessageId, text: token, isUser: false }]
+            }
+
+            const nextMessages = [...prev]
+            nextMessages[assistantMessageIndex] = {
+                ...nextMessages[assistantMessageIndex],
+                text: nextMessages[assistantMessageIndex].text + token,
+            }
+
+            return nextMessages
+        })
+    }, [setMessages])
+
+    const sendChatMessage = useCallback((content: string, appendUserMessage = true) => {
+        if (!userId || readyState !== ReadyState.OPEN) {
+            return false
+        }
+
+        clearSettleTimer()
+
+        if (appendUserMessage) {
+            setMessages(prev => [
+                ...prev,
+                { id: createMessageId(), text: content, isUser: true },
+            ])
+        }
+
+        activeAssistantMessageIdRef.current = createMessageId()
+        setLastUserMessage(content)
+        setIsResponding(true)
+        setIsTimeout(false)
+        setInputValue('')
+
+        sendMessage(JSON.stringify({
+            uuid: userId,
+            type: 'USER',
+            content,
+        }))
+
+        scheduleResponseTimeout()
+        return true
+    }, [clearSettleTimer, createMessageId, readyState, scheduleResponseTimeout, sendMessage, setMessages, userId])
 
     useEffect(() => {
-        if (lastMessage !== null) {
-            if (timeoutRef.current) {
-                clearTimeout(timeoutRef.current);
-                timeoutRef.current = null;
-            }
-            setIsTimeout(false);
-
-            const token = lastMessage.data;
-
-            if (isFirstToken.current) {
-                isFirstToken.current = false;
-                setIsResponding(false);
-                setMessages(prev => [...prev, { text: token, isUser: false }]);
-            } else {
-                setMessages(prev => {
-                    const newMessages = [...prev];
-                    const lastIndex = newMessages.length - 1;
-
-                    if (lastIndex >= 0 && !newMessages[lastIndex].isUser) {
-                        newMessages[lastIndex] = {
-                            ...newMessages[lastIndex],
-                            text: newMessages[lastIndex].text + token
-                        };
-                    } else {
-                        newMessages.push({ text: token, isUser: false });
-                    }
-
-                    return newMessages;
-                });
-            }
+        if (lastMessage === null) {
+            return
         }
-    }, [lastMessage]);
 
-    const handleTimeout = () => {
-        setIsResponding(false);
-        setIsTimeout(true);
-        if (timeoutRef.current) {
-            clearTimeout(timeoutRef.current);
-            timeoutRef.current = null;
+        const assistantMessageId = activeAssistantMessageIdRef.current
+
+        if (!assistantMessageId) {
+            return
         }
-    };
+
+        clearResponseTimer()
+        setIsTimeout(false)
+        setIsResponding(true)
+        appendAssistantToken(assistantMessageId, String(lastMessage.data))
+        scheduleSettleTimer()
+    }, [appendAssistantToken, clearResponseTimer, lastMessage, scheduleSettleTimer])
 
     const handleRetry = () => {
-        if (!userId || readyState !== ReadyState.OPEN) return;
+        if (!lastUserMessage) {
+            return
+        }
 
-        setIsTimeout(false);
-        setIsResponding(true);
-        isFirstToken.current = true;
-
-        const messageToSend = {
-            uuid: userId,
-            type: "USER",
-            content: lastUserMessage
-        };
-
-        sendMessage(JSON.stringify(messageToSend));
-        timeoutRef.current = setTimeout(handleTimeout, 10000);
-    };
+        onRestartSession(lastUserMessage)
+    }
 
     const connectionStatus = {
         [ReadyState.CONNECTING]: '연결 중.. (Sleep 시 60초)',
@@ -210,57 +278,55 @@ function ConfiguredAIChat({ socketUrl }: { socketUrl: string }) {
         [ReadyState.CLOSING]: '연결 종료 중...',
         [ReadyState.CLOSED]: '연결 끊김',
         [ReadyState.UNINSTANTIATED]: '준비 중',
-    }[readyState];
+    }[readyState]
 
     useEffect(() => {
-        const chatContainer = chatContainerRef.current;
+        const chatContainer = chatContainerRef.current
         if (chatContainer) {
-            chatContainer.scrollTo({ top: chatContainer.scrollHeight, behavior: 'smooth' });
+            chatContainer.scrollTo({ top: chatContainer.scrollHeight, behavior: 'smooth' })
         }
-    }, [messages, isTimeout]);
+    }, [messages, isTimeout])
 
     useEffect(() => {
         return () => {
-            if (timeoutRef.current) {
-                clearTimeout(timeoutRef.current);
-            }
-        };
-    }, []);
+            clearResponseTimer()
+            clearSettleTimer()
+        }
+    }, [clearResponseTimer, clearSettleTimer])
+
+    useEffect(() => {
+        if (!initialPrompt || hasSentInitialPromptRef.current) {
+            return
+        }
+
+        const sent = sendChatMessage(initialPrompt, false)
+
+        if (sent) {
+            hasSentInitialPromptRef.current = true
+        }
+    }, [initialPrompt, sendChatMessage])
 
     const handleSubmit = (e: FormEvent) => {
-        e.preventDefault();
-        if (!inputValue.trim() || isResponding || readyState !== ReadyState.OPEN || !userId) return;
+        e.preventDefault()
 
-        const userMessage: Message = { text: inputValue, isUser: true };
-        setMessages(prev => [...prev, userMessage]);
-        setLastUserMessage(inputValue);
+        const trimmedInputValue = inputValue.trim()
+        if (!trimmedInputValue || isResponding) {
+            return
+        }
 
-        const messageToSend = {
-            uuid: userId,
-            type: "USER",
-            content: inputValue
-        };
-
-        sendMessage(JSON.stringify(messageToSend));
-
-        setIsResponding(true);
-        setIsTimeout(false);
-        isFirstToken.current = true;
-        setInputValue('');
-        timeoutRef.current = setTimeout(handleTimeout, 10000);
-    };
+        sendChatMessage(trimmedInputValue)
+    }
 
     return (
         <div className="w-full max-w-md mx-auto bg-white/70 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/50 flex flex-col h-[36rem]">
-            {/* 헤더 부분 */}
             <div className="p-4 border-b border-gray-200/50 flex items-center justify-center gap-2 bg-primary-500 rounded-t-2xl">
                 <ConnectionStatusIcon readyState={readyState} />
                 <h3 className="text-md font-semibold text-gray-800">{connectionStatus}</h3>
             </div>
 
             <div ref={chatContainerRef} className="flex-1 p-5 overflow-y-auto space-y-6">
-                {messages.map((msg, index) => (
-                    <div key={index} className={`flex items-end gap-3 ${msg.isUser ? 'justify-end' : 'justify-start'}`}>
+                {messages.map((msg) => (
+                    <div key={msg.id} className={`flex items-end gap-3 ${msg.isUser ? 'justify-end' : 'justify-start'}`}>
                         {!msg.isUser && (
                             <div className="w-8 h-8 flex items-center justify-center shrink-0 text-xl">
                                 <span role="img" aria-label="robot">
@@ -337,10 +403,32 @@ function ConfiguredAIChat({ socketUrl }: { socketUrl: string }) {
 export default function AIChat() {
     const config = getEnvConfig()
     const socketUrl = config.whoAmAiWs?.baseUrl
+    const messageSequenceRef = useRef(0)
+    const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES)
+    const [sessionKey, setSessionKey] = useState(0)
+    const [retryPrompt, setRetryPrompt] = useState<string | null>(null)
+
+    const createMessageId = useCallback(() => {
+        messageSequenceRef.current += 1
+        return `message-${messageSequenceRef.current}`
+    }, [])
 
     if (!socketUrl) {
         return <AIChatUnavailable />
     }
 
-    return <ConfiguredAIChat socketUrl={`${socketUrl}/ws/chat`} />
+    return (
+        <ConfiguredAIChat
+            key={sessionKey}
+            socketUrl={`${socketUrl}/ws/chat`}
+            initialPrompt={retryPrompt}
+            messages={messages}
+            setMessages={setMessages}
+            createMessageId={createMessageId}
+            onRestartSession={(prompt) => {
+                setRetryPrompt(prompt)
+                setSessionKey((currentKey) => currentKey + 1)
+            }}
+        />
+    )
 }

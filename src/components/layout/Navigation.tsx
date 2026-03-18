@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import type { FocusEvent, KeyboardEvent as ReactKeyboardEvent } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -8,6 +9,7 @@ import { useActiveSection } from '@/hooks/useActiveSection'
 import { services } from '@/data/portfolio'
 import { isExternalLink } from '@/utils/links'
 
+const servicesSectionPath = '/#services'
 const navigableServices = services.filter((service) => service.status !== 'coming_soon')
 
 const navItems = [
@@ -19,15 +21,23 @@ const navItems = [
         id: 'services',
         label: 'Toys',
         type: 'dropdown',
-        dropdown: navigableServices.map((service) => ({
-            id: service.id,
-            label: service.navLabel ?? service.title,
-            path: service.path,
-            icon: service.icon,
-        }))
+        dropdown: [
+            {
+                id: 'services-overview',
+                label: 'Toys 섹션 보기',
+                path: servicesSectionPath,
+                icon: '↘️',
+            },
+            ...navigableServices.map((service) => ({
+                id: service.id,
+                label: service.navLabel ?? service.title,
+                path: service.path,
+                icon: service.icon,
+            })),
+        ],
     },
-    { id: 'contact', label: 'Contact', type: 'section' }
-]
+    { id: 'contact', label: 'Contact', type: 'section' },
+] as const
 
 export default function Navigation() {
     const [isScrolled, setIsScrolled] = useState(false)
@@ -37,6 +47,8 @@ export default function Navigation() {
     const activeSection = useActiveSection()
     const router = useRouter()
     const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+    const desktopServicesButtonRef = useRef<HTMLButtonElement | null>(null)
+    const desktopDropdownItemRefs = useRef<Array<HTMLAnchorElement | null>>([])
 
     useEffect(() => {
         const handleScroll = () => {
@@ -50,6 +62,26 @@ export default function Navigation() {
     const closeMobileMenu = useCallback(() => {
         setIsMobileMenuOpen(false)
         setMobileServicesOpen(false)
+    }, [])
+
+    const clearDropdownCloseTimer = useCallback(() => {
+        if (dropdownTimeoutRef.current) {
+            clearTimeout(dropdownTimeoutRef.current)
+            dropdownTimeoutRef.current = null
+        }
+    }, [])
+
+    const closeDesktopDropdown = useCallback((restoreFocus = false) => {
+        clearDropdownCloseTimer()
+        setActiveDropdown(null)
+
+        if (restoreFocus) {
+            desktopServicesButtonRef.current?.focus()
+        }
+    }, [clearDropdownCloseTimer])
+
+    const focusDesktopDropdownItem = useCallback((index: number) => {
+        desktopDropdownItemRefs.current[index]?.focus()
     }, [])
 
     useEffect(() => {
@@ -69,7 +101,6 @@ export default function Navigation() {
     }, [closeMobileMenu, isMobileMenuOpen])
 
     const scrollToSection = (sectionId: string) => {
-        // 메인 페이지가 아닌 경우 메인으로 이동 후 스크롤
         if (window.location.pathname !== '/') {
             closeMobileMenu()
             router.push(`/#${sectionId}`)
@@ -83,50 +114,145 @@ export default function Navigation() {
         }
     }
 
-    // 드롭다운 열기 (즉시)
-    const handleMouseEnter = (itemId: string) => {
-        if (dropdownTimeoutRef.current) {
-            clearTimeout(dropdownTimeoutRef.current)
-        }
+    const openDesktopDropdown = useCallback((itemId: string) => {
+        clearDropdownCloseTimer()
         setActiveDropdown(itemId)
+    }, [clearDropdownCloseTimer])
+
+    const toggleDesktopDropdown = useCallback((itemId: string) => {
+        clearDropdownCloseTimer()
+        setActiveDropdown((currentDropdown) => (
+            currentDropdown === itemId ? null : itemId
+        ))
+    }, [clearDropdownCloseTimer])
+
+    const handleMouseEnter = (itemId: string) => {
+        openDesktopDropdown(itemId)
     }
 
-    // 드롭다운 닫기 (지연)
     const handleMouseLeave = () => {
+        clearDropdownCloseTimer()
         dropdownTimeoutRef.current = setTimeout(() => {
             setActiveDropdown(null)
-        }, 150) // 150ms 지연으로 마우스 이동 시간 확보
+        }, 150)
     }
 
-    // 드롭다운 메뉴에 마우스가 들어가면 닫기 취소
     const handleDropdownMouseEnter = () => {
-        if (dropdownTimeoutRef.current) {
-            clearTimeout(dropdownTimeoutRef.current)
+        clearDropdownCloseTimer()
+    }
+
+    const handleDesktopDropdownBlur = (event: FocusEvent<HTMLDivElement>) => {
+        const nextTarget = event.relatedTarget as Node | null
+
+        if (nextTarget && event.currentTarget.contains(nextTarget)) {
+            return
+        }
+
+        closeDesktopDropdown()
+    }
+
+    const handleDesktopDropdownButtonKeyDown = (
+        event: ReactKeyboardEvent<HTMLButtonElement>,
+        dropdownLength: number
+    ) => {
+        if (dropdownLength === 0) {
+            return
+        }
+
+        if (event.key === 'ArrowDown') {
+            event.preventDefault()
+            openDesktopDropdown('services')
+            window.requestAnimationFrame(() => focusDesktopDropdownItem(0))
+            return
+        }
+
+        if (event.key === 'ArrowUp') {
+            event.preventDefault()
+            openDesktopDropdown('services')
+            window.requestAnimationFrame(() => focusDesktopDropdownItem(dropdownLength - 1))
+            return
+        }
+
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault()
+
+            if (activeDropdown === 'services') {
+                closeDesktopDropdown()
+            } else {
+                openDesktopDropdown('services')
+            }
+            return
+        }
+
+        if (event.key === 'Escape') {
+            event.preventDefault()
+            closeDesktopDropdown()
         }
     }
 
-    // 컴포넌트 언마운트 시 타이머 정리
+    const handleDesktopDropdownKeyDown = (event: ReactKeyboardEvent<HTMLDivElement>) => {
+        if (!desktopDropdownItemRefs.current.length) {
+            return
+        }
+
+        const currentIndex = desktopDropdownItemRefs.current.findIndex(
+            (item) => item === document.activeElement
+        )
+
+        if (event.key === 'Escape') {
+            event.preventDefault()
+            closeDesktopDropdown(true)
+            return
+        }
+
+        if (event.key === 'ArrowDown') {
+            event.preventDefault()
+            const nextIndex = currentIndex >= 0
+                ? (currentIndex + 1) % desktopDropdownItemRefs.current.length
+                : 0
+            focusDesktopDropdownItem(nextIndex)
+            return
+        }
+
+        if (event.key === 'ArrowUp') {
+            event.preventDefault()
+            const previousIndex = currentIndex >= 0
+                ? (currentIndex - 1 + desktopDropdownItemRefs.current.length) % desktopDropdownItemRefs.current.length
+                : desktopDropdownItemRefs.current.length - 1
+            focusDesktopDropdownItem(previousIndex)
+            return
+        }
+
+        if (event.key === 'Home') {
+            event.preventDefault()
+            focusDesktopDropdownItem(0)
+            return
+        }
+
+        if (event.key === 'End') {
+            event.preventDefault()
+            focusDesktopDropdownItem(desktopDropdownItemRefs.current.length - 1)
+        }
+    }
+
     useEffect(() => {
         return () => {
-            if (dropdownTimeoutRef.current) {
-                clearTimeout(dropdownTimeoutRef.current)
-            }
+            clearDropdownCloseTimer()
         }
-    }, [])
+    }, [clearDropdownCloseTimer])
 
     return (
         <nav
             className={`
                 fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/90 backdrop-blur-sm
                 ${isScrolled
-                ? 'shadow-sm border-b border-gray-100'
-                : 'shadow-sm border-b border-gray-50'
-            }
+                    ? 'shadow-sm border-b border-gray-100'
+                    : 'shadow-sm border-b border-gray-50'
+                }
             `}
         >
             <div className="container">
                 <div className="flex items-center justify-between h-16 px-6">
-                    {/* Logo */}
                     <Link
                         href="/"
                         className="flex items-center space-x-2 md:space-x-3 cursor-pointer hover:scale-105 transition-transform"
@@ -143,7 +269,6 @@ export default function Navigation() {
                         <span className="font-bold text-lg md:text-xl text-blue-600">dd3ok</span>
                     </Link>
 
-                    {/* Desktop Menu */}
                     <div className="hidden md:flex items-center space-x-8">
                         {navItems.map((item) => (
                             <div
@@ -151,6 +276,7 @@ export default function Navigation() {
                                 className="relative"
                                 onMouseEnter={() => item.type === 'dropdown' && handleMouseEnter(item.id)}
                                 onMouseLeave={() => item.type === 'dropdown' && handleMouseLeave()}
+                                onBlur={item.type === 'dropdown' ? handleDesktopDropdownBlur : undefined}
                             >
                                 {item.type === 'section' ? (
                                     <button
@@ -159,9 +285,9 @@ export default function Navigation() {
                                         className={`
                                             relative px-3 py-2 text-sm font-medium transition-colors duration-200
                                             ${activeSection === item.id
-                                            ? 'text-blue-600'
-                                            : 'text-gray-700 hover:text-blue-600'
-                                        }
+                                                ? 'text-blue-600'
+                                                : 'text-gray-700 hover:text-blue-600'
+                                            }
                                         `}
                                     >
                                         {item.label}
@@ -172,18 +298,18 @@ export default function Navigation() {
                                 ) : (
                                     <>
                                         <button
+                                            ref={item.id === 'services' ? desktopServicesButtonRef : undefined}
                                             type="button"
-                                            onClick={() => scrollToSection(item.id)}
-                                            onFocus={() => handleMouseEnter(item.id)}
-                                            aria-haspopup="menu"
+                                            onClick={() => toggleDesktopDropdown(item.id)}
+                                            onKeyDown={(event) => handleDesktopDropdownButtonKeyDown(event, item.dropdown?.length ?? 0)}
                                             aria-expanded={activeDropdown === item.id}
                                             aria-controls={`${item.id}-desktop-menu`}
                                             className={`
                                                 relative px-3 py-2 text-sm font-medium transition-colors duration-200 flex items-center
                                                 ${activeSection === item.id
-                                                ? 'text-blue-600'
-                                                : 'text-gray-700 hover:text-blue-600'
-                                            }
+                                                    ? 'text-blue-600'
+                                                    : 'text-gray-700 hover:text-blue-600'
+                                                }
                                             `}
                                         >
                                             {item.label}
@@ -197,35 +323,38 @@ export default function Navigation() {
                                                 fill="none"
                                                 stroke="currentColor"
                                                 viewBox="0 0 24 24"
+                                                aria-hidden="true"
                                             >
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                                             </svg>
                                         </button>
-                                        {/* Dropdown Menu */}
+
                                         {activeDropdown === item.id && item.dropdown && (
                                             <div
                                                 id={`${item.id}-desktop-menu`}
-                                                role="menu"
+                                                aria-label={`${item.label} 링크`}
                                                 className="absolute top-full left-0 mt-1 w-56 bg-white rounded-lg shadow-xl border border-gray-100 py-2 z-50"
                                                 onMouseEnter={handleDropdownMouseEnter}
                                                 onMouseLeave={handleMouseLeave}
                                                 onFocus={handleDropdownMouseEnter}
+                                                onKeyDown={handleDesktopDropdownKeyDown}
                                             >
-                                                {/* 마우스 이동을 위한 투명 브릿지 */}
                                                 <div className="absolute -top-1 left-0 right-0 h-1 bg-transparent" />
 
-                                                {item.dropdown.map((dropdownItem) => {
+                                                {item.dropdown.map((dropdownItem, dropdownIndex) => {
                                                     const external = isExternalLink(dropdownItem.path)
 
                                                     return (
                                                         <Link
                                                             key={dropdownItem.id}
+                                                            ref={(element) => {
+                                                                desktopDropdownItemRefs.current[dropdownIndex] = element
+                                                            }}
                                                             href={dropdownItem.path}
                                                             target={external ? '_blank' : undefined}
                                                             rel={external ? 'noopener noreferrer' : undefined}
-                                                            role="menuitem"
                                                             className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200 group"
-                                                            onClick={() => setActiveDropdown(null)}
+                                                            onClick={() => closeDesktopDropdown()}
                                                         >
                                                             <span className="mr-3 text-lg">{dropdownItem.icon}</span>
                                                             {dropdownItem.label}
@@ -251,7 +380,6 @@ export default function Navigation() {
                         ))}
                     </div>
 
-                    {/* Mobile Menu Button */}
                     <button
                         type="button"
                         className="md:hidden p-2 mr-1"
@@ -268,7 +396,6 @@ export default function Navigation() {
                     </button>
                 </div>
 
-                {/* Mobile Menu */}
                 <div
                     id="mobile-navigation"
                     className="md:hidden overflow-y-auto"
@@ -284,9 +411,9 @@ export default function Navigation() {
                                         className={`
                                             block w-full text-left px-3 py-2 text-base font-medium rounded-lg transition-colors duration-200
                                             ${activeSection === item.id
-                                            ? 'text-blue-600 bg-blue-50'
-                                            : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
-                                        }
+                                                ? 'text-blue-600 bg-blue-50'
+                                                : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
+                                            }
                                         `}
                                     >
                                         {item.label}
@@ -301,9 +428,9 @@ export default function Navigation() {
                                             className={`
                                                 flex items-center justify-between w-full px-3 py-2 text-base font-medium rounded-lg transition-colors duration-200
                                                 ${activeSection === item.id || mobileServicesOpen
-                                                ? 'text-blue-600 bg-blue-50'
-                                                : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
-                                            }
+                                                    ? 'text-blue-600 bg-blue-50'
+                                                    : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
+                                                }
                                             `}
                                         >
                                             <span>{item.label}</span>
@@ -314,14 +441,14 @@ export default function Navigation() {
                                                 fill="none"
                                                 stroke="currentColor"
                                                 viewBox="0 0 24 24"
+                                                aria-hidden="true"
                                             >
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                                             </svg>
                                         </button>
 
-                                        {/* Mobile Services Dropdown */}
                                         {mobileServicesOpen && item.dropdown && (
-                                            <div id="mobile-services-menu" className="ml-4 mt-1 space-y-1" role="menu">
+                                            <div id="mobile-services-menu" className="ml-4 mt-1 space-y-1" aria-label="Toys 링크">
                                                 {item.dropdown.map((dropdownItem) => {
                                                     const external = isExternalLink(dropdownItem.path)
 
@@ -331,7 +458,6 @@ export default function Navigation() {
                                                             href={dropdownItem.path}
                                                             target={external ? '_blank' : undefined}
                                                             rel={external ? 'noopener noreferrer' : undefined}
-                                                            role="menuitem"
                                                             className="flex items-center px-3 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200 group"
                                                             onClick={closeMobileMenu}
                                                         >
