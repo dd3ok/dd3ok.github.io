@@ -58,13 +58,9 @@ const updateUploadImageState = (
     setState: Dispatch<SetStateAction<UploadImageState>>,
     file: File
 ) => {
-    setState((prevState) => {
-        revokeObjectUrl(prevState.previewUrl)
-
-        return {
-            file,
-            previewUrl: URL.createObjectURL(file),
-        }
+    setState({
+        file,
+        previewUrl: URL.createObjectURL(file),
     })
 }
 
@@ -79,10 +75,7 @@ export function useAIFitting() {
     const [error, setError] = useState<string | null>(null)
 
     const clearGeneratedImage = useCallback(() => {
-        setGeneratedImage((prevImage) => {
-            revokeObjectUrl(prevImage)
-            return null
-        })
+        setGeneratedImage(null)
     }, [])
 
     const resetTransientState = useCallback(() => {
@@ -137,12 +130,7 @@ export function useAIFitting() {
             }
 
             const imageBlob = await response.blob()
-            const imageUrl = URL.createObjectURL(imageBlob)
-
-            setGeneratedImage((prevImage) => {
-                revokeObjectUrl(prevImage)
-                return imageUrl
-            })
+            setGeneratedImage(URL.createObjectURL(imageBlob))
         } catch (err: unknown) {
             if (err instanceof Error && 'status' in err && typeof err.status === 'number') {
                 setError(getErrorMessage(err.status))
@@ -159,10 +147,20 @@ export function useAIFitting() {
     useEffect(() => {
         return () => {
             revokeObjectUrl(personImage.previewUrl)
+        }
+    }, [personImage.previewUrl])
+
+    useEffect(() => {
+        return () => {
             revokeObjectUrl(clothingImage.previewUrl)
+        }
+    }, [clothingImage.previewUrl])
+
+    useEffect(() => {
+        return () => {
             revokeObjectUrl(generatedImage)
         }
-    }, [clothingImage.previewUrl, generatedImage, personImage.previewUrl])
+    }, [generatedImage])
 
     return {
         aiFittingApiBaseUrl,

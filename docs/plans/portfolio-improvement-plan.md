@@ -160,3 +160,4 @@ Establish a repeatable development workflow and then improve the portfolio in sm
 - 2026-03-18: Completed Ticket 18 by removing `static_site_generator: next` from `actions/configure-pages`, restoring the repository's static export config in CI; verified with `npm run build` and workflow YAML parsing
 - 2026-03-18: Started Ticket 19 on branch `codex/runtime-ui-maintenance` to split `/ai-fitting` state into a hook, reuse a shared runtime status banner, and improve troubleshooting notes in the README
 - 2026-03-18: Completed Ticket 19 by extracting `/ai-fitting` request and upload state into `useAIFitting`, reusing a shared `StatusBanner` across AI/contact runtime states, and expanding README troubleshooting guidance; verified with `npm run validate` and `npm run build`
+- 2026-03-20: Addressed PR #10 review feedback by centralizing `/ai-fitting` blob URL cleanup in effect cleanups before re-running `npm run validate` and `npm run build`
