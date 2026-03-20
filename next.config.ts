@@ -1,6 +1,5 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next'
 
-/** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
     // GitHub Pages 정적 배포 설정
     output: 'export',
@@ -21,12 +20,11 @@ const nextConfig: NextConfig = {
         removeConsole: process.env.NODE_ENV === 'production',
     },
 
-    // Next.js 15.5.2의 내장 lint 단계는 현재 flat config 조합과 충돌하므로
+    // Next.js 15.5.10의 내장 lint 단계는 현재 flat config 조합과 충돌하므로
     // 저장소의 lint 게이트는 package.json의 build/validate 스크립트에서 강제합니다.
     eslint: {
         ignoreDuringBuilds: true,
     },
-
 }
 
 module.exports = nextConfig
