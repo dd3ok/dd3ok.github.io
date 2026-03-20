@@ -110,6 +110,11 @@ Establish a repeatable development workflow and then improve the portfolio in sm
 - Reuse a shared status banner pattern across runtime error and unavailable states
 - Expand README troubleshooting notes for local AI checks and deployment issues
 
+### Ticket 20: Build warning cleanup
+- Refresh Browserslist data so the default build path stays quiet
+- Remove stale version notes in build-related config comments
+- Re-verify the static export path after the lockfile-only maintenance update
+
 ## Acceptance Criteria
 - Every active change starts from a small ticket in this file or a follow-up plan
 - Workflow documents remain in sync with the current repo state
@@ -161,3 +166,5 @@ Establish a repeatable development workflow and then improve the portfolio in sm
 - 2026-03-18: Started Ticket 19 on branch `codex/runtime-ui-maintenance` to split `/ai-fitting` state into a hook, reuse a shared runtime status banner, and improve troubleshooting notes in the README
 - 2026-03-18: Completed Ticket 19 by extracting `/ai-fitting` request and upload state into `useAIFitting`, reusing a shared `StatusBanner` across AI/contact runtime states, and expanding README troubleshooting guidance; verified with `npm run validate` and `npm run build`
 - 2026-03-20: Addressed PR #10 review feedback by centralizing `/ai-fitting` blob URL cleanup in effect cleanups before re-running `npm run validate` and `npm run build`
+- 2026-03-20: Started Ticket 20 on branch `codex/build-warning-cleanup` to refresh Browserslist data and clean stale build-config notes
+- 2026-03-20: Completed Ticket 20 by refreshing `caniuse-lite` data in the lockfile, updating stale Next.js lint-note comments, and re-verifying the static export path with `npm run validate` and `npm run build`
