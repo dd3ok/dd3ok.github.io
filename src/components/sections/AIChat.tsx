@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState, type Dispatch, type FormEvent
 import useWebSocket, { ReadyState } from 'react-use-websocket'
 import { useUserIdentifier } from '@/hooks/useUserIdentifier'
 import { getEnvConfig } from '@/utils/EnvConfig'
+import StatusBanner from '@/components/ui/StatusBanner'
 import Image from 'next/image'
 import ReactMarkdown, { type Components } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
@@ -26,12 +27,11 @@ const LoadingDots = () => (
 )
 
 const TimeoutMessage = ({ onRetry }: { onRetry: () => void }) => (
-    <div className="flex flex-col items-center space-y-3 text-center">
-        <div className="text-slate-500 text-sm">
-            <p>응답이 지연되고 있습니다.</p>
-            <p>서버 Sleep시 초기 로딩이 있습니다.</p>
-            <p>잠시후 다시 시도해주세요.</p>
-        </div>
+    <StatusBanner
+        tone="warning"
+        title="응답이 지연되고 있습니다."
+        description="서버가 sleep 상태에서 깨어나는 중일 수 있습니다. 잠시 후 다시 시도해주세요."
+    >
         <button
             type="button"
             onClick={onRetry}
@@ -39,7 +39,7 @@ const TimeoutMessage = ({ onRetry }: { onRetry: () => void }) => (
         >
             새 연결로 다시 요청하기
         </button>
-    </div>
+    </StatusBanner>
 )
 
 const ConnectionStatusIcon = ({ readyState }: { readyState: ReadyState }) => {
@@ -132,13 +132,13 @@ function AIChatUnavailable() {
                 <span className="h-3 w-3 rounded-full bg-amber-400" />
                 <h3 className="text-md font-semibold text-gray-700">AI 소개 비활성화</h3>
             </div>
-            <div className="flex-1 p-6 flex flex-col items-center justify-center text-center space-y-4 bg-white/40">
-                <p className="text-sm leading-6 text-gray-600">
-                    현재 환경에서는 AI 소개 기능 설정이 연결되지 않았습니다.
-                </p>
-                <p className="text-xs leading-5 text-gray-500 max-w-xs">
-                    포트폴리오 본문과 프로젝트 섹션은 계속 확인하실 수 있고, AI 소개는 배포 환경에서만 활성화될 수 있습니다.
-                </p>
+            <div className="flex-1 p-6 flex items-center justify-center bg-white/40">
+                <StatusBanner
+                    tone="info"
+                    title="현재 환경에서는 AI 소개 기능 설정이 연결되지 않았습니다."
+                    description="포트폴리오 본문과 프로젝트 섹션은 계속 확인하실 수 있고, AI 소개는 배포 환경에서만 활성화될 수 있습니다."
+                    className="max-w-xs text-center"
+                />
             </div>
         </div>
     )

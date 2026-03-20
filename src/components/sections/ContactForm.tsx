@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { getEnvConfig } from '@/utils/EnvConfig'
+import StatusBanner from '@/components/ui/StatusBanner'
 
 interface ContactFormData {
     name: string
@@ -278,53 +279,21 @@ export default function ContactForm() {
             </div>
 
             {submitStatus === 'success' && (
-                <div
-                    className="p-3 md:p-4 bg-green-50 border border-green-200 rounded-lg animate-fadeIn"
-                    role="status"
-                    aria-live="polite"
-                    aria-atomic="true"
-                >
-                    <div className="flex items-start">
-                        <div className="flex-shrink-0 mt-0.5">
-                            <svg className="h-4 w-4 md:h-5 md:w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
-                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                            </svg>
-                        </div>
-                        <div className="ml-3">
-                            <p className="text-sm font-medium text-green-800">
-                                {submitFeedback?.title ?? '메시지가 성공적으로 전송되었습니다! 🎉'}
-                            </p>
-                            <p className="text-xs md:text-sm text-green-700 mt-1">
-                                {submitFeedback?.detail ?? '빠른 시일 내에 연락드리겠습니다.'}
-                            </p>
-                        </div>
-                    </div>
-                </div>
+                <StatusBanner
+                    tone="success"
+                    title={submitFeedback?.title ?? '메시지가 성공적으로 전송되었습니다! 🎉'}
+                    description={submitFeedback?.detail ?? '빠른 시일 내에 연락드리겠습니다.'}
+                    className="animate-fadeIn"
+                />
             )}
 
             {submitStatus === 'error' && (
-                <div
-                    className="p-3 md:p-4 bg-red-50 border border-red-200 rounded-lg animate-fadeIn"
-                    role="alert"
-                    aria-live="assertive"
-                    aria-atomic="true"
-                >
-                    <div className="flex items-start">
-                        <div className="flex-shrink-0 mt-0.5">
-                            <svg className="h-4 w-4 md:h-5 md:w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                            </svg>
-                        </div>
-                        <div className="ml-3">
-                            <p className="text-sm font-medium text-red-800">
-                                {submitFeedback?.title ?? '메시지 전송 중 오류가 발생했습니다.'}
-                            </p>
-                            <p className="text-xs md:text-sm text-red-700 mt-1">
-                                {submitFeedback?.detail ?? '잠시 후 다시 시도해주세요. 문제가 지속되면 이메일로 직접 연락주세요.'}
-                            </p>
-                        </div>
-                    </div>
-                </div>
+                <StatusBanner
+                    tone="error"
+                    title={submitFeedback?.title ?? '메시지 전송 중 오류가 발생했습니다.'}
+                    description={submitFeedback?.detail ?? '잠시 후 다시 시도해주세요. 문제가 지속되면 이메일로 직접 연락주세요.'}
+                    className="animate-fadeIn"
+                />
             )}
 
             <button

@@ -49,3 +49,9 @@ If the optional AI variables are missing, the portfolio still renders normally a
 - The first request to chat, contact, or AI fitting can take 30-60 seconds when the external service is waking from sleep.
 - A temporary timeout or unavailable banner during that window can be expected behavior.
 - If the service stays unavailable after a retry, confirm the matching public environment variable is configured.
+
+### Deployment and CI Troubleshooting
+- If GitHub Pages build logs mention missing `out/index.html`, confirm the workflow is not overriding the repository's checked-in static export settings.
+- If `npm run smoke` fails locally, run `npm run build` first and confirm the generated `out/` directory exists before inspecting individual files.
+- If chat or AI fitting stays unavailable in local development, verify both `NEXT_PUBLIC_WHO_AM_AI_API` and `NEXT_PUBLIC_WHO_AM_AI_WS` are set in `.env.local`.
+- If contact succeeds locally but fails in preview or production, double-check `NEXT_PUBLIC_PAGES_KOYEB_API` and watch for cold-start delays before treating it as a hard failure.

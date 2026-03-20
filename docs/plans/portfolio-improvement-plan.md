@@ -105,6 +105,11 @@ Establish a repeatable development workflow and then improve the portfolio in sm
 - Ensure CI uses the checked-in `next.config.ts` without framework-specific mutation
 - Restore smoke-check compatibility in Actions by letting `next build` produce `out/` again
 
+### Ticket 19: Runtime UI maintenance cleanup
+- Extract `/ai-fitting` state and request logic into a dedicated hook
+- Reuse a shared status banner pattern across runtime error and unavailable states
+- Expand README troubleshooting notes for local AI checks and deployment issues
+
 ## Acceptance Criteria
 - Every active change starts from a small ticket in this file or a follow-up plan
 - Workflow documents remain in sync with the current repo state
@@ -153,3 +158,6 @@ Establish a repeatable development workflow and then improve the portfolio in sm
 - 2026-03-18: Addressed PR #8 review feedback by preserving AI chat conversation history across retry reconnects instead of resetting the widget state on remount; verified with `npm run validate` and `npm run build`
 - 2026-03-18: Started Ticket 18 on branch `codex/github-pages-workflow-fix` to resolve a CI smoke-check failure caused by a mutated Next.js build path
 - 2026-03-18: Completed Ticket 18 by removing `static_site_generator: next` from `actions/configure-pages`, restoring the repository's static export config in CI; verified with `npm run build` and workflow YAML parsing
+- 2026-03-18: Started Ticket 19 on branch `codex/runtime-ui-maintenance` to split `/ai-fitting` state into a hook, reuse a shared runtime status banner, and improve troubleshooting notes in the README
+- 2026-03-18: Completed Ticket 19 by extracting `/ai-fitting` request and upload state into `useAIFitting`, reusing a shared `StatusBanner` across AI/contact runtime states, and expanding README troubleshooting guidance; verified with `npm run validate` and `npm run build`
+- 2026-03-20: Addressed PR #10 review feedback by centralizing `/ai-fitting` blob URL cleanup in effect cleanups before re-running `npm run validate` and `npm run build`
