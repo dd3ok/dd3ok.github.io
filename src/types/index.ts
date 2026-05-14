@@ -47,6 +47,17 @@ export interface ContactInfo {
     phone?: string
 }
 
+export interface AgentSkill {
+    id: string
+    title: string
+    description: string
+    shortDescription: string
+    tech: string[]
+    github: string
+    category: 'finance' | 'productivity'
+    keywords: string[]
+}
+
 export interface NavItem {
     id: string
     label: string

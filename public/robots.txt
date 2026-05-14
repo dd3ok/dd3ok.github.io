@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dd3ok.github.io/sitemap.xml
