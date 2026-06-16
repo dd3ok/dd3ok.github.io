@@ -3,13 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "npm run validate && next build && npm run smoke",
-    "start": "serve out -l 3000",
-    "lint": "eslint . --max-warnings=0",
+    "dev": "node node_modules/next/dist/bin/next dev",
+    "build": "npm run validate && node node_modules/next/dist/bin/next build && npm run smoke",
+    "start": "node node_modules/serve/build/main.js out -l 3000",
+    "lint": "node node_modules/eslint/bin/eslint.js . --max-warnings=0",
     "smoke": "node scripts/smoke-check.mjs",
-    "validate": "npm run lint && npx tsc --noEmit",
-    "preview": "npm run build && serve out -l 3000"
+    "validate": "npm run lint && node node_modules/typescript/bin/tsc --noEmit && npm run notes:check",
+    "notes:check": "node scripts/check-notes.mjs",
+    "preview": "npm run build && node node_modules/serve/build/main.js out -l 3000"
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.16",

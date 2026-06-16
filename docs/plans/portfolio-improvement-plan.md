@@ -165,6 +165,17 @@ Establish a repeatable development workflow and then improve the portfolio in sm
 - 2026-03-18: Completed Ticket 18 by removing `static_site_generator: next` from `actions/configure-pages`, restoring the repository's static export config in CI; verified with `npm run build` and workflow YAML parsing
 - 2026-03-18: Started Ticket 19 on branch `codex/runtime-ui-maintenance` to split `/ai-fitting` state into a hook, reuse a shared runtime status banner, and improve troubleshooting notes in the README
 - 2026-03-18: Completed Ticket 19 by extracting `/ai-fitting` request and upload state into `useAIFitting`, reusing a shared `StatusBanner` across AI/contact runtime states, and expanding README troubleshooting guidance; verified with `npm run validate` and `npm run build`
-- 2026-03-20: Addressed PR #10 review feedback by centralizing `/ai-fitting` blob URL cleanup in effect cleanups before re-running `npm run validate` and `npm run build`
-- 2026-03-20: Started Ticket 20 on branch `codex/build-warning-cleanup` to refresh Browserslist data and clean stale build-config notes
 - 2026-03-20: Completed Ticket 20 by refreshing `caniuse-lite` data in the lockfile, updating stale Next.js lint-note comments, and re-verifying the static export path with `npm run validate` and `npm run build`
+
+### Ticket 21: Hybrid Theme System & Premium UI/UX Redesign
+- Establish hybrid theme token variables in `globals.css` (Warm Cream light / Deep Space dark)
+- Build a flicker-free Blocking Script in root layout (`layout.tsx`)
+- Implement interactive SVG Theme Toggle in Navigation
+- Refine all sections (Hero, About, AIChat, Experience, Projects, Contact, Footer) into premium, non-AI-generated-looking modern layouts (Glassmorphism, Ambient Orbs, Claude-style AI Chat)
+- Ensure all automated checks (`npm run validate` & `npm run build`) pass cleanly
+
+## Progress Log
+... (Skipping past logs to append today's entry) ...
+- 2026-05-21: Started Ticket 21 on branch `feature/hybrid-theme-premium-ui`
+- 2026-05-21: Designed colors and wrote the implementation plan; set up the `task.md` checkpoint.
+- 2026-05-21: Implemented hybrid theme tokens, flicker-free head script, SVG ThemeToggle, Navigation, Hero, About, AIChat, Experience, Projects, ContactSection, ContactForm, and Footer. Verified with full code compilation and static checks; build and smoke-checks passed 100% cleanly.

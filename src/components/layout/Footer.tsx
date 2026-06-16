@@ -2,16 +2,16 @@ export default function Footer() {
     const currentYear = new Date().getFullYear()
 
     return (
-        <footer className="bg-gray-900 text-white py-12">
+        <footer className="bg-[var(--bg-grad-end)] text-[var(--text-primary)] border-t border-[var(--card-border)] py-12">
             <div className="container px-4 md:px-6">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
                     {/* 메인 소개 섹션 */}
                     <div className="md:col-span-2">
-                        <h3 className="text-xl font-bold mb-4">dd3ok</h3>
-                        <p className="text-gray-400 leading-relaxed max-w-md mb-3">
+                        <h3 className="text-xl font-bold text-[var(--text-primary)] mb-4">dd3ok</h3>
+                        <p className="text-[var(--text-secondary)] leading-relaxed max-w-md mb-3 font-medium">
                             확장 가능하고 효율적인 서비스를 만들겠습니다.
                         </p>
-                        <p className="text-gray-500 text-sm leading-relaxed max-w-md">
+                        <p className="text-[var(--text-muted)] text-sm leading-relaxed max-w-md font-medium">
                             트래픽 대응, 분산 처리, 그리고 AI 접목을 즐기는 백엔드 개발자입니다.
                         </p>
                     </div>
@@ -23,14 +23,14 @@ export default function Footer() {
 
                     {/* 연결 섹션 */}
                     <div className="text-left md:text-left text-right pr-4 md:pr-0">
-                        <h4 className="font-semibold mb-4">연결</h4>
-                        <ul className="space-y-3 text-gray-400">
+                        <h4 className="font-semibold text-[var(--text-primary)] mb-4">연결</h4>
+                        <ul className="space-y-3 text-[var(--text-secondary)]">
                             <li>
                                 <a
                                     href="https://github.com/dd3ok"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="hover:text-white transition-colors inline-flex items-center group"
+                                    className="hover:text-[var(--accent-color)] transition-colors inline-flex items-center group font-medium"
                                 >
                                     <div className="mr-3 w-5 h-5 group-hover:scale-110 transition-transform">
                                         <svg className="w-full h-full" fill="currentColor" viewBox="0 0 24 24">
@@ -45,7 +45,7 @@ export default function Footer() {
                                     href="https://linkedin.com/in/dd3ok"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="hover:text-white transition-colors inline-flex items-center group"
+                                    className="hover:text-[var(--accent-color)] transition-colors inline-flex items-center group font-medium"
                                 >
                                     <div className="mr-3 w-5 h-5 group-hover:scale-110 transition-transform">
                                         <svg className="w-full h-full" fill="currentColor" viewBox="0 0 24 24">
@@ -60,7 +60,7 @@ export default function Footer() {
                                     href="https://instagram.com/dd3ok"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="hover:text-white transition-colors inline-flex items-center group"
+                                    className="hover:text-[var(--accent-color)] transition-colors inline-flex items-center group font-medium"
                                 >
                                     <div className="mr-3 w-5 h-5 group-hover:scale-110 transition-transform">
                                         <svg className="w-full h-full" fill="currentColor" viewBox="0 0 24 24">
@@ -73,7 +73,7 @@ export default function Footer() {
                             <li>
                                 <a
                                     href="mailto:hwick@kakao.com"
-                                    className="hover:text-white transition-colors inline-flex items-center group"
+                                    className="hover:text-[var(--accent-color)] transition-colors inline-flex items-center group font-medium"
                                 >
                                     <div className="mr-3 w-5 h-5 group-hover:scale-110 transition-transform">
                                         <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -88,12 +88,12 @@ export default function Footer() {
                 </div>
 
                 {/* 하단 저작권 */}
-                <div className="border-t border-gray-800 pt-8">
+                <div className="border-t border-[var(--card-border)] pt-8">
                     <div className="flex flex-col md:flex-row md:justify-between md:items-center items-end gap-4 text-right md:text-left pr-4 md:pr-0">
-                        <p className="text-gray-400 text-sm">
+                        <p className="text-[var(--text-secondary)] text-sm font-medium">
                             &copy; {currentYear} dd3ok. All rights reserved.
                         </p>
-                        <div className="flex space-x-4 text-sm text-gray-500">
+                        <div className="flex space-x-4 text-sm text-[var(--text-muted)] font-medium">
                             <span>Made with Claude & Gemini</span>
                         </div>
                     </div>

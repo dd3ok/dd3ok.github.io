@@ -4,30 +4,28 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import type { FocusEvent, KeyboardEvent as ReactKeyboardEvent } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useActiveSection } from '@/hooks/useActiveSection'
 import { services } from '@/data/portfolio'
 import { isExternalLink } from '@/utils/links'
+import ThemeToggle from './ThemeToggle'
 
-const servicesSectionPath = '/#services'
-const navigableServices = services.filter((service) => service.status !== 'coming_soon')
+const navigableServices = services.filter((service) => (
+    service.status !== 'coming_soon' &&
+    service.id !== 'waitworthy'
+))
 
 const navItems = [
     { id: 'hero', label: 'Home', type: 'section' },
     { id: 'about', label: 'About', type: 'section' },
     { id: 'experience', label: 'Experience', type: 'section' },
     { id: 'projects', label: 'Projects', type: 'section' },
+    { id: 'notes', label: 'Research Notes', type: 'link', path: '/notes/' },
     {
         id: 'services',
         label: 'Toys',
         type: 'dropdown',
         dropdown: [
-            {
-                id: 'services-overview',
-                label: 'Toys 섹션 보기',
-                path: servicesSectionPath,
-                icon: '↘️',
-            },
             ...navigableServices.map((service) => ({
                 id: service.id,
                 label: service.navLabel ?? service.title,
@@ -43,9 +41,9 @@ export default function Navigation() {
     const [isScrolled, setIsScrolled] = useState(false)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
-    const [mobileServicesOpen, setMobileServicesOpen] = useState(false)
     const activeSection = useActiveSection()
     const router = useRouter()
+    const pathname = usePathname()
     const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null)
     const desktopServicesButtonRef = useRef<HTMLButtonElement | null>(null)
     const desktopDropdownItemRefs = useRef<Array<HTMLAnchorElement | null>>([])
@@ -61,8 +59,12 @@ export default function Navigation() {
 
     const closeMobileMenu = useCallback(() => {
         setIsMobileMenuOpen(false)
-        setMobileServicesOpen(false)
     }, [])
+
+    const isNavLinkActive = useCallback((path: string) => {
+        const normalizedPath = path.endsWith('/') ? path.slice(0, -1) : path
+        return pathname === normalizedPath || pathname.startsWith(`${normalizedPath}/`)
+    }, [pathname])
 
     const clearDropdownCloseTimer = useCallback(() => {
         if (dropdownTimeoutRef.current) {
@@ -119,13 +121,6 @@ export default function Navigation() {
         setActiveDropdown(itemId)
     }, [clearDropdownCloseTimer])
 
-    const toggleDesktopDropdown = useCallback((itemId: string) => {
-        clearDropdownCloseTimer()
-        setActiveDropdown((currentDropdown) => (
-            currentDropdown === itemId ? null : itemId
-        ))
-    }, [clearDropdownCloseTimer])
-
     const handleMouseEnter = (itemId: string) => {
         openDesktopDropdown(itemId)
     }
@@ -175,12 +170,8 @@ export default function Navigation() {
 
         if (event.key === 'Enter' || event.key === ' ') {
             event.preventDefault()
-
-            if (activeDropdown === 'services') {
-                closeDesktopDropdown()
-            } else {
-                openDesktopDropdown('services')
-            }
+            closeDesktopDropdown()
+            scrollToSection('services')
             return
         }
 
@@ -244,10 +235,10 @@ export default function Navigation() {
     return (
         <nav
             className={`
-                fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/90 backdrop-blur-sm
+                fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-[var(--nav-bg)] backdrop-blur-xl border-b
                 ${isScrolled
-                    ? 'shadow-sm border-b border-gray-100'
-                    : 'shadow-sm border-b border-gray-50'
+                    ? 'border-[var(--card-border)] shadow-md shadow-black/[0.03]'
+                    : 'border-transparent shadow-none'
                 }
             `}
         >
@@ -255,7 +246,7 @@ export default function Navigation() {
                 <div className="flex items-center justify-between h-16 px-6">
                     <Link
                         href="/"
-                        className="flex items-center space-x-2 md:space-x-3 cursor-pointer hover:scale-105 transition-transform"
+                        className="flex items-center space-x-2 md:space-x-3 cursor-pointer hover:scale-[1.03] transition-transform duration-300"
                         onClick={closeMobileMenu}
                     >
                         <Image
@@ -263,13 +254,13 @@ export default function Navigation() {
                             alt="dd3ok 로고"
                             width={32}
                             height={32}
-                            className="w-8 h-8 md:w-10 md:h-10 rounded-lg"
+                            className="w-8 h-8 md:w-9 md:h-9 rounded-lg shadow-sm"
                             priority
                         />
-                        <span className="font-bold text-lg md:text-xl text-blue-600">dd3ok</span>
+                        <span className="font-extrabold text-lg md:text-xl tracking-tight text-[var(--accent-color)]">dd3ok</span>
                     </Link>
 
-                    <div className="hidden md:flex items-center space-x-8">
+                    <div className="hidden md:flex items-center space-x-6">
                         {navItems.map((item) => (
                             <div
                                 key={item.id}
@@ -278,21 +269,38 @@ export default function Navigation() {
                                 onMouseLeave={() => item.type === 'dropdown' && handleMouseLeave()}
                                 onBlur={item.type === 'dropdown' ? handleDesktopDropdownBlur : undefined}
                             >
-                                {item.type === 'section' ? (
+                                {item.type === 'link' ? (
+                                    <Link
+                                        href={item.path}
+                                        className={`
+                                            relative px-3 py-2 text-sm font-semibold transition-all duration-300
+                                            ${isNavLinkActive(item.path)
+                                                ? 'text-[var(--accent-color)]'
+                                                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                                            }
+                                        `}
+                                        onClick={closeMobileMenu}
+                                    >
+                                        {item.label}
+                                        {isNavLinkActive(item.path) && (
+                                            <div className="absolute bottom-0 left-3 right-3 h-0.5 bg-[var(--accent-color)] rounded-full animate-fadeIn" />
+                                        )}
+                                    </Link>
+                                ) : item.type === 'section' ? (
                                     <button
                                         type="button"
                                         onClick={() => scrollToSection(item.id)}
                                         className={`
-                                            relative px-3 py-2 text-sm font-medium transition-colors duration-200
+                                            relative px-3 py-2 text-sm font-semibold transition-all duration-300
                                             ${activeSection === item.id
-                                                ? 'text-blue-600'
-                                                : 'text-gray-700 hover:text-blue-600'
+                                                ? 'text-[var(--accent-color)]'
+                                                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                                             }
                                         `}
                                     >
                                         {item.label}
                                         {activeSection === item.id && (
-                                            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 rounded-full" />
+                                            <div className="absolute bottom-0 left-3 right-3 h-0.5 bg-[var(--accent-color)] rounded-full animate-fadeIn" />
                                         )}
                                     </button>
                                 ) : (
@@ -300,25 +308,31 @@ export default function Navigation() {
                                         <button
                                             ref={item.id === 'services' ? desktopServicesButtonRef : undefined}
                                             type="button"
-                                            onClick={() => toggleDesktopDropdown(item.id)}
-                                            onKeyDown={(event) => handleDesktopDropdownButtonKeyDown(event, item.dropdown?.length ?? 0)}
+                                            onClick={() => {
+                                                closeDesktopDropdown()
+                                                scrollToSection(item.id)
+                                            }}
+                                            onKeyDown={(event) => handleDesktopDropdownButtonKeyDown(
+                                                event,
+                                                item.dropdown?.length ?? 0
+                                            )}
                                             aria-expanded={activeDropdown === item.id}
                                             aria-controls={`${item.id}-desktop-menu`}
                                             className={`
-                                                relative px-3 py-2 text-sm font-medium transition-colors duration-200 flex items-center
+                                                relative px-3 py-2 text-sm font-semibold transition-all duration-300 flex items-center
                                                 ${activeSection === item.id
-                                                    ? 'text-blue-600'
-                                                    : 'text-gray-700 hover:text-blue-600'
+                                                    ? 'text-[var(--accent-color)]'
+                                                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                                                 }
                                             `}
                                         >
                                             {item.label}
                                             {activeSection === item.id && (
-                                                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 rounded-full" />
+                                                <div className="absolute bottom-0 left-3 right-3 h-0.5 bg-[var(--accent-color)] rounded-full animate-fadeIn" />
                                             )}
                                             <svg
-                                                className={`w-4 h-4 ml-1 transition-transform duration-200 ${
-                                                    activeDropdown === item.id ? 'rotate-180' : ''
+                                                className={`w-4 h-4 ml-1 transition-transform duration-300 ${
+                                                    activeDropdown === item.id ? 'rotate-180 text-[var(--accent-color)]' : 'text-[var(--text-muted)]'
                                                 }`}
                                                 fill="none"
                                                 stroke="currentColor"
@@ -333,13 +347,13 @@ export default function Navigation() {
                                             <div
                                                 id={`${item.id}-desktop-menu`}
                                                 aria-label={`${item.label} 링크`}
-                                                className="absolute top-full left-0 mt-1 w-56 bg-white rounded-lg shadow-xl border border-gray-100 py-2 z-50"
+                                                className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-56 bg-[var(--dropdown-bg)] backdrop-blur-2xl rounded-2xl shadow-xl border border-[var(--card-border)] py-2 z-50 animate-dropdownEnter"
                                                 onMouseEnter={handleDropdownMouseEnter}
                                                 onMouseLeave={handleMouseLeave}
                                                 onFocus={handleDropdownMouseEnter}
                                                 onKeyDown={handleDesktopDropdownKeyDown}
                                             >
-                                                <div className="absolute -top-1 left-0 right-0 h-1 bg-transparent" />
+                                                <div className="absolute -top-1.5 left-0 right-0 h-1.5 bg-transparent" />
 
                                                 {item.dropdown.map((dropdownItem, dropdownIndex) => {
                                                     const external = isExternalLink(dropdownItem.path)
@@ -353,14 +367,14 @@ export default function Navigation() {
                                                             href={dropdownItem.path}
                                                             target={external ? '_blank' : undefined}
                                                             rel={external ? 'noopener noreferrer' : undefined}
-                                                            className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200 group"
+                                                            className="flex items-center px-4 py-3 text-sm text-[var(--text-secondary)] hover:bg-[var(--accent-glow)] hover:text-[var(--text-primary)] transition-all duration-300 rounded-xl mx-2 my-0.5 group"
                                                             onClick={() => closeDesktopDropdown()}
                                                         >
-                                                            <span className="mr-3 text-lg">{dropdownItem.icon}</span>
-                                                            {dropdownItem.label}
+                                                            <span className="mr-3 text-base">{dropdownItem.icon}</span>
+                                                            <span className="font-medium">{dropdownItem.label}</span>
                                                             {external && (
                                                                 <svg
-                                                                    className="w-3 h-3 ml-auto text-gray-400 group-hover:text-blue-500 transition-colors"
+                                                                    className="w-3 h-3 ml-auto text-[var(--text-muted)] group-hover:text-[var(--accent-color)] transition-colors duration-300"
                                                                     fill="none"
                                                                     stroke="currentColor"
                                                                     viewBox="0 0 24 24"
@@ -378,22 +392,27 @@ export default function Navigation() {
                                 )}
                             </div>
                         ))}
+                        <div className="h-4 w-[1px] bg-[var(--card-border)]" />
+                        <ThemeToggle />
                     </div>
 
-                    <button
-                        type="button"
-                        className="md:hidden p-2 mr-1"
-                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                        aria-expanded={isMobileMenuOpen}
-                        aria-controls="mobile-navigation"
-                        aria-label={isMobileMenuOpen ? '모바일 메뉴 닫기' : '모바일 메뉴 열기'}
-                    >
-                        <div className="w-6 h-6 flex flex-col justify-center items-center">
-                            <span className={`bg-gray-700 block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${isMobileMenuOpen ? 'rotate-45 translate-y-1' : '-translate-y-0.5'}`} />
-                            <span className={`bg-gray-700 block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm my-0.5 ${isMobileMenuOpen ? 'opacity-0' : 'opacity-100'}`} />
-                            <span className={`bg-gray-700 block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${isMobileMenuOpen ? '-rotate-45 -translate-y-1' : 'translate-y-0.5'}`} />
-                        </div>
-                    </button>
+                    <div className="flex items-center space-x-3 md:hidden">
+                        <ThemeToggle />
+                        <button
+                            type="button"
+                            className="p-2 text-[var(--text-primary)] hover:bg-[var(--card-border)] rounded-lg transition-colors duration-300"
+                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                            aria-expanded={isMobileMenuOpen}
+                            aria-controls="mobile-navigation"
+                            aria-label={isMobileMenuOpen ? '모바일 메뉴 닫기' : '모바일 메뉴 열기'}
+                        >
+                            <div className="w-5 h-5 flex flex-col justify-center items-center">
+                                <span className={`bg-[var(--text-primary)] block transition-all duration-300 ease-out h-0.5 w-5 rounded-sm ${isMobileMenuOpen ? 'rotate-45 translate-y-[3px]' : '-translate-y-1'}`} />
+                                <span className={`bg-[var(--text-primary)] block transition-all duration-300 ease-out h-0.5 w-5 rounded-sm my-0.5 ${isMobileMenuOpen ? 'opacity-0' : 'opacity-100'}`} />
+                                <span className={`bg-[var(--text-primary)] block transition-all duration-300 ease-out h-0.5 w-5 rounded-sm ${isMobileMenuOpen ? '-rotate-45 -translate-y-[3px]' : 'translate-y-1'}`} />
+                            </div>
+                        </button>
+                    </div>
                 </div>
 
                 <div
@@ -401,85 +420,51 @@ export default function Navigation() {
                     className="md:hidden overflow-y-auto"
                     hidden={!isMobileMenuOpen}
                 >
-                    <div className="px-4 py-2 space-y-1 bg-white/95 backdrop-blur-md border-t border-gray-100">
+                    <div className="px-4 py-3 space-y-1 bg-[var(--nav-bg)] backdrop-blur-2xl border-t border-[var(--card-border)] shadow-inner">
                         {navItems.map((item) => (
                             <div key={item.id}>
-                                {item.type === 'section' ? (
+                                {item.type === 'link' ? (
+                                    <Link
+                                        href={item.path}
+                                        className={`
+                                            block w-full text-left px-4 py-2.5 text-base font-semibold rounded-xl transition-all duration-300
+                                            ${isNavLinkActive(item.path)
+                                                ? 'text-[var(--accent-color)] bg-[var(--accent-glow)]'
+                                                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--card-border)]'
+                                            }
+                                        `}
+                                        onClick={closeMobileMenu}
+                                    >
+                                        {item.label}
+                                    </Link>
+                                ) : item.type === 'section' ? (
                                     <button
                                         type="button"
                                         onClick={() => scrollToSection(item.id)}
                                         className={`
-                                            block w-full text-left px-3 py-2 text-base font-medium rounded-lg transition-colors duration-200
+                                            block w-full text-left px-4 py-2.5 text-base font-semibold rounded-xl transition-all duration-300
                                             ${activeSection === item.id
-                                                ? 'text-blue-600 bg-blue-50'
-                                                : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
+                                                ? 'text-[var(--accent-color)] bg-[var(--accent-glow)]'
+                                                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--card-border)]'
                                             }
                                         `}
                                     >
                                         {item.label}
                                     </button>
                                 ) : (
-                                    <>
-                                        <button
-                                            type="button"
-                                            onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
-                                            aria-expanded={mobileServicesOpen}
-                                            aria-controls="mobile-services-menu"
-                                            className={`
-                                                flex items-center justify-between w-full px-3 py-2 text-base font-medium rounded-lg transition-colors duration-200
-                                                ${activeSection === item.id || mobileServicesOpen
-                                                    ? 'text-blue-600 bg-blue-50'
-                                                    : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
-                                                }
-                                            `}
-                                        >
-                                            <span>{item.label}</span>
-                                            <svg
-                                                className={`w-4 h-4 transition-transform duration-200 ${
-                                                    mobileServicesOpen ? 'rotate-180' : ''
-                                                }`}
-                                                fill="none"
-                                                stroke="currentColor"
-                                                viewBox="0 0 24 24"
-                                                aria-hidden="true"
-                                            >
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                                            </svg>
-                                        </button>
-
-                                        {mobileServicesOpen && item.dropdown && (
-                                            <div id="mobile-services-menu" className="ml-4 mt-1 space-y-1" aria-label="Toys 링크">
-                                                {item.dropdown.map((dropdownItem) => {
-                                                    const external = isExternalLink(dropdownItem.path)
-
-                                                    return (
-                                                        <Link
-                                                            key={dropdownItem.id}
-                                                            href={dropdownItem.path}
-                                                            target={external ? '_blank' : undefined}
-                                                            rel={external ? 'noopener noreferrer' : undefined}
-                                                            className="flex items-center px-3 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200 group"
-                                                            onClick={closeMobileMenu}
-                                                        >
-                                                            <span className="mr-3">{dropdownItem.icon}</span>
-                                                            {dropdownItem.label}
-                                                            {external && (
-                                                                <svg
-                                                                    className="w-3 h-3 ml-auto text-gray-400 group-hover:text-blue-500 transition-colors"
-                                                                    fill="none"
-                                                                    stroke="currentColor"
-                                                                    viewBox="0 0 24 24"
-                                                                    aria-hidden="true"
-                                                                >
-                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                                                                </svg>
-                                                            )}
-                                                        </Link>
-                                                    )
-                                                })}
-                                            </div>
-                                        )}
-                                    </>
+                                    <button
+                                        type="button"
+                                        onClick={() => scrollToSection(item.id)}
+                                        className={`
+                                            block w-full text-left px-4 py-2.5 text-base font-semibold rounded-xl transition-all duration-300
+                                            ${activeSection === item.id
+                                                ? 'text-[var(--accent-color)] bg-[var(--accent-glow)]'
+                                                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--card-border)]'
+                                            }
+                                        `}
+                                    >
+                                        {item.label}
+                                    </button>
                                 )}
                             </div>
                         ))}
