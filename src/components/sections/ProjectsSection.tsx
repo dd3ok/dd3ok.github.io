@@ -5,14 +5,14 @@ export default function ProjectsSection() {
     return (
         <section
             id="projects"
-            className="section-padding bg-white"
+            className="section-padding bg-transparent relative z-10"
         >
             <div className="container">
                 <ScrollAnimation className="text-center mb-16">
-                    <h2 className="text-3xl md:text-4xl font-bold text-blue-600 mb-4">
+                    <h2 className="text-3xl md:text-4xl font-extrabold text-[var(--accent-color)] tracking-tight mb-4">
                         Projects
                     </h2>
-                    <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                    <p className="text-lg text-[var(--text-secondary)] max-w-2xl mx-auto font-medium">
                         지마켓/옥션 판매자센터 ESM Plus와 삼성전자 BQMS의 MRO몰을 담당했습니다.
                     </p>
                 </ScrollAnimation>

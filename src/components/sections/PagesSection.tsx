@@ -1,6 +1,5 @@
 import ScrollAnimation from '@/components/animations/ScrollAnimations'
 import Link from 'next/link'
-import Card from '@/components/ui/Card'
 import { services } from '@/data/portfolio'
 import { isExternalLink } from '@/utils/links'
 
@@ -8,14 +7,14 @@ export default function PagesSection() {
     return (
         <section
             id="services"
-            className="section-padding bg-gradient-to-br bg-gray-50"
+            className="section-padding bg-transparent relative z-10"
         >
             <div className="container">
                 <ScrollAnimation className="text-center mb-16">
-                    <h2 className="text-3xl md:text-4xl font-bold text-blue-600 mb-4">
+                    <h2 className="text-3xl md:text-4xl font-extrabold text-[var(--accent-color)] tracking-tight mb-4">
                         Toys
                     </h2>
-                    <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                    <p className="text-lg text-[var(--text-secondary)] max-w-2xl mx-auto font-medium">
                         개인적인 페이지와 토이프로젝트 repository입니다
                     </p>
                 </ScrollAnimation>
@@ -27,27 +26,29 @@ export default function PagesSection() {
                             animation="fade"
                             delay={index * 120}
                         >
-                            <Card className="group hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col h-full">
-                                {/* 그라데이션 헤더 */}
-                                <div className={`h-32 bg-gradient-to-br ${service.color} relative overflow-hidden`}>
-                                    <div className="absolute inset-0 bg-black/10" />
+                            <div className="glass-card group hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col h-full rounded-2xl">
+                                {/* 은은한 테마 그라데이션 헤더 */}
+                                <div className="h-32 bg-gradient-to-br from-[var(--accent-glow)] to-[var(--card-border)] border-b border-[var(--card-border)] relative overflow-hidden">
+                                    <div className="absolute inset-0 bg-black/[0.02]" />
                                     <div className="absolute inset-0 flex items-center justify-center">
-                                        <span className="text-4xl filter drop-shadow-lg">
-                                            {service.icon}
-                                        </span>
+                                        <div className="w-16 h-16 rounded-full bg-[var(--card-bg)] border border-[var(--card-border)] flex items-center justify-center shadow-md shadow-black/[0.02] group-hover:scale-110 transition-transform duration-500">
+                                            <span className="text-3xl filter drop-shadow-sm select-none">
+                                                {service.icon}
+                                            </span>
+                                        </div>
                                     </div>
-                                    {/* 장식 요소 */}
-                                    <div className="absolute top-4 right-4 w-20 h-20 bg-white/10 rounded-full blur-xl" />
-                                    <div className="absolute bottom-4 left-4 w-16 h-16 bg-white/10 rounded-full blur-xl" />
+                                    {/* 장식 요소 (오로라 역광 구체) */}
+                                    <div className="absolute -top-4 -right-4 w-20 h-20 bg-[var(--accent-color)]/10 rounded-full blur-xl" />
+                                    <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-[var(--accent-secondary)]/10 rounded-full blur-xl" />
                                 </div>
 
                                 {/* 컨텐츠 영역 - flex-grow로 공간 확장 */}
                                 <div className="p-6 flex flex-col flex-grow">
-                                    <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                                    <h3 className="text-xl font-bold text-[var(--text-primary)] mb-3 group-hover:text-[var(--accent-color)] transition-colors">
                                         {service.title}
                                     </h3>
 
-                                    <p className="text-gray-600 mb-4 leading-relaxed">
+                                    <p className="text-[var(--text-secondary)] mb-4 leading-relaxed text-sm font-medium">
                                         {service.description}
                                     </p>
 
@@ -55,8 +56,8 @@ export default function PagesSection() {
                                     <div className="mb-6 flex-grow">
                                         <ul className="space-y-2">
                                             {service.features.map((feature, idx) => (
-                                                <li key={idx} className="flex items-center text-sm text-gray-600">
-                                                    <svg className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <li key={idx} className="flex items-center text-sm text-[var(--text-secondary)] font-medium">
+                                                    <svg className="w-4 h-4 text-[var(--accent-color)] mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                                                     </svg>
                                                     {feature}
@@ -68,7 +69,7 @@ export default function PagesSection() {
                                     <div className="mt-auto">
                                         {service.status === 'coming_soon' ? (
                                             <span
-                                                className="inline-flex items-center justify-center w-full px-4 py-3 rounded-lg font-medium bg-gray-200 text-gray-500 cursor-not-allowed"
+                                                className="inline-flex items-center justify-center w-full px-4 py-3 rounded-xl font-semibold bg-[var(--card-border)] border border-[var(--card-border)] text-[var(--text-muted)] cursor-not-allowed"
                                                 aria-disabled="true"
                                             >
                                                 {service.buttonText}
@@ -76,7 +77,7 @@ export default function PagesSection() {
                                         ) : (
                                             <Link
                                                 href={service.path}
-                                                className="inline-flex items-center justify-center w-full px-4 py-3 rounded-lg transition-all duration-300 group-hover:scale-105 font-medium bg-gray-900 text-white hover:bg-blue-600"
+                                                className="inline-flex items-center justify-center w-full px-4 py-3 rounded-xl transition-all duration-300 group-hover:scale-105 font-semibold bg-[var(--accent-color)] hover:bg-[var(--accent-secondary)] text-white hover:shadow-[0_0_20px_var(--accent-glow)]"
                                                 target={isExternalLink(service.path) ? '_blank' : undefined}
                                                 rel={isExternalLink(service.path) ? 'noopener noreferrer' : undefined}
                                             >
@@ -88,7 +89,7 @@ export default function PagesSection() {
                                         )}
                                     </div>
                                 </div>
-                            </Card>
+                            </div>
                         </ScrollAnimation>
                     ))}
                 </div>

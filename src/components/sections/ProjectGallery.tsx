@@ -39,9 +39,9 @@ export default function ProjectGallery() {
                         animation="fade"
                         delay={index * 160}
                     >
-                        <Card className="group hover:shadow-xl transition-all duration-300 h-full">
+                        <Card className="glass-card hover-lift h-full flex flex-col p-4">
                             <div
-                                className="aspect-video bg-gradient-to-br from-blue-100 to-indigo-100 rounded-lg mb-6 overflow-hidden cursor-pointer relative group/image"
+                                className="aspect-video bg-[var(--input-border)] border border-[var(--card-border)] rounded-xl overflow-hidden cursor-pointer relative group/image"
                                 onClick={() => openImageModal(project.image, project.title)}
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter' || e.key === ' ') {
@@ -58,25 +58,25 @@ export default function ProjectGallery() {
                                     alt={project.title}
                                     fill
                                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                                    className="object-cover transition-transform duration-500 group-hover:scale-105"
                                     priority={index < 2}
                                 />
 
-                                <div className="absolute inset-0 bg-black/0 group-hover/image:bg-black/20 transition-colors duration-300 flex items-center justify-center">
-                                    <div className="opacity-0 group-hover/image:opacity-100 transition-opacity duration-300 bg-white/90 rounded-full p-3 shadow-lg">
-                                        <svg className="w-6 h-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                                <div className="absolute inset-0 bg-black/0 group-hover/image:bg-black/30 transition-all duration-500 flex items-center justify-center pointer-events-none">
+                                    <div className="opacity-0 scale-75 group-hover/image:opacity-100 group-hover/image:scale-100 transition-all duration-500 bg-[var(--card-bg)] backdrop-blur-md rounded-full p-3 shadow-lg border border-[var(--card-border)] text-[var(--accent-color)]">
+                                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
                                         </svg>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="p-6">
-                                <h3 className="text-xl font-bold text-gray-900 mb-3">
+                            <div className="p-4 flex flex-col flex-1">
+                                <h3 className="text-xl font-extrabold text-[var(--text-primary)] mb-3 tracking-tight">
                                     {project.title}
                                 </h3>
 
-                                <p className="text-gray-600 mb-4 leading-relaxed">
+                                <p className="text-[var(--text-secondary)] mb-5 leading-relaxed text-sm font-medium flex-1">
                                     {project.description}
                                 </p>
 
@@ -84,7 +84,7 @@ export default function ProjectGallery() {
                                     {project.tech.map((tech) => (
                                         <span
                                             key={tech}
-                                            className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full"
+                                            className="text-[10px] font-bold bg-[var(--accent-glow)] text-[var(--accent-color)] border border-[var(--accent-color)]/10 px-2.5 py-1 rounded-full shadow-sm"
                                         >
                                             {tech}
                                         </span>
@@ -96,7 +96,7 @@ export default function ProjectGallery() {
                                         href={project.demo}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 bg-blue-600 hover:bg-blue-700 text-white focus:ring-blue-500 px-4 py-2 text-sm inline-flex items-center justify-center"
+                                        className="w-full font-bold rounded-xl transition-all duration-300 bg-[var(--accent-color)] hover:bg-[var(--accent-secondary)] text-white hover:scale-[1.02] shadow-md shadow-[var(--accent-color)]/10 hover:shadow-[var(--accent-color)]/20 px-4 py-2.5 text-xs inline-flex items-center justify-center tracking-wider uppercase"
                                     >
                                         방문하기
                                     </a>

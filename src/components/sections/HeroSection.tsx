@@ -5,29 +5,34 @@ export default function HeroSection() {
     return (
         <section
             id="hero"
-            // section-padding을 다시 사용하고, 정렬 로직을 유지합니다.
-            className="min-h-screen flex flex-col justify-center lg:justify-start relative overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-50 section-padding"
+            className="min-h-screen flex flex-col justify-center lg:justify-start relative overflow-hidden bg-gradient-to-br from-[var(--bg-grad-start)] to-[var(--bg-grad-end)] section-padding"
         >
-            <div className="absolute inset-0 overflow-hidden">
-                <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-100 rounded-full mix-blend-multiply filter blur-xl opacity-70" />
-                <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-indigo-100 rounded-full mix-blend-multiply filter blur-xl opacity-70" />
+            {/* Ambient Aurora Orbs */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                <div
+                    className="absolute -top-20 -right-20 w-[450px] h-[450px] bg-[var(--orb-color-1)] aurora-orb"
+                    style={{ animationDelay: '0s' }}
+                />
+                <div
+                    className="absolute -bottom-20 -left-20 w-[400px] h-[400px] bg-[var(--orb-color-2)] aurora-orb"
+                    style={{ animationDelay: '-7s' }}
+                />
             </div>
 
-            {/* [수정] 이 container div에 반응형 패딩을 추가하여 모바일 헤더 문제를 해결합니다. */}
             <div className="container relative z-10 pt-16 lg:pt-0">
                 <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-8 lg:gap-12">
 
                     <div className="text-center lg:text-left lg:justify-self-end lg:max-w-xl">
                         <div className="enter-up enter-delay-100">
-                            <div className="text-4xl md:text-5xl font-bold leading-tight text-gray-900 mb-6">
+                            <div className="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight text-[var(--text-primary)] mb-6">
                                 <div className="mb-4">안녕하세요,</div>
-                                <div className="text-blue-600 mb-4">Backend Engineer</div>
+                                <div className="text-gradient mb-4 font-black pb-2">Backend Engineer</div>
                                 <div>유인재입니다</div>
                             </div>
                         </div>
 
                         <div className="enter-up enter-delay-300">
-                            <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                            <p className="text-lg md:text-xl text-[var(--text-secondary)] mb-12 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-medium">
                                 스프링 기반 백엔드 경험을 바탕으로,<br />
                                 확장성·안정성을 갖춘 서비스를 설계하고 개발합니다.
                             </p>

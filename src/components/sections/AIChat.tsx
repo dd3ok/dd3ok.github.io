@@ -31,11 +31,12 @@ const TimeoutMessage = ({ onRetry }: { onRetry: () => void }) => (
         tone="warning"
         title="응답이 지연되고 있습니다."
         description="서버가 sleep 상태에서 깨어나는 중일 수 있습니다. 잠시 후 다시 시도해주세요."
+        className="border-[var(--card-border)] bg-[var(--card-bg)]"
     >
         <button
             type="button"
             onClick={onRetry}
-            className="px-4 py-2 bg-blue-500 text-white text-sm rounded-lg hover:bg-blue-600 transition-colors"
+            className="px-4 py-2 bg-[var(--accent-color)] text-white text-xs font-semibold rounded-xl hover:bg-[var(--accent-secondary)] shadow-sm transition-all duration-300"
         >
             새 연결로 다시 요청하기
         </button>
@@ -44,11 +45,11 @@ const TimeoutMessage = ({ onRetry }: { onRetry: () => void }) => (
 
 const ConnectionStatusIcon = ({ readyState }: { readyState: ReadyState }) => {
     const statusInfo = {
-        [ReadyState.CONNECTING]: { color: 'bg-yellow-500', animate: 'animate-pulse', title: '연결 중' },
-        [ReadyState.OPEN]: { color: 'bg-green-500', animate: '', title: '연결됨' },
-        [ReadyState.CLOSING]: { color: 'bg-yellow-500', animate: '', title: '연결 종료 중' },
-        [ReadyState.CLOSED]: { color: 'bg-red-500', animate: '', title: '연결 끊김' },
-        [ReadyState.UNINSTANTIATED]: { color: 'bg-gray-400', animate: '', title: '초기화 안됨' },
+        [ReadyState.CONNECTING]: { color: 'bg-amber-400', animate: 'animate-pulse', title: '연결 중' },
+        [ReadyState.OPEN]: { color: 'bg-emerald-500', animate: 'animate-pulse', title: '연결됨' },
+        [ReadyState.CLOSING]: { color: 'bg-amber-400', animate: '', title: '연결 종료 중' },
+        [ReadyState.CLOSED]: { color: 'bg-rose-500', animate: '', title: '연결 끊김' },
+        [ReadyState.UNINSTANTIATED]: { color: 'bg-slate-400', animate: '', title: '초기화 안됨' },
     }[readyState]
 
     if (!statusInfo) return null
@@ -56,7 +57,7 @@ const ConnectionStatusIcon = ({ readyState }: { readyState: ReadyState }) => {
     return (
         <span
             title={statusInfo.title}
-            className={`h-3 w-3 rounded-full ${statusInfo.color} ${statusInfo.animate} transition-colors`}
+            className={`h-2 w-2 rounded-full ${statusInfo.color} ${statusInfo.animate} transition-colors`}
         />
     )
 }
@@ -119,7 +120,7 @@ const markdownComponents: Components = {
         </div>
     ),
     a: ({ children, href }) => (
-        <a href={href} className="!text-blue-600 hover:!text-blue-800 !underline" target="_blank" rel="noopener noreferrer">
+        <a href={href} className="!text-[var(--accent-color)] hover:!text-[var(--accent-secondary)] !underline" target="_blank" rel="noopener noreferrer">
             {children}
         </a>
     ),
@@ -127,17 +128,17 @@ const markdownComponents: Components = {
 
 function AIChatUnavailable() {
     return (
-        <div className="w-full max-w-md mx-auto bg-white/70 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/50 flex flex-col h-[36rem] overflow-hidden">
-            <div className="p-4 border-b border-gray-200/50 flex items-center justify-center gap-2">
-                <span className="h-3 w-3 rounded-full bg-amber-400" />
-                <h3 className="text-md font-semibold text-gray-700">AI 소개 비활성화</h3>
+        <div className="w-full max-w-md mx-auto glass-card flex flex-col h-[36rem] overflow-hidden">
+            <div className="p-4 border-b border-[var(--card-border)] bg-[var(--nav-bg)] flex items-center justify-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-amber-400 animate-pulse" />
+                <h3 className="text-sm font-bold text-[var(--text-secondary)]">AI 소개 비활성화</h3>
             </div>
-            <div className="flex-1 p-6 flex items-center justify-center bg-white/40">
+            <div className="flex-1 p-6 flex items-center justify-center bg-transparent">
                 <StatusBanner
                     tone="info"
                     title="현재 환경에서는 AI 소개 기능 설정이 연결되지 않았습니다."
                     description="포트폴리오 본문과 프로젝트 섹션은 계속 확인하실 수 있고, AI 소개는 배포 환경에서만 활성화될 수 있습니다."
-                    className="max-w-xs text-center"
+                    className="max-w-xs text-center border-[var(--card-border)] bg-[var(--card-bg)] text-[var(--text-secondary)]"
                 />
             </div>
         </div>
@@ -318,27 +319,43 @@ function ConfiguredAIChat({
     }
 
     return (
-        <div className="w-full max-w-md mx-auto bg-white/70 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/50 flex flex-col h-[36rem]">
-            <div className="p-4 border-b border-gray-200/50 flex items-center justify-center gap-2 bg-primary-500 rounded-t-2xl">
-                <ConnectionStatusIcon readyState={readyState} />
-                <h3 className="text-md font-semibold text-gray-800">{connectionStatus}</h3>
+        <div className="w-full max-w-md mx-auto glass-card flex flex-col h-[36rem] shadow-xl overflow-hidden animate-fadeIn">
+            {/* Header */}
+            <div className="p-4 border-b border-[var(--card-border)] flex items-center justify-between bg-[var(--nav-bg)] px-5">
+                <div className="flex items-center space-x-2">
+                    <span className="text-sm font-extrabold text-[var(--text-primary)] tracking-tight">인재 AI</span>
+                    <span className="text-[10px] bg-[var(--accent-glow)] text-[var(--accent-color)] font-bold px-2 py-0.5 rounded-full">Assistant</span>
+                </div>
+                <div className="flex items-center space-x-1.5 bg-[var(--card-bg)] border border-[var(--card-border)] px-3 py-1 rounded-full shadow-sm">
+                    <ConnectionStatusIcon readyState={readyState} />
+                    <span className="text-[10px] font-bold text-[var(--text-secondary)] tracking-tight">{connectionStatus}</span>
+                </div>
             </div>
 
-            <div ref={chatContainerRef} className="flex-1 p-5 overflow-y-auto space-y-6">
+            {/* Chat Body */}
+            <div ref={chatContainerRef} className="flex-1 p-5 overflow-y-auto space-y-6 chat-scroll bg-transparent">
                 {messages.map((msg) => (
-                    <div key={msg.id} className={`flex items-end gap-3 ${msg.isUser ? 'justify-end' : 'justify-start'}`}>
+                    <div key={msg.id} className={`flex items-start gap-2.5 ${msg.isUser ? 'justify-end' : 'justify-start'}`}>
                         {!msg.isUser && (
-                            <div className="w-8 h-8 flex items-center justify-center shrink-0 text-xl">
-                                <span role="img" aria-label="robot">
-                                    <Image src="/image/aiimage.png" alt="AI-Profile" width={28} height={28} />
-                                </span>
+                            <div className="w-8 h-8 rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] flex items-center justify-center shrink-0 ring-2 ring-[var(--accent-color)]/20 shadow-sm overflow-hidden p-0.5">
+                                <Image
+                                    src="/image/aiimage.png"
+                                    alt="AI-Profile"
+                                    width={26}
+                                    height={26}
+                                    className="rounded-full"
+                                />
                             </div>
                         )}
-                        <div className={`px-4 py-2.5 rounded-xl max-w-xs md:max-w-sm break-words shadow-md transition-all duration-300 hover:shadow-lg ${msg.isUser ? 'bg-blue-600 text-white rounded-br-none' : 'bg-slate-100 text-slate-800 rounded-bl-none'}`}>
+                        <div className={`break-words transition-all duration-300 ${
+                            msg.isUser
+                                ? 'bg-gradient-to-br from-[var(--accent-color)] to-[var(--accent-secondary)] text-white shadow-sm rounded-2xl rounded-tr-none px-4 py-2.5 max-w-[75%] md:max-w-[80%] hover:shadow-md font-medium text-sm leading-relaxed whitespace-pre-wrap'
+                                : 'bg-[var(--card-bg)] border border-[var(--card-border)] text-[var(--text-primary)] shadow-sm rounded-2xl rounded-tl-none px-4 py-3 max-w-[85%] md:max-w-[90%] hover:border-[var(--card-hover-border)]'
+                        }`}>
                             {msg.isUser ? (
-                                <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.text}</p>
+                                <p>{msg.text}</p>
                             ) : (
-                                <div className="prose prose-sm prose-slate max-w-none [&>*:first-child]:mt-0 [&>*:last-child]:mb-0">
+                                <div className="prose prose-sm max-w-none text-[var(--text-primary)] [&>*:first-child]:mt-0 [&>*:last-child]:mb-0">
                                     <ReactMarkdown
                                         remarkPlugins={[remarkGfm]}
                                         components={markdownComponents}
@@ -352,44 +369,53 @@ function ConfiguredAIChat({
                 ))}
 
                 {isResponding && !isTimeout && (
-                    <div className="flex items-end gap-3 justify-start">
-                        <div className="w-8 h-8 flex items-center justify-center shrink-0 text-xl">
-                            <span role="img" aria-label="robot">
-                                <Image src="/image/aiimage.png" alt="AI-Profile" width={28} height={28} />
-                            </span>
+                    <div className="flex items-start gap-2.5 justify-start">
+                        <div className="w-8 h-8 rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] flex items-center justify-center shrink-0 ring-2 ring-[var(--accent-color)]/20 shadow-sm overflow-hidden p-0.5">
+                            <Image
+                                src="/image/aiimage.png"
+                                alt="AI-Profile"
+                                width={26}
+                                height={26}
+                                className="rounded-full"
+                            />
                         </div>
-                        <div className="px-4 py-3 rounded-xl shadow-md bg-slate-100">
+                        <div className="px-4 py-3 rounded-2xl rounded-tl-none shadow-sm bg-[var(--card-bg)] border border-[var(--card-border)]">
                             <LoadingDots />
                         </div>
                     </div>
                 )}
 
                 {isTimeout && (
-                    <div className="flex items-end gap-3 justify-start">
-                        <div className="w-8 h-8 flex items-center justify-center shrink-0 text-xl">
-                            <span role="img" aria-label="robot">
-                                <Image src="/image/aiimage.png" alt="AI-Profile" width={28} height={28} />
-                            </span>
+                    <div className="flex items-start gap-2.5 justify-start">
+                        <div className="w-8 h-8 rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] flex items-center justify-center shrink-0 ring-2 ring-[var(--accent-color)]/20 shadow-sm overflow-hidden p-0.5">
+                            <Image
+                                src="/image/aiimage.png"
+                                alt="AI-Profile"
+                                width={26}
+                                height={26}
+                                className="rounded-full"
+                            />
                         </div>
-                        <div className="px-4 py-3 rounded-xl shadow-md bg-slate-100">
+                        <div className="px-4 py-3 rounded-2xl rounded-tl-none shadow-sm bg-[var(--card-bg)] border border-[var(--card-border)]">
                             <TimeoutMessage onRetry={handleRetry} />
                         </div>
                     </div>
                 )}
             </div>
 
-            <div className="p-3 border-t border-gray-200/50 bg-white/50 rounded-b-2xl">
-                <form onSubmit={handleSubmit} className="flex gap-3 items-center">
+            {/* Input Footer */}
+            <div className="p-3 border-t border-[var(--card-border)] bg-[var(--nav-bg)]">
+                <form onSubmit={handleSubmit} className="flex gap-2 items-center">
                     <input
                         type="text"
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
                         placeholder="무엇이든 물어보세요."
-                        className="flex-1 px-4 py-2.5 bg-slate-100/80 border border-transparent rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all text-sm"
+                        className="flex-1 px-4 py-2.5 glass-input text-sm placeholder-[var(--text-muted)] focus:outline-none"
                     />
                     <button
                         type="submit"
-                        className="w-10 h-10 flex items-center justify-center bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-blue-400 shrink-0"
+                        className="w-9 h-9 flex items-center justify-center bg-[var(--accent-color)] text-white rounded-full hover:bg-[var(--accent-secondary)] focus:outline-none transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed shrink-0 shadow-md shadow-black/[0.04]"
                         disabled={!inputValue.trim() || (isResponding && !isTimeout) || readyState !== ReadyState.OPEN}
                     >
                         <SendIcon />

@@ -102,16 +102,35 @@ export const projects: Project[] = [
 
 export const services: Service[] = [
     {
-        id: 'wedding',
-        title: '모바일 청첩장(작업중)',
-        status: 'coming_soon',
-        description: '미리보는 모바일 청첩장',
-        icon: '🤵‍♂️❤️👰‍♀️',
-        path: '/wedding',
-        features: ['모바일 청첩장', '포토 갤러리', '방명록'],
-        color: 'from-pink-500 to-rose-500',
-        buttonText: '준비 중',
+        id: 'waitworthy',
+        title: 'Waitworthy',
+        navLabel: 'Research Notes',
+        description: '공개 가능한 AI 질문과 답변을 다시 읽기 좋은 research note로 정리하는 개인 지식 저장소',
+        icon: '🗂️',
+        path: '/notes',
+        features: [
+            '질문/답변을 Markdown 노트로 정리',
+            '공개 가능한 글만 웹페이지에 노출',
+            'GitHub 기반 버전관리와 자동화 확장'
+        ],
+        color: 'from-emerald-500 to-cyan-500',
+        buttonText: '노트 보기',
         buttonType: 'service',
+    },
+    {
+        id: 'agent-skills',
+        title: 'AI Agent API Skills',
+        description: 'Claude Code, Codex 등 AI 코딩 에이전트를 위한 주식·자산 시장 데이터 비공식 API 툴링 세트',
+        icon: '🛠️',
+        path: 'https://github.com/dd3ok?tab=repositories&q=-skill',
+        features: [
+            '토스증권 / 네이버증권 비공식 API 스킬 개발',
+            '바이낸스 Spot API 및 yfinance 연동 툴킷 구현',
+            'LLM Context 절약을 위한 캐시 최적화 스킬 포함'
+        ],
+        color: 'from-cyan-500 to-blue-600',
+        buttonText: 'Repositories 바로가기',
+        buttonType: 'repo',
     },
     {
         id: 'nopairprgm',
@@ -121,17 +140,6 @@ export const services: Service[] = [
         path: 'https://github.com/dd3ok/no-pair-prgm',
         features: ['Gemini 1.5 Flash 연동', 'Github API 연동', 'Github PR 자동 코드리뷰'],
         color: 'from-purple-500 to-indigo-500',
-        buttonText: 'Repository 바로가기',
-        buttonType: 'repo',
-    },
-    {
-        id: 'fpsxyz',
-        title: '마인크래프트 HUD',
-        description: 'Minecraft Mod로 현재 내 상태를 표시합니다',
-        icon: '⛏️',
-        path: 'https://github.com/dd3ok/fabric-fpsxyzs',
-        features: ['Fabric API 사용', '정보별 업데이트 주기 최적화'],
-        color: 'from-green-500 to-emerald-500',
         buttonText: 'Repository 바로가기',
         buttonType: 'repo',
     },

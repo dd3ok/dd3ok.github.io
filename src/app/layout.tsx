@@ -1,8 +1,12 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Noto_Sans_KR } from 'next/font/google'
 import './globals.css'
 
-const inter = Inter({ subsets: ['latin'] })
+const notoSansKR = Noto_Sans_KR({
+    subsets: ['latin'],
+    weight: ['300', '400', '500', '700'],
+    display: 'swap',
+})
 const siteUrl = 'https://dd3ok.github.io'
 const siteTitle = 'dd3ok — Backend Developer Portfolio'
 const siteDescription =
@@ -96,8 +100,26 @@ export default function RootLayout({
     children: React.ReactNode
 }) {
     return (
-        <html lang="ko">
-        <body className={inter.className}>
+        <html lang="ko" suppressHydrationWarning>
+        <head>
+            <script
+                dangerouslySetInnerHTML={{
+                    __html: `
+                        (function() {
+                            try {
+                                var saved = localStorage.getItem('theme');
+                                if (saved === 'dark') {
+                                    document.documentElement.setAttribute('data-theme', 'dark');
+                                } else {
+                                    document.documentElement.setAttribute('data-theme', 'light');
+                                }
+                            } catch (e) {}
+                        })();
+                    `
+                }}
+            />
+        </head>
+        <body className={notoSansKR.className}>
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

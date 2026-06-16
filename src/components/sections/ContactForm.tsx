@@ -197,10 +197,10 @@ export default function ContactForm() {
         }
     }
 
-    return (
+        return (
         <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6" noValidate>
             <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="name" className="block text-sm font-semibold text-[var(--text-secondary)] mb-2">
                     이름 <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -212,20 +212,20 @@ export default function ContactForm() {
                     required
                     aria-invalid={Boolean(formErrors.name)}
                     aria-describedby={formErrors.name ? 'contact-name-error' : undefined}
-                    className={`w-full px-3 md:px-4 py-2.5 md:py-3 bg-white border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 text-base ${
-                        formErrors.name ? 'border-red-500' : 'border-gray-300'
+                    className={`w-full px-3 md:px-4 py-2.5 md:py-3 glass-input placeholder:text-[var(--text-muted)] text-base ${
+                        formErrors.name ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : ''
                     }`}
                     placeholder="홍길동"
                 />
                 {formErrors.name && (
-                    <p id="contact-name-error" className="mt-1 text-sm text-red-600">
+                    <p id="contact-name-error" className="mt-1 text-sm text-red-500 font-medium">
                         {formErrors.name}
                     </p>
                 )}
             </div>
 
             <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="email" className="block text-sm font-semibold text-[var(--text-secondary)] mb-2">
                     이메일 <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -237,20 +237,20 @@ export default function ContactForm() {
                     required
                     aria-invalid={Boolean(formErrors.email)}
                     aria-describedby={formErrors.email ? 'contact-email-error' : undefined}
-                    className={`w-full px-3 md:px-4 py-2.5 md:py-3 bg-white border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 text-base ${
-                        formErrors.email ? 'border-red-500' : 'border-gray-300'
+                    className={`w-full px-3 md:px-4 py-2.5 md:py-3 glass-input placeholder:text-[var(--text-muted)] text-base ${
+                        formErrors.email ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : ''
                     }`}
                     placeholder="hong@example.com"
                 />
                 {formErrors.email && (
-                    <p id="contact-email-error" className="mt-1 text-sm text-red-600">
+                    <p id="contact-email-error" className="mt-1 text-sm text-red-500 font-medium">
                         {formErrors.email}
                     </p>
                 )}
             </div>
 
             <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="message" className="block text-sm font-semibold text-[var(--text-secondary)] mb-2">
                     메시지 <span className="text-red-500">*</span>
                 </label>
                 <textarea
@@ -263,17 +263,17 @@ export default function ContactForm() {
                     rows={4}
                     aria-invalid={Boolean(formErrors.message)}
                     aria-describedby={`contact-message-hint${formErrors.message ? ' contact-message-error' : ''}`}
-                    className={`w-full px-3 md:px-4 py-2.5 md:py-3 bg-white border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 resize-none text-base ${
-                        formErrors.message ? 'border-red-500' : 'border-gray-300'
+                    className={`w-full px-3 md:px-4 py-2.5 md:py-3 glass-input placeholder:text-[var(--text-muted)] resize-none text-base ${
+                        formErrors.message ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : ''
                     }`}
                     placeholder="안녕하세요! 함께 일하고 싶습니다."
                 />
                 {formErrors.message && (
-                    <p id="contact-message-error" className="mt-1 text-sm text-red-600">
+                    <p id="contact-message-error" className="mt-1 text-sm text-red-500 font-medium">
                         {formErrors.message}
                     </p>
                 )}
-                <p id="contact-message-hint" className="mt-1 text-xs text-gray-500">
+                <p id="contact-message-hint" className="mt-1 text-xs text-[var(--text-muted)] font-medium">
                     {formData.message.length}/{MESSAGE_MAX_LENGTH} (최소 {MESSAGE_MIN_LENGTH}자)
                 </p>
             </div>
@@ -299,7 +299,7 @@ export default function ContactForm() {
             <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                className="w-full bg-[var(--accent-color)] hover:bg-[var(--accent-secondary)] text-white py-3 px-6 rounded-xl hover:shadow-[0_0_20px_var(--accent-glow)] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 font-semibold focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:ring-offset-2"
             >
                 {isSubmitting ? (
                     <div className="flex items-center justify-center">
@@ -311,7 +311,7 @@ export default function ContactForm() {
                 )}
             </button>
 
-            <p className="text-xs text-gray-500 text-center">
+            <p className="text-xs text-[var(--text-muted)] text-center font-medium leading-relaxed">
                 응답이 늦으면 외부 서비스가 깨어나는 중일 수 있습니다. 급한 문의는 이메일로 바로 연락해주세요.
             </p>
         </form>

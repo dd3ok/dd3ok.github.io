@@ -22,9 +22,9 @@ export default function Button({
     const baseClasses = 'font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2'
 
     const variants = {
-        primary: 'bg-blue-600 hover:bg-blue-700 text-white focus:ring-blue-500',
-        outline: 'border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white focus:ring-blue-500',
-        ghost: 'text-blue-600 hover:bg-blue-50 focus:ring-blue-500'
+        primary: 'bg-[var(--accent-color)] hover:bg-[var(--accent-secondary)] text-white focus:ring-[var(--accent-color)] hover:shadow-[0_0_15px_var(--accent-glow)]',
+        outline: 'border border-[var(--accent-color)] text-[var(--accent-color)] hover:bg-[var(--accent-color)] hover:text-white focus:ring-[var(--accent-color)]',
+        ghost: 'text-[var(--accent-color)] hover:bg-[var(--accent-glow)] focus:ring-[var(--accent-color)]'
     }
 
     const sizes = {

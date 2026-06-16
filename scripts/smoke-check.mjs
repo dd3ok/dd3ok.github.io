@@ -5,22 +5,65 @@ const requiredFiles = [
   'out/index.html',
   'out/404.html',
   'out/ai-fitting/index.html',
+  'out/notes/index.html',
   'out/_next',
+]
+
+const absentFiles = [
+  'out/notes/all/index.html',
+  'out/notes/post/__empty__/index.html',
 ]
 
 const contentChecks = {
   'out/index.html': [
-    '유인재입니다',
     'Projects',
     'Contact',
     'href="#projects"',
     'href="#contact"',
     'https://dd3ok.github.io/',
+    'Waitworthy',
   ],
   'out/ai-fitting/index.html': [
-    '입어보기+',
-    '입어보기 결과',
     'https://dd3ok.github.io/ai-fitting',
+  ],
+  'out/notes/index.html': [
+    'All Notes',
+    'All',
+    'href="/notes/"',
+    'AI &amp; Tools',
+    'Tech',
+    'Business',
+    'Finance',
+    'Learning',
+    'Life',
+    'Health',
+    'Insights',
+    'Other',
+  ],
+  'out/notes/ai-tools/index.html': [
+    'All',
+    'href="/notes/"',
+    'AI &amp; Tools',
+    'Health',
+    'Insights',
+    'Other',
+  ],
+}
+
+const absentContentChecks = {
+  'out/notes/index.html': [
+    'href="/notes/meta/"',
+    'href="/notes/ai/"',
+    'href="/notes/tools/"',
+    '>Meta</h2>',
+    '>Career</h2>',
+    '>Decision</h2>',
+    'href="/notes/all/"',
+    'LLM, agents, AI workflows, prompts, productivity tools, product comparisons',
+  ],
+  'out/notes/ai-tools/index.html': [
+    'href="/notes/all/"',
+    'LLM, agents, AI workflows, prompts, productivity tools, product comparisons',
   ],
 }
 
@@ -65,6 +108,14 @@ for (const relativePath of requiredFiles) {
   }
 }
 
+for (const relativePath of absentFiles) {
+  const absolutePath = resolve(relativePath)
+
+  if (existsSync(absolutePath)) {
+    throw new Error(`Unexpected build output exists: ${relativePath}`)
+  }
+}
+
 for (const [relativePath, expectedTexts] of Object.entries(contentChecks)) {
   const pageContent = readFileSync(resolve(relativePath), 'utf8')
 
@@ -79,6 +130,16 @@ for (const [relativePath, expectedTexts] of Object.entries(contentChecks)) {
 
     if (!existsSync(exportedHtmlPath)) {
       throw new Error(`${relativePath} references a missing exported route: ${pathname}`)
+    }
+  }
+}
+
+for (const [relativePath, forbiddenTexts] of Object.entries(absentContentChecks)) {
+  const pageContent = readFileSync(resolve(relativePath), 'utf8')
+
+  for (const text of forbiddenTexts) {
+    if (pageContent.includes(text)) {
+      throw new Error(`${relativePath} should not include content: ${text}`)
     }
   }
 }
