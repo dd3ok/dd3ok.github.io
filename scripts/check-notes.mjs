@@ -132,6 +132,33 @@ if (!notesDirectoryViewSource.includes('/notes/post/${note.slug}/')) {
   throw new Error('Note detail links must use /notes/post/[slug]/')
 }
 
+if (!notesDirectoryViewSource.includes('window.history.pushState')) {
+  throw new Error('Note category tabs must update URLs without a route refresh')
+}
+
+if (!notesDirectoryViewSource.includes('popstate')) {
+  throw new Error('Note category tabs must support browser back and forward navigation')
+}
+
+const requiredClientNavigationGuards = [
+  'event.defaultPrevented',
+  'event.button !== 0',
+  'event.metaKey',
+  'event.ctrlKey',
+  'event.altKey',
+  'event.shiftKey',
+]
+
+for (const guard of requiredClientNavigationGuards) {
+  if (!notesDirectoryViewSource.includes(guard)) {
+    throw new Error(`Note category tabs must preserve native link behavior: missing ${guard}`)
+  }
+}
+
+if (!notesDirectoryViewSource.includes('try {') || !notesDirectoryViewSource.includes('decodeURIComponent')) {
+  throw new Error('Note category URL parsing must safely decode path segments')
+}
+
 const noteFiles = readdirSync(notesDirectory)
   .filter((fileName) => fileName.endsWith('.md'))
   .sort()
