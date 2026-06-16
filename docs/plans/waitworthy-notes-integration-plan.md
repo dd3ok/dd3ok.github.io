@@ -77,7 +77,7 @@ dd3ok.github.io
   src/content/notes/*.md
   src/lib/notes.ts
   src/app/notes/page.tsx
-  src/app/notes/[slug]/page.tsx
+  src/app/notes/post/[slug]/page.tsx
   scripts/check-notes.mjs
   = 공개용 노트 목록과 상세 페이지
 ```
@@ -92,7 +92,7 @@ dd3ok.github.io
 5. npm run validate로 lint/typecheck/notes 검증
 6. npm run build로 GitHub Pages static export 확인
 7. commit/push 또는 PR 생성
-8. GitHub Pages에서 /notes와 /notes/[slug]로 공개
+8. GitHub Pages에서 /notes와 /notes/post/[slug]로 공개
 ```
 
 ## Public Note Contract

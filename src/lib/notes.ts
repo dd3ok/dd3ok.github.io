@@ -17,7 +17,7 @@ export interface PublicNote {
     summary: string
     visibility: 'public'
     status: PublicNoteStatus
-    category?: string
+    category: string
     type?: string
     domain?: string
     tags: string[]
@@ -90,7 +90,19 @@ export const noteFilterCategories: NoteCategory[] = [
     ...noteCategories,
 ]
 
-const stripQuotes = (value: string) => value.replace(/^"|"$/g, '')
+const stripQuotes = (value: string) => value.replace(/^['"]|['"]$/g, '')
+
+const parseInlineArray = (value: string) => {
+    if (!value.startsWith('[') || !value.endsWith(']')) {
+        return undefined
+    }
+
+    return value
+        .slice(1, -1)
+        .split(',')
+        .map((item) => stripQuotes(item.trim()))
+        .filter(Boolean)
+}
 
 const parseFrontmatter = (frontmatterSource: string, fileName: string) => {
     const metadata: Frontmatter = {}
@@ -129,7 +141,7 @@ const parseFrontmatter = (frontmatterSource: string, fileName: string) => {
             continue
         }
 
-        metadata[key] = stripQuotes(value)
+        metadata[key] = parseInlineArray(value) ?? stripQuotes(value)
         activeArrayKey = null
     }
 
@@ -166,6 +178,13 @@ const parseBoolean = (metadata: Frontmatter, field: string) => {
     return typeof value === 'string' && value.toLowerCase() === 'true'
 }
 
+const publicCategoryIds = new Set(noteCategories.map((category) => category.id))
+const rawTranscriptPatterns = [
+    /^\s*(User|Assistant|System|Developer):/im,
+    /<details\b/i,
+    /<summary\b/i,
+]
+
 const estimateReadingTime = (body: string) => {
     const visibleText = body
         .replace(/```[\s\S]*?```/g, ' ')
@@ -176,20 +195,24 @@ const estimateReadingTime = (body: string) => {
 }
 
 export const parseNoteFile = (fileName: string, fileContent: string): PublicNote => {
-    if (!fileContent.startsWith('---\n')) {
+    const normalizedContent = fileContent.replace(/\r\n/g, '\n')
+
+    if (!normalizedContent.startsWith('---\n')) {
         throw new Error(`${fileName} must start with frontmatter`)
     }
 
-    const closingIndex = fileContent.indexOf('\n---\n', 4)
+    const closingIndex = normalizedContent.indexOf('\n---\n', 4)
 
     if (closingIndex === -1) {
         throw new Error(`${fileName} is missing a closing frontmatter fence`)
     }
 
-    const metadata = parseFrontmatter(fileContent.slice(4, closingIndex), fileName)
-    const body = fileContent.slice(closingIndex + 5).trim()
+    const metadata = parseFrontmatter(normalizedContent.slice(4, closingIndex), fileName)
+    const body = normalizedContent.slice(closingIndex + 5).trim()
     const visibility = getRequiredString(metadata, 'visibility', fileName)
     const status = getRequiredString(metadata, 'status', fileName)
+    const category = getRequiredString(metadata, 'category', fileName)
+    const tags = getRequiredStringArray(metadata, 'tags', fileName)
 
     if (visibility !== 'public') {
         throw new Error(`${fileName} must be public to appear on dd3ok.github.io`)
@@ -197,6 +220,24 @@ export const parseNoteFile = (fileName: string, fileContent: string): PublicNote
 
     if (!allowedStatuses.has(status as PublicNoteStatus)) {
         throw new Error(`${fileName} has unsupported status: ${status}`)
+    }
+
+    if (!publicCategoryIds.has(category)) {
+        throw new Error(`${fileName} has unsupported public category: ${category}`)
+    }
+
+    if (tags.length < 2) {
+        throw new Error(`${fileName} must include at least two tags`)
+    }
+
+    if (!parseBoolean(metadata, 'human_reviewed')) {
+        throw new Error(`${fileName} must be human reviewed before publishing`)
+    }
+
+    for (const pattern of rawTranscriptPatterns) {
+        if (pattern.test(body)) {
+            throw new Error(`${fileName} looks like raw or private transcript content`)
+        }
     }
 
     return {
@@ -207,12 +248,12 @@ export const parseNoteFile = (fileName: string, fileContent: string): PublicNote
         summary: getRequiredString(metadata, 'summary', fileName),
         visibility,
         status: status as PublicNoteStatus,
-        category: getOptionalString(metadata, 'category'),
+        category,
         type: getOptionalString(metadata, 'type'),
         domain: getOptionalString(metadata, 'domain'),
-        tags: getRequiredStringArray(metadata, 'tags', fileName),
+        tags,
         sourceRepository: getOptionalString(metadata, 'source_repository'),
-        humanReviewed: parseBoolean(metadata, 'human_reviewed'),
+        humanReviewed: true,
         body,
         readingTimeMinutes: estimateReadingTime(body),
     }
@@ -252,7 +293,7 @@ export const getNotesForCategory = (notes: PublicNote[], category: NoteCategory)
     ])
 
     return notes.filter((note) => (
-        Boolean(note.category && categoryKeys.has(note.category)) ||
+        categoryKeys.has(note.category) ||
         Boolean(note.domain && categoryKeys.has(note.domain)) ||
         Boolean(note.type && categoryKeys.has(note.type)) ||
         note.tags.some((tag) => categoryKeys.has(tag))

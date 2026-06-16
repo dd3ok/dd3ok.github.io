@@ -11,8 +11,8 @@ const requiredFiles = [
 
 const absentFiles = [
   'out/notes/all/index.html',
-  'out/notes/post/__empty__/index.html',
 ]
+const emptyPostRouteFile = 'out/notes/post/__empty__/index.html'
 
 const contentChecks = {
   'out/index.html': [
@@ -113,6 +113,16 @@ for (const relativePath of absentFiles) {
 
   if (existsSync(absolutePath)) {
     throw new Error(`Unexpected build output exists: ${relativePath}`)
+  }
+}
+
+if (existsSync(resolve(emptyPostRouteFile))) {
+  const pageContent = readFileSync(resolve(emptyPostRouteFile), 'utf8')
+
+  for (const text of ['No public notes yet', 'noindex']) {
+    if (!pageContent.includes(text)) {
+      throw new Error(`${emptyPostRouteFile} is missing expected empty-state content: ${text}`)
+    }
   }
 }
 
