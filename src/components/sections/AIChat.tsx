@@ -340,7 +340,7 @@ function ConfiguredAIChat({
                             <div className="w-8 h-8 rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] flex items-center justify-center shrink-0 ring-1 ring-[var(--card-border)] shadow-sm overflow-hidden p-0.5">
                                 <Image
                                     src="/image/aiimage.png"
-                                    alt="AI-Profile"
+                                    alt="이력서 에이전트 프로필"
                                     width={26}
                                     height={26}
                                     className="rounded-full"
@@ -373,7 +373,7 @@ function ConfiguredAIChat({
                         <div className="w-8 h-8 rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] flex items-center justify-center shrink-0 ring-1 ring-[var(--card-border)] shadow-sm overflow-hidden p-0.5">
                             <Image
                                 src="/image/aiimage.png"
-                                alt="AI-Profile"
+                                alt="이력서 에이전트 프로필"
                                 width={26}
                                 height={26}
                                 className="rounded-full"
@@ -390,7 +390,7 @@ function ConfiguredAIChat({
                         <div className="w-8 h-8 rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] flex items-center justify-center shrink-0 ring-1 ring-[var(--card-border)] shadow-sm overflow-hidden p-0.5">
                             <Image
                                 src="/image/aiimage.png"
-                                alt="AI-Profile"
+                                alt="이력서 에이전트 프로필"
                                 width={26}
                                 height={26}
                                 className="rounded-full"
