@@ -179,3 +179,5 @@ Establish a repeatable development workflow and then improve the portfolio in sm
 - 2026-05-21: Started Ticket 21 on branch `feature/hybrid-theme-premium-ui`
 - 2026-05-21: Designed colors and wrote the implementation plan; set up the `task.md` checkpoint.
 - 2026-05-21: Implemented hybrid theme tokens, flicker-free head script, SVG ThemeToggle, Navigation, Hero, About, AIChat, Experience, Projects, ContactSection, ContactForm, and Footer. Verified with full code compilation and static checks; build and smoke-checks passed 100% cleanly.
+- 2026-06-17: Started resume-agent branding cleanup on branch `codex/resume-agent-chat`; keep `who-am-ai` repository and environment identifiers unchanged while aligning visible chat/service copy to `이력서 에이전트`.
+- 2026-06-17: Completed resume-agent branding cleanup by updating visible service copy, navigation label, chat avatar alt text, and static smoke coverage while preserving the `who-am-ai` repository link and runtime identifiers; verified with `npm run validate` and `npm run build`.

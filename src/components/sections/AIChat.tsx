@@ -69,7 +69,7 @@ interface Message {
 }
 
 const INITIAL_MESSAGES: Message[] = [
-    { id: 'welcome', text: '안녕하세요! 인재 AI입니다 👋\n\n경력, 프로젝트, 기술에 관해 무엇이든 물어보세요.', isUser: false },
+    { id: 'welcome', text: '안녕하세요! 이력서 에이전트입니다 👋\n\n경력, 프로젝트, 기술에 관해 무엇이든 물어보세요.', isUser: false },
 ]
 
 interface ConfiguredAIChatProps {
@@ -131,13 +131,13 @@ function AIChatUnavailable() {
         <div className="w-full max-w-md mx-auto glass-card flex flex-col h-[36rem] overflow-hidden">
             <div className="p-4 border-b border-[var(--card-border)] bg-[var(--nav-bg)] flex items-center justify-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-amber-400 animate-pulse" />
-                <h3 className="text-sm font-bold text-[var(--text-secondary)]">AI 소개 비활성화</h3>
+                <h3 className="text-sm font-bold text-[var(--text-secondary)]">이력서 에이전트 비활성화</h3>
             </div>
             <div className="flex-1 p-6 flex items-center justify-center bg-transparent">
                 <StatusBanner
                     tone="info"
-                    title="현재 환경에서는 AI 소개 기능 설정이 연결되지 않았습니다."
-                    description="포트폴리오 본문과 프로젝트 섹션은 계속 확인하실 수 있고, AI 소개는 배포 환경에서만 활성화될 수 있습니다."
+                    title="현재 환경에서는 이력서 에이전트 설정이 연결되지 않았습니다."
+                    description="포트폴리오 본문과 프로젝트 섹션은 계속 확인하실 수 있고, 이력서 에이전트는 배포 환경에서만 활성화될 수 있습니다."
                     className="max-w-xs text-center border-[var(--card-border)] bg-[var(--card-bg)] text-[var(--text-secondary)]"
                 />
             </div>
@@ -323,8 +323,8 @@ function ConfiguredAIChat({
             {/* Header */}
             <div className="p-4 border-b border-[var(--card-border)] flex items-center justify-between bg-[var(--nav-bg)] px-5">
                 <div className="flex items-center space-x-2">
-                    <span className="text-sm font-extrabold text-[var(--text-primary)] tracking-tight">인재 AI</span>
-                    <span className="text-[10px] bg-[var(--accent-glow)] text-[var(--accent-color)] font-bold px-2 py-0.5 rounded-full">Assistant</span>
+                    <span className="text-sm font-extrabold text-[var(--text-primary)] tracking-tight">이력서 에이전트</span>
+                    <span className="text-[10px] bg-[var(--accent-glow)] text-[var(--accent-color)] font-bold px-2 py-0.5 rounded-full">Agent</span>
                 </div>
                 <div className="flex items-center space-x-1.5 bg-[var(--card-bg)] border border-[var(--card-border)] px-3 py-1 rounded-full shadow-sm">
                     <ConnectionStatusIcon readyState={readyState} />
@@ -337,10 +337,10 @@ function ConfiguredAIChat({
                 {messages.map((msg) => (
                     <div key={msg.id} className={`flex items-start gap-2.5 ${msg.isUser ? 'justify-end' : 'justify-start'}`}>
                         {!msg.isUser && (
-                            <div className="w-8 h-8 rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] flex items-center justify-center shrink-0 ring-2 ring-[var(--accent-color)]/20 shadow-sm overflow-hidden p-0.5">
+                            <div className="w-8 h-8 rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] flex items-center justify-center shrink-0 ring-1 ring-[var(--card-border)] shadow-sm overflow-hidden p-0.5">
                                 <Image
                                     src="/image/aiimage.png"
-                                    alt="AI-Profile"
+                                    alt="이력서 에이전트 프로필"
                                     width={26}
                                     height={26}
                                     className="rounded-full"
@@ -370,10 +370,10 @@ function ConfiguredAIChat({
 
                 {isResponding && !isTimeout && (
                     <div className="flex items-start gap-2.5 justify-start">
-                        <div className="w-8 h-8 rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] flex items-center justify-center shrink-0 ring-2 ring-[var(--accent-color)]/20 shadow-sm overflow-hidden p-0.5">
+                        <div className="w-8 h-8 rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] flex items-center justify-center shrink-0 ring-1 ring-[var(--card-border)] shadow-sm overflow-hidden p-0.5">
                             <Image
                                 src="/image/aiimage.png"
-                                alt="AI-Profile"
+                                alt="이력서 에이전트 프로필"
                                 width={26}
                                 height={26}
                                 className="rounded-full"
@@ -387,10 +387,10 @@ function ConfiguredAIChat({
 
                 {isTimeout && (
                     <div className="flex items-start gap-2.5 justify-start">
-                        <div className="w-8 h-8 rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] flex items-center justify-center shrink-0 ring-2 ring-[var(--accent-color)]/20 shadow-sm overflow-hidden p-0.5">
+                        <div className="w-8 h-8 rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] flex items-center justify-center shrink-0 ring-1 ring-[var(--card-border)] shadow-sm overflow-hidden p-0.5">
                             <Image
                                 src="/image/aiimage.png"
-                                alt="AI-Profile"
+                                alt="이력서 에이전트 프로필"
                                 width={26}
                                 height={26}
                                 className="rounded-full"
