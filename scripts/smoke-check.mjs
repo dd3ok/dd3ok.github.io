@@ -22,9 +22,9 @@ const contentChecks = {
     'href="#contact"',
     'https://dd3ok.github.io/',
     'Waitworthy',
-    '이력서 에이전트',
+    '커리어 에이전트',
     '경력, 프로젝트, 기술 스택을 대화형으로 확인할 수 있는 포트폴리오 Q&amp;A 에이전트',
-    '이력서 기반 맞춤 답변',
+    '커리어 기반 맞춤 답변',
     'https://github.com/dd3ok/who-am-ai',
   ],
   'out/ai-fitting/index.html': [
@@ -58,6 +58,7 @@ const absentContentChecks = {
   'out/index.html': [
     'Who am AI',
     '채팅 AI',
+    '이력서 에이전트',
   ],
   'out/notes/index.html': [
     'href="/notes/meta/"',
