@@ -20,7 +20,7 @@ const navItems = [
     { id: 'about', label: 'About', type: 'section' },
     { id: 'experience', label: 'Experience', type: 'section' },
     { id: 'projects', label: 'Projects', type: 'section' },
-    { id: 'notes', label: 'Research Notes', type: 'link', path: '/notes/' },
+    { id: 'notes', label: 'Waitworthy', type: 'link', path: '/notes/' },
     {
         id: 'services',
         label: 'Toys',

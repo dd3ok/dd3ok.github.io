@@ -104,8 +104,8 @@ export const services: Service[] = [
     {
         id: 'waitworthy',
         title: 'Waitworthy',
-        navLabel: 'Research Notes',
-        description: '공개 가능한 AI 질문과 답변을 다시 읽기 좋은 research note로 정리하는 개인 지식 저장소',
+        navLabel: 'Waitworthy',
+        description: '기다릴 가치가 있었던 GPT Pro·Deep Research 등 AI 리서치 결과를 카테고리별 위키로 정리하는 Repository 입니다.',
         icon: '🗂️',
         path: '/notes',
         features: [

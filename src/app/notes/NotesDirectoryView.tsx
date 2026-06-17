@@ -49,6 +49,9 @@ export default function NotesDirectoryView({ activeCategory, notes }: NotesDirec
                         <h1 className="text-4xl font-extrabold tracking-tight text-[var(--text-primary)] md:text-5xl">
                             {title}
                         </h1>
+                        <p className="max-w-2xl text-sm font-medium leading-6 text-[var(--text-secondary)]">
+                            기다릴 가치가 있었던 GPT Pro·Deep Research 등 AI 리서치 결과를 카테고리별 위키로 정리하는 Repository 입니다.
+                        </p>
                         <p className="text-sm font-semibold text-[var(--text-muted)]">
                             공개 노트 {activeNotes.length}개
                         </p>
