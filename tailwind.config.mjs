@@ -1,7 +1,7 @@
-import type { Config } from 'tailwindcss'
 import typography from '@tailwindcss/typography'
 
-const config: Config = {
+/** @type {import('tailwindcss').Config} */
+const config = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -43,7 +43,7 @@ const config: Config = {
           blue: '#2563eb',
           green: '#059669',
           purple: '#7c3aed',
-        }
+        },
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
@@ -66,62 +66,62 @@ const config: Config = {
         fadeIn: {
           '0%': {
             opacity: '0',
-            transform: 'translateY(20px)'
+            transform: 'translateY(20px)',
           },
           '100%': {
             opacity: '1',
-            transform: 'translateY(0)'
+            transform: 'translateY(0)',
           },
         },
         slideInLeft: {
           '0%': {
             opacity: '0',
-            transform: 'translateX(-50px)'
+            transform: 'translateX(-50px)',
           },
           '100%': {
             opacity: '1',
-            transform: 'translateX(0)'
+            transform: 'translateX(0)',
           },
         },
         slideInRight: {
           '0%': {
             opacity: '0',
-            transform: 'translateX(50px)'
+            transform: 'translateX(50px)',
           },
           '100%': {
             opacity: '1',
-            transform: 'translateX(0)'
+            transform: 'translateX(0)',
           },
         },
         slideInUp: {
           '0%': {
             opacity: '0',
-            transform: 'translateY(30px)'
+            transform: 'translateY(30px)',
           },
           '100%': {
             opacity: '1',
-            transform: 'translateY(0)'
+            transform: 'translateY(0)',
           },
         },
         scaleIn: {
           '0%': {
             opacity: '0',
-            transform: 'scale(0.9)'
+            transform: 'scale(0.9)',
           },
           '100%': {
             opacity: '1',
-            transform: 'scale(1)'
+            transform: 'scale(1)',
           },
         },
         bounceSoft: {
           '0%, 20%': {
-            transform: 'translateY(0)'
+            transform: 'translateY(0)',
           },
           '50%': {
-            transform: 'translateY(-8px)'
+            transform: 'translateY(-8px)',
           },
           '80%, 100%': {
-            transform: 'translateY(0)'
+            transform: 'translateY(0)',
           },
         },
       },
@@ -129,22 +129,20 @@ const config: Config = {
         xs: '2px',
       },
       boxShadow: {
-        'soft': '0 2px 15px rgba(0, 0, 0, 0.08)',
-        'medium': '0 4px 20px rgba(0, 0, 0, 0.12)',
-        'large': '0 8px 30px rgba(0, 0, 0, 0.16)',
+        soft: '0 2px 15px rgba(0, 0, 0, 0.08)',
+        medium: '0 4px 20px rgba(0, 0, 0, 0.12)',
+        large: '0 8px 30px rgba(0, 0, 0, 0.16)',
         'glow-blue': '0 0 20px rgba(37, 99, 235, 0.3)',
       },
       borderRadius: {
         '4xl': '2rem',
       },
       screens: {
-        'xs': '475px',
+        xs: '475px',
       },
     },
   },
-  plugins: [
-    typography,
-  ],
+  plugins: [typography],
   future: {
     hoverOnlyWhenSupported: true,
   },

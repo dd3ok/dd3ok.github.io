@@ -32,28 +32,15 @@ export default function AgentSkillsSection() {
         <section
             id="agent-skills"
             className="section-padding bg-gradient-to-b from-gray-50 to-white"
-            aria-labelledby="agent-skills-heading"
+            aria-label="Agent skill repositories"
         >
             <div className="container">
-                <ScrollAnimation className="text-center mb-16">
-                    <h2
-                        id="agent-skills-heading"
-                        className="text-3xl md:text-4xl font-bold text-blue-600 mb-4"
-                    >
-                        Open Source Agent Skills
-                    </h2>
-                    <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                        AI 코딩 에이전트(Codex, Claude Code 등)에서 사용할 수 있는 오픈소스 스킬 모음입니다.
-                        금융 데이터 API부터 생산성 도구까지, 에이전트의 능력을 확장합니다.
-                    </p>
-                </ScrollAnimation>
-
                 {/* Finance API Skills */}
                 <ScrollAnimation className="mb-12">
-                    <h3 className="text-xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
+                    <h2 className="text-xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
                         <span className="text-emerald-600">{categoryConfig.finance.icon}</span>
                         Finance API Skills
-                    </h3>
+                    </h2>
                 </ScrollAnimation>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
                     {financeSkills.map((skill, index) => (
@@ -105,10 +92,10 @@ export default function AgentSkillsSection() {
 
                 {/* Productivity Skills */}
                 <ScrollAnimation className="mb-12">
-                    <h3 className="text-xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
+                    <h2 className="text-xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
                         <span className="text-blue-600">{categoryConfig.productivity.icon}</span>
                         Productivity Skills
-                    </h3>
+                    </h2>
                 </ScrollAnimation>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {productivitySkills.map((skill, index) => (
