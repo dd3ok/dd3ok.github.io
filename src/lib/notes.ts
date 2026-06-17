@@ -82,7 +82,7 @@ export const noteCategories: NoteCategory[] = [
 
 export const allNotesCategory: NoteCategory = {
     id: 'all',
-    title: 'All',
+    title: '전체',
 }
 
 export const noteFilterCategories: NoteCategory[] = [

@@ -35,15 +35,18 @@ export default function NotesDirectoryView({ activeCategory, notes }: NotesDirec
         count: getNotesForCategory(notes, category).length,
     }))
     const title = activeCategory.id === allNotesCategory.id
-        ? 'All Notes'
+        ? 'Waitworthy'
         : `${activeCategory.title} Notes`
+    const eyebrow = activeCategory.id === allNotesCategory.id
+        ? 'AI Research Wiki'
+        : 'Waitworthy'
 
     return (
         <section className="section-padding pt-28 md:pt-32">
             <div className="container">
                 <div className="border-b border-[var(--card-border)] pb-6">
                     <p className="text-sm font-bold uppercase tracking-[0.18em] text-[var(--accent-color)]">
-                        Waitworthy
+                        {eyebrow}
                     </p>
                     <div className="mt-3 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
                         <h1 className="text-4xl font-extrabold tracking-tight text-[var(--text-primary)] md:text-5xl">

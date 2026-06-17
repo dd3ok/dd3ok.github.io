@@ -31,8 +31,8 @@ const contentChecks = {
     'https://dd3ok.github.io/ai-fitting',
   ],
   'out/notes/index.html': [
-    'All Notes',
-    'All',
+    'Waitworthy',
+    '전체',
     'href="/notes/"',
     'AI &amp; Tools',
     'Tech',
@@ -45,7 +45,7 @@ const contentChecks = {
     'Other',
   ],
   'out/notes/ai-tools/index.html': [
-    'All',
+    '전체',
     'href="/notes/"',
     'AI &amp; Tools',
     'Health',
