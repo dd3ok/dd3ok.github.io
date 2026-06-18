@@ -21,7 +21,7 @@ const contentChecks = {
     'href="#contact"',
     'https://dd3ok.github.io/',
     'Waitworthy',
-    '커리어 에이전트',
+    'who-am-ai',
     '경력, 프로젝트, 기술 스택을 대화형으로 확인할 수 있는 포트폴리오 Q&amp;A 에이전트',
     '커리어 기반 맞춤 답변',
     'https://github.com/dd3ok/who-am-ai',

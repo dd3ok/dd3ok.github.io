@@ -156,8 +156,8 @@ export const services: Service[] = [
     },
     {
         id: 'whoamai',
-        title: '커리어 에이전트',
-        navLabel: '커리어 에이전트',
+        title: 'who-am-ai',
+        navLabel: 'who-am-ai',
         description: '경력, 프로젝트, 기술 스택을 대화형으로 확인할 수 있는 포트폴리오 Q&A 에이전트',
         icon: '🤖',
         path: 'https://github.com/dd3ok/who-am-ai',
