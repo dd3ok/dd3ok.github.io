@@ -141,7 +141,7 @@ export default async function NotePostPage({ params }: NotePostPageProps) {
                         </p>
                     </header>
 
-                    <div className="prose prose-neutral mt-8 max-w-none dark:prose-invert prose-headings:text-[var(--text-primary)] prose-p:text-[var(--text-secondary)] prose-a:text-[var(--accent-color)] prose-strong:text-[var(--text-primary)]">
+                    <div className="prose prose-neutral mt-8 max-w-none text-black prose-headings:text-black prose-p:text-black prose-a:text-black prose-strong:text-black prose-li:text-black prose-blockquote:text-black prose-code:text-black prose-th:text-black prose-td:text-black dark:text-white dark:prose-headings:text-white dark:prose-p:text-white dark:prose-a:text-white dark:prose-strong:text-white dark:prose-li:text-white dark:prose-blockquote:text-white dark:prose-code:text-white dark:prose-th:text-white dark:prose-td:text-white">
                         <ReactMarkdown remarkPlugins={[remarkGfm]}>
                             {note.body}
                         </ReactMarkdown>
