@@ -4,7 +4,6 @@ import { resolve } from 'node:path'
 const requiredFiles = [
   'out/index.html',
   'out/404.html',
-  'out/ai-fitting/index.html',
   'out/notes/index.html',
   'out/_next',
 ]
@@ -26,9 +25,6 @@ const contentChecks = {
     '경력, 프로젝트, 기술 스택을 대화형으로 확인할 수 있는 포트폴리오 Q&amp;A 에이전트',
     '커리어 기반 맞춤 답변',
     'https://github.com/dd3ok/who-am-ai',
-  ],
-  'out/ai-fitting/index.html': [
-    'https://dd3ok.github.io/ai-fitting',
   ],
   'out/notes/index.html': [
     'Waitworthy',

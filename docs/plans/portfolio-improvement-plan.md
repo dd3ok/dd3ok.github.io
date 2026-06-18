@@ -184,3 +184,6 @@ Establish a repeatable development workflow and then improve the portfolio in sm
 - 2026-06-17: Started career-agent copy follow-up on branch `codex/career-agent-copy` to replace the document-like `이력서 에이전트` wording with the more person-focused `커리어 에이전트` label.
 - 2026-06-17: Completed career-agent copy follow-up by updating chat, fallback, service card, accessibility text, and smoke coverage to `커리어 에이전트`; verified with `npm run build`.
 - 2026-06-18: Started compact footer cleanup on branch `codex/compact-footer` to reduce footer height, remove the footer from Waitworthy pages, and replace third-party AI tool credit copy with a right-aligned `Built by dd3ok` line.
+- 2026-06-18: Patched Waitworthy note body typography on branch `codex/compact-footer` by replacing media-based `dark:` prose colors with the app's `data-theme` CSS variables.
+- 2026-06-18: Fixed Waitworthy fenced code block contrast in light mode by adding theme-variable `pre` and nested `pre code` colors after the prose color cleanup.
+- 2026-06-18: Removed the `/ai-fitting` route, home service card, sitemap entry, smoke-check expectation, and current docs references after retiring the AI fitting demo.

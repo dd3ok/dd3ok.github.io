@@ -12,7 +12,7 @@
 - Deployment target: GitHub Pages via static export
 - External integrations:
   - `pagesApi` for contact and healthcheck
-  - `whoAmAiApi` for chat and AI fitting
+  - `whoAmAiApi` for chat
 
 ## Key Directories
 - `src/app`: routes and page-level layout

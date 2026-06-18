@@ -177,15 +177,4 @@ export const services: Service[] = [
         buttonText: '서비스 이용하기',
         buttonType: 'service',
     },
-    {
-        id: 'ai-fitting',
-        title: '입어보기+',
-        description: '잘 어울릴까? 편하게 입어보세요.',
-        icon: '👕',
-        path: 'https://dd3ok.github.io/ai-fitting',
-        features: ['AI 피팅 서비스', 'gemini-2.5-flash-image-preview'],
-        color: 'from-blue-500 to-cyan-500',
-        buttonText: '서비스 이용하기',
-        buttonType: 'service',
-    },
 ]
