@@ -21,6 +21,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Checkout Waitworthy wiki
+        uses: actions/checkout@v4
+        with:
+          repository: dd3ok/waitworthy
+          ref: main
+          ssh-key: ${{ secrets.WAITWORTHY_DEPLOY_KEY }}
+          path: .waitworthy
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -41,6 +49,11 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Import Waitworthy notes
+        env:
+          WAITWORTHY_WIKI_DIR: .waitworthy/wiki
+        run: npm run notes:import:waitworthy
 
       - name: Build with Next.js
         env:

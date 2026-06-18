@@ -19,6 +19,7 @@
 
 # production
 /build
+/.waitworthy/
 
 # misc
 .DS_Store
