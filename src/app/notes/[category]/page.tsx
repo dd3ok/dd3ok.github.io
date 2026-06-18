@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Navigation from '@/components/layout/Navigation'
-import Footer from '@/components/layout/Footer'
 import NotesDirectoryView from '../NotesDirectoryView'
 import {
     getNoteCategoryById,
@@ -52,7 +51,6 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         <main className="page-enter min-h-screen bg-[var(--bg-color)]">
             <Navigation />
             <NotesDirectoryView activeCategory={category} notes={getPublicNotes()} />
-            <Footer />
         </main>
     )
 }

@@ -183,3 +183,4 @@ Establish a repeatable development workflow and then improve the portfolio in sm
 - 2026-06-17: Completed resume-agent branding cleanup by updating visible service copy, navigation label, chat avatar alt text, and static smoke coverage while preserving the `who-am-ai` repository link and runtime identifiers; verified with `npm run validate` and `npm run build`.
 - 2026-06-17: Started career-agent copy follow-up on branch `codex/career-agent-copy` to replace the document-like `이력서 에이전트` wording with the more person-focused `커리어 에이전트` label.
 - 2026-06-17: Completed career-agent copy follow-up by updating chat, fallback, service card, accessibility text, and smoke coverage to `커리어 에이전트`; verified with `npm run build`.
+- 2026-06-18: Started compact footer cleanup on branch `codex/compact-footer` to reduce footer height, remove the footer from Waitworthy pages, and replace third-party AI tool credit copy with a right-aligned `Built by dd3ok` line.

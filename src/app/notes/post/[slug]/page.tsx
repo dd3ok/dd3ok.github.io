@@ -4,7 +4,6 @@ import { notFound } from 'next/navigation'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import Navigation from '@/components/layout/Navigation'
-import Footer from '@/components/layout/Footer'
 import {
     getNoteCategoryById,
     getPublicNoteBySlug,
@@ -91,7 +90,6 @@ export default async function NotePostPage({ params }: NotePostPageProps) {
                             </div>
                         </div>
                     </section>
-                    <Footer />
                 </main>
             )
         }
@@ -159,7 +157,6 @@ export default async function NotePostPage({ params }: NotePostPageProps) {
                     </footer>
                 </div>
             </article>
-            <Footer />
         </main>
     )
 }

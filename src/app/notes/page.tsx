@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import Navigation from '@/components/layout/Navigation'
-import Footer from '@/components/layout/Footer'
 import NotesDirectoryView from './NotesDirectoryView'
 import { allNotesCategory, getPublicNotes } from '@/lib/notes'
 
@@ -17,7 +16,6 @@ export default function NotesPage() {
         <main className="page-enter min-h-screen bg-[var(--bg-color)]">
             <Navigation />
             <NotesDirectoryView activeCategory={allNotesCategory} notes={getPublicNotes()} />
-            <Footer />
         </main>
     )
 }
