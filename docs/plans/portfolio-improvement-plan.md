@@ -189,3 +189,5 @@ Establish a repeatable development workflow and then improve the portfolio in sm
 - 2026-06-18: Removed the `/ai-fitting` route, home service card, sitemap entry, smoke-check expectation, and current docs references after retiring the AI fitting demo.
 - 2026-06-18: Updated the visible repository card name from `커리어 에이전트` to `who-am-ai` while keeping the chat-facing agent copy unchanged.
 - 2026-06-20: Removed finance/API skill promotions from the home page while keeping the `/agent-skills` detail route available.
+- 2026-06-20: Added a `Current Focus` experience entry for post-Gmarket backend, AI agent, and automation work without exposing the private wallstreetcats repository name.
+- 2026-06-20: Refined About, skills, current focus, and metadata copy around practical AI backend experiments across public repos and private toy projects without overstating production AI specialization.
