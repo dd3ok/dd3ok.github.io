@@ -91,7 +91,7 @@ export default function ContactForm() {
         if (status && status >= 500) {
             return {
                 title: '연락 서비스가 아직 준비 중일 수 있습니다.',
-                detail: '외부 API가 잠들어 있다가 깨어나는 중일 수 있습니다. 30~60초 후 다시 시도하거나 이메일로 직접 연락해주세요.',
+                detail: '외부 서비스가 wake up 중일 수 있습니다. 30~60초 후 다시 시도해주세요.',
             }
         }
 
@@ -312,7 +312,7 @@ export default function ContactForm() {
             </button>
 
             <p className="text-xs text-[var(--text-muted)] text-center font-medium leading-relaxed">
-                응답이 늦으면 외부 서비스가 깨어나는 중일 수 있습니다. 급한 문의는 이메일로 바로 연락해주세요.
+                외부 서비스가 wake up 중일 수 있습니다. 잠시 후 다시 시도해주세요.
             </p>
         </form>
     )
