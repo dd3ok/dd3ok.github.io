@@ -25,7 +25,7 @@ export const experiences: Experience[] = [
         period: '2025.01 - Present',
         description: [
             'Spring AI 기반 커리어 Q&A 에이전트 who-am-ai 개발',
-            'Python 기반 주식 데이터 수집·분석,평가,브리핑 자동화 파이프라인 개발',
+            'Python 기반 주식 데이터 수집·분석·평가·브리핑 자동화 파이프라인 개발',
             'RAG, Agent Tooling, Eval, Observability를 개인 토이프로젝트에 점진적으로 적용',
             'Codex, Claude Code 기반 Agent Skill과 개발 자동화 워크플로우 실험',
         ],
