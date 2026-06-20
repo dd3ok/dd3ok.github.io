@@ -132,7 +132,7 @@ export const services: Service[] = [
     {
         id: 'nopairprgm',
         title: '코드리뷰 AI',
-        description: 'GitHub PR에 Gemini 기반 리뷰 흐름을 붙여본 코드리뷰 자동화 실험',
+        description: 'GitHub PR에 Gemini 기반 리뷰 흐름을 붙여본 코드리뷰 자동화',
         icon: '🤖',
         path: 'https://github.com/dd3ok/no-pair-prgm',
         features: ['Gemini 1.5 Flash 연동', 'GitHub API 연동', 'GitHub PR 자동 코드리뷰'],
