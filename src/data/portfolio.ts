@@ -1,12 +1,12 @@
 import type { AboutContent, Experience, Project, Service, Skill } from '@/types'
 
 export const aboutContent: AboutContent = {
-    summaryTags: ['클린코드', '대용량트래픽', '분산환경', 'AI', 'LLM'],
-    title: '확장 가능하고 안정적인 시스템을 만듭니다',
+    summaryTags: ['Spring', '분산시스템', 'AI에이전트', 'RAG', '자동화'],
+    title: '운영 가능한 백엔드 위에 AI를 실험합니다',
     paragraphs: [
-        '스프링 기반의 백엔드 서비스를 주로 담당했고 최근에는 AI와 LLM에 관심이 있습니다. 웹 애플리케이션 개발과 운영에 전문성을 갖추고 있습니다.',
-        '특히 분산 시스템 아키텍처에 관심이 많으며, 안정적인 시스템을 만들기 위해 노력합니다.',
-        '지속적인 학습을 통해 최신 기술 트렌드를 따라가며, 팀과의 협업을 통한 문제 해결을 선호합니다.',
+        'Spring 기반 백엔드 개발과 운영 경험을 바탕으로, 최근에는 RAG, AI Agent, LLMOps, 자동화 파이프라인을 개인 토이프로젝트에 적용해보고 있습니다.',
+        '지마켓 ESM+와 삼성전자 BQMS에서 로그인·인증, 판매자 API, 업무 시스템 운영 경험을 쌓았고, 안정성과 확장성을 우선합니다.',
+        'who-am-ai, Repoclip, Agent Skill, 데이터 브리핑 파이프라인 같은 실험을 통해 AI를 백엔드 시스템에 자연스럽게 녹이는 방법을 탐색하고 있습니다.',
     ],
 }
 
@@ -14,10 +14,22 @@ export const skills: Skill[] = [
     { category: 'Language', items: ['Java', 'Kotlin', 'javascript', 'C#'] },
     { category: 'Framework & Library', items: ['Spring Boot', 'React', 'Next.js', 'Vue', 'jQuery'] },
     { category: 'Database', items: ['Oracle', 'MSSQL', 'Redis', 'MongoDB', 'Kafka'] },
+    { category: 'AI Backend', items: ['Spring AI', 'RAG', 'Agent Tooling', 'LLM Eval', 'MCP'] },
     { category: 'Monitoring', items: ['Prometheus', 'Grafana', 'ELK Stack', 'Datadog'] },
 ]
 
 export const experiences: Experience[] = [
+    {
+        company: 'Current Focus',
+        position: 'Backend / AI Agent Engineering',
+        period: '2025.01 - Present',
+        description: [
+            'Spring AI 기반 커리어 Q&A 에이전트 who-am-ai 개발',
+            'Python 기반 주식 데이터 수집·분석,평가,브리핑 자동화 파이프라인 개발',
+            'RAG, Agent Tooling, Eval, Observability를 개인 토이프로젝트에 점진적으로 적용',
+            'Codex, Claude Code 기반 Agent Skill과 개발 자동화 워크플로우 실험',
+        ],
+    },
     {
         company: '지마켓',
         position: 'Backend Developer',
@@ -120,10 +132,10 @@ export const services: Service[] = [
     {
         id: 'nopairprgm',
         title: '코드리뷰 AI',
-        description: 'PR을 올려 Gemini 한테 리뷰를 받자',
+        description: 'GitHub PR에 Gemini 기반 리뷰 흐름을 붙여본 코드리뷰 자동화 실험',
         icon: '🤖',
         path: 'https://github.com/dd3ok/no-pair-prgm',
-        features: ['Gemini 1.5 Flash 연동', 'Github API 연동', 'Github PR 자동 코드리뷰'],
+        features: ['Gemini 1.5 Flash 연동', 'GitHub API 연동', 'GitHub PR 자동 코드리뷰'],
         color: 'from-purple-500 to-indigo-500',
         buttonText: 'Repository 바로가기',
         buttonType: 'repo',
@@ -131,7 +143,7 @@ export const services: Service[] = [
     {
         id: 'oauth',
         title: 'OAuth 로그인 + 세션/토큰 관리',
-        description: 'Naver, Kakao, Google OAuth로 간편하게 로그인하세요',
+        description: 'OAuth 로그인과 JWT/Redis 세션 관리를 구현한 인증 서비스 예제',
         icon: '🔐',
         path: 'https://github.com/dd3ok/auth-service',
         features: ['OAuth 2.0 로그인', 'JWT 토큰 인증', 'Redis 세션 관리'],
@@ -154,10 +166,10 @@ export const services: Service[] = [
     {
         id: 'repoclip',
         title: 'Repoclip',
-        description: 'LLM을 위한 Repository 요약 도구',
+        description: 'Repository를 LLM 컨텍스트로 정리하는 요약 도구',
         icon: '📦',
         path: 'https://repoclip.onrender.com',
-        features: ['Github 저장소 / ZIP 파일 업로드', '클립보드 or 텍스트파일로 export'],
+        features: ['GitHub 저장소 / ZIP 파일 업로드', '클립보드 or 텍스트파일로 export'],
         color: 'from-yellow-500 to-green-500',
         buttonText: '서비스 이용하기',
         buttonType: 'service',

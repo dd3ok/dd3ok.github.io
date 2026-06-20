@@ -10,7 +10,7 @@ const notoSansKR = Noto_Sans_KR({
 const siteUrl = 'https://dd3ok.github.io'
 const siteTitle = 'dd3ok — Backend Developer Portfolio'
 const siteDescription =
-    'Backend Developer dd3ok의 포트폴리오. Spring Boot, 분산 시스템, AI Agent Skill 오픈소스 프로젝트 — 네이버증권 API, 토스증권 API, 바이낸스 API, 야후 파이낸스 스킬 등.'
+    'Backend Developer dd3ok의 포트폴리오. Spring Boot 기반 백엔드 경험과 who-am-ai, Waitworthy, Repoclip, Agent Skill 등 AI 백엔드·자동화 토이프로젝트를 정리합니다.'
 
 export const metadata: Metadata = {
     metadataBase: new URL(siteUrl),
@@ -23,15 +23,15 @@ export const metadata: Metadata = {
         'dd3ok',
         'backend developer',
         'portfolio',
+        'Spring Boot',
+        'AI backend',
+        'RAG',
+        'LLMOps',
+        'AI agent',
         'agent skill',
         'codex skill',
         'openai skill',
-        '네이버증권 API',
-        '토스증권 API',
-        'Binance API',
-        'Yahoo Finance',
         'Python',
-        'Spring Boot',
         'open source',
     ],
     authors: [{ name: 'dd3ok', url: 'https://github.com/dd3ok' }],
