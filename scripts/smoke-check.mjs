@@ -55,6 +55,9 @@ const absentContentChecks = {
     'Who am AI',
     '채팅 AI',
     '이력서 에이전트',
+    'AI Agent API Skills',
+    'Finance API Skills',
+    '토스증권 / 네이버증권 비공식 API 스킬 개발',
   ],
   'out/notes/index.html': [
     'href="/notes/meta/"',

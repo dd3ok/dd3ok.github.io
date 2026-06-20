@@ -188,3 +188,4 @@ Establish a repeatable development workflow and then improve the portfolio in sm
 - 2026-06-18: Fixed Waitworthy fenced code block contrast in light mode by adding theme-variable `pre` and nested `pre code` colors after the prose color cleanup.
 - 2026-06-18: Removed the `/ai-fitting` route, home service card, sitemap entry, smoke-check expectation, and current docs references after retiring the AI fitting demo.
 - 2026-06-18: Updated the visible repository card name from `커리어 에이전트` to `who-am-ai` while keeping the chat-facing agent copy unchanged.
+- 2026-06-20: Removed finance/API skill promotions from the home page while keeping the `/agent-skills` detail route available.

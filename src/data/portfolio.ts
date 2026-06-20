@@ -118,21 +118,6 @@ export const services: Service[] = [
         buttonType: 'service',
     },
     {
-        id: 'agent-skills',
-        title: 'AI Agent API Skills',
-        description: 'Claude Code, Codex 등 AI 코딩 에이전트를 위한 주식·자산 시장 데이터 비공식 API 툴링 세트',
-        icon: '🛠️',
-        path: 'https://github.com/dd3ok?tab=repositories&q=-skill',
-        features: [
-            '토스증권 / 네이버증권 비공식 API 스킬 개발',
-            '바이낸스 Spot API 및 yfinance 연동 툴킷 구현',
-            'LLM Context 절약을 위한 캐시 최적화 스킬 포함'
-        ],
-        color: 'from-cyan-500 to-blue-600',
-        buttonText: 'Repositories 바로가기',
-        buttonType: 'repo',
-    },
-    {
         id: 'nopairprgm',
         title: '코드리뷰 AI',
         description: 'PR을 올려 Gemini 한테 리뷰를 받자',
