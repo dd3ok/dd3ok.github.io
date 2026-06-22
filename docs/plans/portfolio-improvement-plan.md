@@ -201,3 +201,4 @@ Establish a repeatable development workflow and then improve the portfolio in sm
 - 2026-06-22: Completed Ticket 22 by separating Waitworthy from the home section links, placing it after Contact with dividers, and scoping section active states to `/`; verified with `npm run build` and static HTML checks for `/` and `/notes`.
 - 2026-06-22: Followed up Ticket 22 by reducing the header height, compacting nav controls, and keeping a subtle top-of-page header shadow instead of hiding it entirely.
 - 2026-06-22: Fine-tuned Ticket 22 by lowering the header to 52px and increasing the Waitworthy separator contrast slightly.
+- 2026-06-22: Removed the redundant `Agent` badge from the career agent chat header and fallback header.

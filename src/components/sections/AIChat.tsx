@@ -324,7 +324,6 @@ function ConfiguredAIChat({
             <div className="p-4 border-b border-[var(--card-border)] flex items-center justify-between bg-[var(--nav-bg)] px-5">
                 <div className="flex items-center space-x-2">
                     <span className="text-sm font-extrabold text-[var(--text-primary)] tracking-tight">커리어 에이전트</span>
-                    <span className="text-[10px] bg-[var(--accent-glow)] text-[var(--accent-color)] font-bold px-2 py-0.5 rounded-full">Agent</span>
                 </div>
                 <div className="flex items-center space-x-1.5 bg-[var(--card-bg)] border border-[var(--card-border)] px-3 py-1 rounded-full shadow-sm">
                     <ConnectionStatusIcon readyState={readyState} />
