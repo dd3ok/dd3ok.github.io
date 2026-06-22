@@ -15,12 +15,11 @@ const navigableServices = services.filter((service) => (
     service.id !== 'waitworthy'
 ))
 
-const navItems = [
+const sectionNavItems = [
     { id: 'hero', label: 'Home', type: 'section' },
     { id: 'about', label: 'About', type: 'section' },
     { id: 'experience', label: 'Experience', type: 'section' },
     { id: 'projects', label: 'Projects', type: 'section' },
-    { id: 'notes', label: 'Waitworthy', type: 'link', path: '/notes/' },
     {
         id: 'services',
         label: 'Toys',
@@ -37,6 +36,8 @@ const navItems = [
     { id: 'contact', label: 'Contact', type: 'section' },
 ] as const
 
+const waitworthyNavItem = { id: 'notes', label: 'Waitworthy', path: '/notes/' } as const
+
 export default function Navigation() {
     const [isScrolled, setIsScrolled] = useState(false)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -44,6 +45,7 @@ export default function Navigation() {
     const activeSection = useActiveSection()
     const router = useRouter()
     const pathname = usePathname()
+    const isHomePath = pathname === '/'
     const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null)
     const desktopServicesButtonRef = useRef<HTMLButtonElement | null>(null)
     const desktopDropdownItemRefs = useRef<Array<HTMLAnchorElement | null>>([])
@@ -65,6 +67,10 @@ export default function Navigation() {
         const normalizedPath = path.endsWith('/') ? path.slice(0, -1) : path
         return pathname === normalizedPath || pathname.startsWith(`${normalizedPath}/`)
     }, [pathname])
+
+    const isSectionActive = useCallback((sectionId: string) => (
+        isHomePath && activeSection === sectionId
+    ), [activeSection, isHomePath])
 
     const clearDropdownCloseTimer = useCallback(() => {
         if (dropdownTimeoutRef.current) {
@@ -237,16 +243,16 @@ export default function Navigation() {
             className={`
                 fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-[var(--nav-bg)] backdrop-blur-xl border-b
                 ${isScrolled
-                    ? 'border-[var(--card-border)] shadow-md shadow-black/[0.03]'
-                    : 'border-transparent shadow-none'
+                    ? 'border-[var(--card-border)] shadow-[0_8px_24px_-18px_rgba(15,23,42,0.35)]'
+                    : 'border-[var(--card-border)] shadow-[0_1px_10px_-8px_rgba(15,23,42,0.28)]'
                 }
             `}
         >
             <div className="container">
-                <div className="flex items-center justify-between h-16 px-6">
+                <div className="flex items-center justify-between h-[52px] px-4 md:px-5">
                     <Link
                         href="/"
-                        className="flex items-center space-x-2 md:space-x-3 cursor-pointer hover:scale-[1.03] transition-transform duration-300"
+                        className="flex items-center space-x-2 cursor-pointer hover:scale-[1.03] transition-transform duration-300"
                         onClick={closeMobileMenu}
                     >
                         <Image
@@ -254,14 +260,14 @@ export default function Navigation() {
                             alt="dd3ok 로고"
                             width={32}
                             height={32}
-                            className="w-8 h-8 md:w-9 md:h-9 rounded-lg shadow-sm"
+                            className="w-7 h-7 md:w-8 md:h-8 rounded-lg shadow-sm"
                             priority
                         />
-                        <span className="font-extrabold text-lg md:text-xl tracking-tight text-[var(--accent-color)]">dd3ok</span>
+                        <span className="font-extrabold text-base md:text-lg tracking-tight text-[var(--accent-color)]">dd3ok</span>
                     </Link>
 
-                    <div className="hidden md:flex items-center space-x-6">
-                        {navItems.map((item) => (
+                    <div className="hidden md:flex items-center space-x-3 lg:space-x-5">
+                        {sectionNavItems.map((item) => (
                             <div
                                 key={item.id}
                                 className="relative"
@@ -269,37 +275,20 @@ export default function Navigation() {
                                 onMouseLeave={() => item.type === 'dropdown' && handleMouseLeave()}
                                 onBlur={item.type === 'dropdown' ? handleDesktopDropdownBlur : undefined}
                             >
-                                {item.type === 'link' ? (
-                                    <Link
-                                        href={item.path}
-                                        className={`
-                                            relative px-3 py-2 text-sm font-semibold transition-all duration-300
-                                            ${isNavLinkActive(item.path)
-                                                ? 'text-[var(--accent-color)]'
-                                                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
-                                            }
-                                        `}
-                                        onClick={closeMobileMenu}
-                                    >
-                                        {item.label}
-                                        {isNavLinkActive(item.path) && (
-                                            <div className="absolute bottom-0 left-3 right-3 h-0.5 bg-[var(--accent-color)] rounded-full animate-fadeIn" />
-                                        )}
-                                    </Link>
-                                ) : item.type === 'section' ? (
+                                {item.type === 'section' ? (
                                     <button
                                         type="button"
                                         onClick={() => scrollToSection(item.id)}
                                         className={`
-                                            relative px-3 py-2 text-sm font-semibold transition-all duration-300
-                                            ${activeSection === item.id
+                                            relative px-2.5 py-1.5 text-[13px] font-semibold transition-all duration-300
+                                            ${isSectionActive(item.id)
                                                 ? 'text-[var(--accent-color)]'
                                                 : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                                             }
                                         `}
                                     >
                                         {item.label}
-                                        {activeSection === item.id && (
+                                        {isSectionActive(item.id) && (
                                             <div className="absolute bottom-0 left-3 right-3 h-0.5 bg-[var(--accent-color)] rounded-full animate-fadeIn" />
                                         )}
                                     </button>
@@ -319,15 +308,15 @@ export default function Navigation() {
                                             aria-expanded={activeDropdown === item.id}
                                             aria-controls={`${item.id}-desktop-menu`}
                                             className={`
-                                                relative px-3 py-2 text-sm font-semibold transition-all duration-300 flex items-center
-                                                ${activeSection === item.id
+                                                relative px-2.5 py-1.5 text-[13px] font-semibold transition-all duration-300 flex items-center
+                                                ${isSectionActive(item.id)
                                                     ? 'text-[var(--accent-color)]'
                                                     : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                                                 }
                                             `}
                                         >
                                             {item.label}
-                                            {activeSection === item.id && (
+                                            {isSectionActive(item.id) && (
                                                 <div className="absolute bottom-0 left-3 right-3 h-0.5 bg-[var(--accent-color)] rounded-full animate-fadeIn" />
                                             )}
                                             <svg
@@ -392,15 +381,32 @@ export default function Navigation() {
                                 )}
                             </div>
                         ))}
-                        <div className="h-4 w-[1px] bg-[var(--card-border)]" />
+                        <div className="h-5 w-px bg-[var(--text-muted)] opacity-40" aria-hidden="true" />
+                        <Link
+                            href={waitworthyNavItem.path}
+                            className={`
+                                relative px-2.5 py-1.5 text-[13px] font-semibold transition-all duration-300
+                                ${isNavLinkActive(waitworthyNavItem.path)
+                                    ? 'text-[var(--accent-color)]'
+                                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                                }
+                            `}
+                            onClick={closeMobileMenu}
+                        >
+                            {waitworthyNavItem.label}
+                            {isNavLinkActive(waitworthyNavItem.path) && (
+                                <div className="absolute bottom-0 left-3 right-3 h-0.5 bg-[var(--accent-color)] rounded-full animate-fadeIn" />
+                            )}
+                        </Link>
+                        <div className="h-5 w-px bg-[var(--text-muted)] opacity-40" aria-hidden="true" />
                         <ThemeToggle />
                     </div>
 
-                    <div className="flex items-center space-x-3 md:hidden">
+                    <div className="flex items-center space-x-2.5 md:hidden">
                         <ThemeToggle />
                         <button
                             type="button"
-                            className="p-2 text-[var(--text-primary)] hover:bg-[var(--card-border)] rounded-lg transition-colors duration-300"
+                            className="p-1.5 text-[var(--text-primary)] hover:bg-[var(--card-border)] rounded-lg transition-colors duration-300"
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                             aria-expanded={isMobileMenuOpen}
                             aria-controls="mobile-navigation"
@@ -421,29 +427,15 @@ export default function Navigation() {
                     hidden={!isMobileMenuOpen}
                 >
                     <div className="px-4 py-3 space-y-1 bg-[var(--nav-bg)] backdrop-blur-2xl border-t border-[var(--card-border)] shadow-inner">
-                        {navItems.map((item) => (
+                        {sectionNavItems.map((item) => (
                             <div key={item.id}>
-                                {item.type === 'link' ? (
-                                    <Link
-                                        href={item.path}
-                                        className={`
-                                            block w-full text-left px-4 py-2.5 text-base font-semibold rounded-xl transition-all duration-300
-                                            ${isNavLinkActive(item.path)
-                                                ? 'text-[var(--accent-color)] bg-[var(--accent-glow)]'
-                                                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--card-border)]'
-                                            }
-                                        `}
-                                        onClick={closeMobileMenu}
-                                    >
-                                        {item.label}
-                                    </Link>
-                                ) : item.type === 'section' ? (
+                                {item.type === 'section' ? (
                                     <button
                                         type="button"
                                         onClick={() => scrollToSection(item.id)}
                                         className={`
                                             block w-full text-left px-4 py-2.5 text-base font-semibold rounded-xl transition-all duration-300
-                                            ${activeSection === item.id
+                                            ${isSectionActive(item.id)
                                                 ? 'text-[var(--accent-color)] bg-[var(--accent-glow)]'
                                                 : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--card-border)]'
                                             }
@@ -457,7 +449,7 @@ export default function Navigation() {
                                         onClick={() => scrollToSection(item.id)}
                                         className={`
                                             block w-full text-left px-4 py-2.5 text-base font-semibold rounded-xl transition-all duration-300
-                                            ${activeSection === item.id
+                                            ${isSectionActive(item.id)
                                                 ? 'text-[var(--accent-color)] bg-[var(--accent-glow)]'
                                                 : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--card-border)]'
                                             }
@@ -468,6 +460,20 @@ export default function Navigation() {
                                 )}
                             </div>
                         ))}
+                        <div className="my-2 h-px bg-[var(--text-muted)] opacity-35" aria-hidden="true" />
+                        <Link
+                            href={waitworthyNavItem.path}
+                            className={`
+                                block w-full text-left px-4 py-2.5 text-base font-semibold rounded-xl transition-all duration-300
+                                ${isNavLinkActive(waitworthyNavItem.path)
+                                    ? 'text-[var(--accent-color)] bg-[var(--accent-glow)]'
+                                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--card-border)]'
+                                }
+                            `}
+                            onClick={closeMobileMenu}
+                        >
+                            {waitworthyNavItem.label}
+                        </Link>
                     </div>
                 </div>
             </div>

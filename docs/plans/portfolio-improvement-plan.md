@@ -174,6 +174,11 @@ Establish a repeatable development workflow and then improve the portfolio in sm
 - Refine all sections (Hero, About, AIChat, Experience, Projects, Contact, Footer) into premium, non-AI-generated-looking modern layouts (Glassmorphism, Ambient Orbs, Claude-style AI Chat)
 - Ensure all automated checks (`npm run validate` & `npm run build`) pass cleanly
 
+### Ticket 22: Waitworthy Navigation Placement
+- Move Waitworthy to the right side of Contact with a visual separator
+- Keep section active states scoped to the home route so Waitworthy pages do not also highlight Home
+- Preserve static export and mobile navigation behavior
+
 ## Progress Log
 ... (Skipping past logs to append today's entry) ...
 - 2026-05-21: Started Ticket 21 on branch `feature/hybrid-theme-premium-ui`
@@ -192,3 +197,7 @@ Establish a repeatable development workflow and then improve the portfolio in sm
 - 2026-06-20: Added a `Current Focus` experience entry for post-Gmarket backend, AI agent, and automation work without exposing the private wallstreetcats repository name.
 - 2026-06-20: Refined About, skills, current focus, and metadata copy around practical AI backend experiments across public repos and private toy projects without overstating production AI specialization.
 - 2026-06-22: Ran a Humanize Korean pass over public UI copy, trimming translationese, stiff status text, and over-explanatory contact messages while preserving technical names and project facts.
+- 2026-06-22: Started Ticket 22 on branch `codex/waitworthy-nav-active-fix` to move Waitworthy after Contact and prevent Home from appearing active on Waitworthy routes.
+- 2026-06-22: Completed Ticket 22 by separating Waitworthy from the home section links, placing it after Contact with dividers, and scoping section active states to `/`; verified with `npm run build` and static HTML checks for `/` and `/notes`.
+- 2026-06-22: Followed up Ticket 22 by reducing the header height, compacting nav controls, and keeping a subtle top-of-page header shadow instead of hiding it entirely.
+- 2026-06-22: Fine-tuned Ticket 22 by lowering the header to 52px and increasing the Waitworthy separator contrast slightly.

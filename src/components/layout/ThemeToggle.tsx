@@ -8,7 +8,7 @@ export default function ThemeToggle() {
     if (!mounted) {
         // Render a silent placeholder during hydration
         return (
-            <div className="w-9 h-9 rounded-lg bg-transparent border border-transparent" aria-hidden="true" />
+            <div className="w-8 h-8 rounded-lg bg-transparent border border-transparent" aria-hidden="true" />
         )
     }
 
@@ -16,10 +16,10 @@ export default function ThemeToggle() {
         <button
             type="button"
             onClick={toggleTheme}
-            className="relative p-2 w-9 h-9 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] hover:border-[var(--card-hover-border)] hover:bg-white/[0.05] focus:outline-none transition-all duration-300 flex items-center justify-center overflow-hidden group shadow-sm hover:shadow-[0_0_15px_-3px_var(--accent-glow)]"
+            className="relative p-1.5 w-8 h-8 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] hover:border-[var(--card-hover-border)] hover:bg-white/[0.05] focus:outline-none transition-all duration-300 flex items-center justify-center overflow-hidden group shadow-sm hover:shadow-[0_0_15px_-3px_var(--accent-glow)]"
             aria-label={theme === 'light' ? '다크 모드로 전환' : '라이트 모드로 전환'}
         >
-            <div className="relative w-5 h-5 transition-transform duration-500 ease-out group-hover:rotate-[20deg]">
+            <div className="relative w-4 h-4 transition-transform duration-500 ease-out group-hover:rotate-[20deg]">
                 {/* Sun icon */}
                 <svg
                     className={`absolute inset-0 w-full h-full text-amber-500 transition-all duration-500 transform ${
