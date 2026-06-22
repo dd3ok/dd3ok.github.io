@@ -53,7 +53,7 @@ export default function NotesDirectoryView({ activeCategory, notes }: NotesDirec
                             {title}
                         </h1>
                         <p className="max-w-2xl text-sm font-medium leading-6 text-[var(--text-secondary)]">
-                            GPT Pro·Deep Research 등 기다릴 가치가 있었던 AI 리서치를 위키로 정리합니다.
+                            ChatGPT Deep Research, GPT Pro 워크플로, Gemini Deep Research 등 기다릴 가치가 있었던 AI 심층 리서치 보고서를 위키로 정리합니다.
                         </p>
                         <p className="text-sm font-semibold text-[var(--text-muted)]">
                             공개 노트 {activeNotes.length}개

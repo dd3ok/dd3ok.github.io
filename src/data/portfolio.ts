@@ -105,7 +105,7 @@ export const services: Service[] = [
         id: 'waitworthy',
         title: 'Waitworthy',
         navLabel: 'Waitworthy',
-        description: 'GPT Pro·Deep Research 등 기다릴 가치가 있었던 AI 리서치를 위키로 정리합니다.',
+        description: 'ChatGPT Deep Research, GPT Pro 워크플로, Gemini Deep Research 등 기다릴 가치가 있었던 AI 심층 리서치 보고서를 위키로 정리합니다.',
         icon: '🗂️',
         path: '/notes',
         features: [
