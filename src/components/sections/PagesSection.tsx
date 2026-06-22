@@ -15,7 +15,7 @@ export default function PagesSection() {
                         Toys
                     </h2>
                     <p className="text-lg text-[var(--text-secondary)] max-w-2xl mx-auto font-medium">
-                        AI, 자동화, 개발 도구를 가볍게 실험한 개인 프로젝트입니다
+                        AI, 자동화, 개발 도구를 작게 만들어본 개인 프로젝트입니다
                     </p>
                 </ScrollAnimation>
 

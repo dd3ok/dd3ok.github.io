@@ -10,7 +10,7 @@ const notoSansKR = Noto_Sans_KR({
 const siteUrl = 'https://dd3ok.github.io'
 const siteTitle = 'dd3ok — Backend Developer Portfolio'
 const siteDescription =
-    'Backend Developer dd3ok의 포트폴리오. Spring Boot 기반 백엔드 경험과 who-am-ai, Waitworthy, Repoclip, Agent Skill 등 AI 백엔드·자동화 토이프로젝트를 정리합니다.'
+    'Backend Developer dd3ok의 포트폴리오. Spring Boot 기반 백엔드 경험과 who-am-ai, Waitworthy, Repoclip, Agent Skill 등 AI 백엔드·자동화 토이 프로젝트를 정리합니다.'
 
 export const metadata: Metadata = {
     metadataBase: new URL(siteUrl),

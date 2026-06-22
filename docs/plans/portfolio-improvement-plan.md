@@ -191,3 +191,4 @@ Establish a repeatable development workflow and then improve the portfolio in sm
 - 2026-06-20: Removed finance/API skill promotions from the home page while keeping the `/agent-skills` detail route available.
 - 2026-06-20: Added a `Current Focus` experience entry for post-Gmarket backend, AI agent, and automation work without exposing the private wallstreetcats repository name.
 - 2026-06-20: Refined About, skills, current focus, and metadata copy around practical AI backend experiments across public repos and private toy projects without overstating production AI specialization.
+- 2026-06-22: Ran a Humanize Korean pass over public UI copy, trimming translationese, stiff status text, and over-explanatory contact messages while preserving technical names and project facts.

@@ -5,7 +5,7 @@ export const agentSkills: AgentSkill[] = [
         id: 'naverstock-api-skill',
         title: 'NaverStock API Skill',
         description:
-            '네이버증권(stock.naver.com) 비공식 읽기 전용 웹 API를 AI 에이전트가 안전하게 조회할 수 있도록 돕는 스킬입니다. 국내 주식 시세, 업종/테마/ETF, 뉴스, 리서치 데이터를 지원합니다.',
+            '네이버증권(stock.naver.com) 비공식 읽기 전용 웹 API를 AI 에이전트가 안전하게 조회하도록 돕는 스킬입니다. 국내 주식 시세, 업종/테마/ETF, 뉴스, 리서치 데이터를 지원합니다.',
         shortDescription: '네이버증권 API 스킬',
         tech: ['Python', 'Codex', 'OpenAI'],
         github: 'https://github.com/dd3ok/naverstock-api-skill',
@@ -56,7 +56,7 @@ export const agentSkills: AgentSkill[] = [
         id: 'yahoo-finance-market-skill',
         title: 'Yahoo Finance Market Skill',
         description:
-            'yfinance 라이브러리를 활용한 Yahoo Finance 시장 조사 Agent Skill입니다. 주가 조회, 재무제표, 차트 데이터, 글로벌 시장 데이터를 AI 에이전트에서 사용할 수 있습니다.',
+            'yfinance 라이브러리를 활용한 Yahoo Finance 시장 조사 Agent Skill입니다. 주가 조회, 재무제표, 차트 데이터, 글로벌 시장 데이터를 AI 에이전트에서 다룹니다.',
         shortDescription: '야후 파이낸스 스킬',
         tech: ['Python', 'yfinance'],
         github: 'https://github.com/dd3ok/yahoo-finance-market-skill',

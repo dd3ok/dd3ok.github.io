@@ -33,7 +33,7 @@ export default function HeroSection() {
 
                         <div className="enter-up enter-delay-300">
                             <p className="text-lg md:text-xl text-[var(--text-secondary)] mb-12 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-medium">
-                                스프링 기반 백엔드 경험을 바탕으로,<br />
+                                스프링 백엔드 경험을 살려,<br />
                                 확장성·안정성을 갖춘 서비스를 설계하고 개발합니다.
                             </p>
                         </div>
