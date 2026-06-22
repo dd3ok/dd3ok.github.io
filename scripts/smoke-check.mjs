@@ -4,6 +4,7 @@ import { resolve } from 'node:path'
 const requiredFiles = [
   'out/index.html',
   'out/404.html',
+  'out/sitemap.xml',
   'out/notes/index.html',
   'out/_next',
 ]
@@ -49,6 +50,14 @@ const contentChecks = {
     'Other',
   ],
 }
+
+const sitemapContentChecks = [
+  '<loc>https://dd3ok.github.io/</loc>',
+  '<loc>https://dd3ok.github.io/agent-skills/</loc>',
+  '<loc>https://dd3ok.github.io/notes/</loc>',
+  '<loc>https://dd3ok.github.io/notes/life/</loc>',
+  '<loc>https://dd3ok.github.io/notes/post/2026-06-17-korean-baby-naming-skill/</loc>',
+]
 
 const absentContentChecks = {
   'out/index.html': [
@@ -134,6 +143,14 @@ if (existsSync(resolve(emptyPostRouteFile))) {
     if (!pageContent.includes(text)) {
       throw new Error(`${emptyPostRouteFile} is missing expected empty-state content: ${text}`)
     }
+  }
+}
+
+const sitemapContent = readFileSync(resolve('out/sitemap.xml'), 'utf8')
+
+for (const text of sitemapContentChecks) {
+  if (!sitemapContent.includes(text)) {
+    throw new Error(`out/sitemap.xml is missing expected content: ${text}`)
   }
 }
 
