@@ -21,7 +21,7 @@ export default function ContactSection() {
                         Contact
                     </h2>
                     <p className="text-base md:text-lg text-[var(--text-secondary)] max-w-2xl mx-auto px-4 md:px-0 font-medium">
-                        새로운 기회나 협업에 관심이 있으시다면 언제든 연락해 주세요
+                        새로운 기회나 협업이 있다면 편하게 연락해 주세요
                     </p>
                 </ScrollAnimation>
 
@@ -35,7 +35,7 @@ export default function ContactSection() {
                                         함께 일해요!
                                     </h3>
                                     <p className="text-[var(--text-secondary)] mb-6 md:mb-8 leading-relaxed text-sm md:text-base font-medium">
-                                        흥미로운 프로젝트나 새로운 기회에 대해 이야기하고 싶습니다.
+                                        흥미로운 프로젝트나 새로운 기회가 있다면 편하게 이야기해 주세요.
                                         AI를 활용한 백엔드, 분산 시스템 등 스터디도 환영합니다.
                                     </p>
 

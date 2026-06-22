@@ -30,7 +30,7 @@ const TimeoutMessage = ({ onRetry }: { onRetry: () => void }) => (
     <StatusBanner
         tone="warning"
         title="응답이 지연되고 있습니다."
-        description="서버가 sleep 상태에서 깨어나는 중일 수 있습니다. 잠시 후 다시 시도해주세요."
+        description="서버가 sleep 상태에서 wake up 중일 수 있습니다. 잠시 후 다시 시도해주세요."
         className="border-[var(--card-border)] bg-[var(--card-bg)]"
     >
         <button
@@ -136,8 +136,8 @@ function AIChatUnavailable() {
             <div className="flex-1 p-6 flex items-center justify-center bg-transparent">
                 <StatusBanner
                     tone="info"
-                    title="현재 환경에서는 커리어 에이전트 설정이 연결되지 않았습니다."
-                    description="포트폴리오 본문과 프로젝트 섹션은 계속 확인하실 수 있고, 커리어 에이전트는 배포 환경에서만 활성화될 수 있습니다."
+                    title="현재 환경에 커리어 에이전트 설정이 없습니다."
+                    description="포트폴리오 본문과 프로젝트 섹션은 계속 볼 수 있습니다. 커리어 에이전트는 배포 환경에서만 켜질 수 있습니다."
                     className="max-w-xs text-center border-[var(--card-border)] bg-[var(--card-bg)] text-[var(--text-secondary)]"
                 />
             </div>
@@ -274,7 +274,7 @@ function ConfiguredAIChat({
     }
 
     const connectionStatus = {
-        [ReadyState.CONNECTING]: '연결 중.. (Sleep 시 60초)',
+        [ReadyState.CONNECTING]: '연결 중... (Sleep 시 60초)',
         [ReadyState.OPEN]: '연결됨',
         [ReadyState.CLOSING]: '연결 종료 중...',
         [ReadyState.CLOSED]: '연결 끊김',

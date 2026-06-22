@@ -5,7 +5,7 @@ import AgentSkillsSection from '@/components/sections/AgentSkillsSection'
 export const metadata: Metadata = {
     title: 'Open Source Agent Skills — dd3ok | AI 코딩 에이전트 스킬 모음',
     description:
-        'dd3ok의 오픈소스 AI Agent Skill 모음: 네이버증권 API, 토스증권 API, 바이낸스 API, 야후 파이낸스, 문서 브리핑 캐시, 세션 핸드오프, WATCHLIST.md. Codex와 Claude Code에서 사용 가능한 Python 기반 스킬.',
+        'dd3ok의 오픈소스 AI Agent Skill 모음: 네이버증권 API, 토스증권 API, 바이낸스 API, 야후 파이낸스, 문서 브리핑 캐시, 세션 핸드오프, WATCHLIST.md. Codex와 Claude Code에서 쓰는 Python 기반 스킬.',
     keywords: [
         'agent skill',
         'codex skill',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Open Source Agent Skills — dd3ok',
         description:
-            'AI 코딩 에이전트(Codex, Claude Code)에서 사용할 수 있는 오픈소스 스킬 모음. 금융 데이터 API부터 생산성 도구까지.',
+            'AI 코딩 에이전트(Codex, Claude Code)에서 쓰는 오픈소스 스킬 모음. 금융 데이터 API부터 생산성 도구까지.',
         url: 'https://dd3ok.github.io/agent-skills',
         type: 'website',
         locale: 'ko_KR',
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: 'Open Source Agent Skills — dd3ok',
         description:
-            'AI 코딩 에이전트에서 사용할 수 있는 오픈소스 스킬 모음: 네이버증권, 토스증권, 바이낸스, 야후 파이낸스 API 외 생산성 도구.',
+            'AI 코딩 에이전트에서 쓰는 오픈소스 스킬 모음: 네이버증권, 토스증권, 바이낸스, 야후 파이낸스 API 외 생산성 도구.',
         images: ['/logo.png'],
     },
     alternates: {
@@ -54,7 +54,7 @@ const jsonLd = {
     '@type': 'CollectionPage',
     name: 'Open Source Agent Skills — dd3ok',
     description:
-        'AI 코딩 에이전트(Codex, Claude Code)에서 사용할 수 있는 오픈소스 Python 스킬 모음',
+        'AI 코딩 에이전트(Codex, Claude Code)에서 쓰는 오픈소스 Python 스킬 모음',
     url: 'https://dd3ok.github.io/agent-skills',
     author: {
         '@type': 'Person',

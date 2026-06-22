@@ -77,14 +77,14 @@ export default function ContactForm() {
         if (typeof navigator !== 'undefined' && !navigator.onLine) {
             return {
                 title: '오프라인 상태입니다.',
-                detail: '인터넷 연결을 확인한 뒤 다시 시도해주세요. 급하면 이메일로 바로 연락하셔도 됩니다.',
+                detail: '인터넷 연결을 확인한 뒤 다시 시도해주세요.',
             }
         }
 
         if (status === 429) {
             return {
                 title: '요청이 잠시 제한되었습니다.',
-                detail: '잠시 후 다시 시도해주세요. 급한 문의는 이메일로 바로 보내주셔도 좋습니다.',
+                detail: '잠시 후 다시 시도해주세요.',
             }
         }
 
@@ -97,7 +97,7 @@ export default function ContactForm() {
 
         return {
             title: '메시지 전송 중 오류가 발생했습니다.',
-            detail: '잠시 후 다시 시도해주세요. 문제가 계속되면 이메일로 직접 연락주시면 가장 빠릅니다.',
+            detail: '잠시 후 다시 시도해주세요.',
         }
     }
 
@@ -182,8 +182,8 @@ export default function ContactForm() {
 
             setSubmitStatus('success')
             setSubmitFeedback({
-                title: '메시지가 성공적으로 전송되었습니다! 🎉',
-                detail: '빠른 시일 내에 연락드리겠습니다.',
+                title: '메시지를 보냈습니다.',
+                detail: '확인 후 연락드리겠습니다.',
             })
             setFormData({ name: '', email: '', message: '' })
             scheduleFeedbackReset()
@@ -281,8 +281,8 @@ export default function ContactForm() {
             {submitStatus === 'success' && (
                 <StatusBanner
                     tone="success"
-                    title={submitFeedback?.title ?? '메시지가 성공적으로 전송되었습니다! 🎉'}
-                    description={submitFeedback?.detail ?? '빠른 시일 내에 연락드리겠습니다.'}
+                    title={submitFeedback?.title ?? '메시지를 보냈습니다.'}
+                    description={submitFeedback?.detail ?? '확인 후 연락드리겠습니다.'}
                     className="animate-fadeIn"
                 />
             )}
@@ -291,7 +291,7 @@ export default function ContactForm() {
                 <StatusBanner
                     tone="error"
                     title={submitFeedback?.title ?? '메시지 전송 중 오류가 발생했습니다.'}
-                    description={submitFeedback?.detail ?? '잠시 후 다시 시도해주세요. 문제가 지속되면 이메일로 직접 연락주세요.'}
+                    description={submitFeedback?.detail ?? '잠시 후 다시 시도해주세요.'}
                     className="animate-fadeIn"
                 />
             )}
