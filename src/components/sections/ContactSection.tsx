@@ -5,7 +5,7 @@ export default function ContactSection() {
     return (
         <section
             id="contact"
-            className="section-padding bg-gradient-to-b from-[var(--bg-color)] to-[var(--bg-grad-end)] relative overflow-hidden z-10"
+            className="px-6 pt-16 pb-8 md:px-12 md:pt-24 md:pb-10 lg:px-16 lg:pt-32 lg:pb-12 bg-gradient-to-b from-[var(--bg-color)] to-[var(--bg-grad-end)] relative overflow-hidden z-10"
         >
             {/* Ambient Aurora Orb */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
