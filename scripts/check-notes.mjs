@@ -136,6 +136,11 @@ if (!notesDirectoryViewSource.includes('note.tags')) {
   throw new Error('Note directory cards must expose note tags for scanning and future filtering')
 }
 
+if (!notesDirectoryViewSource.includes('<ul className="mt-4 flex flex-wrap gap-2"') ||
+  !notesDirectoryViewSource.includes('<li')) {
+  throw new Error('Note directory tags must be rendered as a semantic list')
+}
+
 const noteFiles = readdirSync(notesDirectory)
   .filter((fileName) => fileName.endsWith('.md'))
   .sort()

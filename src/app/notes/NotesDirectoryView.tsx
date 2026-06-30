@@ -119,21 +119,21 @@ export default function NotesDirectoryView({ activeCategory, notes }: NotesDirec
                                         <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
                                             {note.summary}
                                         </p>
-                                        <div className="mt-4 flex flex-wrap gap-2" aria-label={`${note.title} 태그`}>
+                                        <ul className="mt-4 flex flex-wrap gap-2" aria-label={`${note.title} 태그`}>
                                             {visibleTags.map((tag) => (
-                                                <span
+                                                <li
                                                     key={tag}
                                                     className="rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] px-2.5 py-1 text-xs font-bold text-[var(--text-muted)]"
                                                 >
                                                     {tag}
-                                                </span>
+                                                </li>
                                             ))}
                                             {remainingTagCount > 0 && (
-                                                <span className="rounded-full border border-[var(--card-border)] px-2.5 py-1 text-xs font-bold text-[var(--text-muted)]">
+                                                <li className="rounded-full border border-[var(--card-border)] px-2.5 py-1 text-xs font-bold text-[var(--text-muted)]">
                                                     +{remainingTagCount}
-                                                </span>
+                                                </li>
                                             )}
-                                        </div>
+                                        </ul>
                                     </article>
                                 )
                             })}
