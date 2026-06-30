@@ -116,8 +116,6 @@ export default async function NotePostPage({ params }: NotePostPageProps) {
                             <time dateTime={note.date}>{formatDate(note.date)}</time>
                             <span aria-hidden="true">·</span>
                             <span>{note.readingTimeMinutes}분 읽기</span>
-                            <span aria-hidden="true">·</span>
-                            <span className="capitalize">{note.status}</span>
                             {category && (
                                 <>
                                     <span aria-hidden="true">·</span>

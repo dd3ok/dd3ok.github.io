@@ -5,7 +5,6 @@ import {
     noteFilterCategories,
     type NoteCategory,
     type PublicNote,
-    type PublicNoteStatus,
 } from '@/lib/notes'
 
 interface NotesDirectoryViewProps {
@@ -29,13 +28,6 @@ const getCategoryHref = (category: NoteCategory) => {
     return `/notes/${category.id}/`
 }
 
-const statusLabelByStatus: Record<PublicNoteStatus, string> = {
-    draft: '초안',
-    reviewed: '검토 완료',
-    evergreen: '계속 업데이트',
-    archived: '보관됨',
-}
-
 export default function NotesDirectoryView({ activeCategory, notes }: NotesDirectoryViewProps) {
     const activeNotes = getNotesForCategory(notes, activeCategory)
     const categoryTabs = noteFilterCategories.map((category) => ({
@@ -43,7 +35,7 @@ export default function NotesDirectoryView({ activeCategory, notes }: NotesDirec
         count: getNotesForCategory(notes, category).length,
     }))
     const visibleCategoryTabs = categoryTabs.filter((category) => (
-        category.id === allNotesCategory.id || category.count > 0
+        category.id === allNotesCategory.id || category.id === activeCategory.id || category.count > 0
     ))
     const activeCategoryLabel = activeCategory.id === allNotesCategory.id
         ? '최근 노트'
@@ -114,10 +106,6 @@ export default function NotesDirectoryView({ activeCategory, notes }: NotesDirec
                                             <time dateTime={note.date}>{formatDate(note.date)}</time>
                                             <span aria-hidden="true">·</span>
                                             <span>{note.readingTimeMinutes}분 읽기</span>
-                                            <span aria-hidden="true">·</span>
-                                            <span className="rounded-full border border-[var(--card-border)] px-2 py-0.5">
-                                                {statusLabelByStatus[note.status]}
-                                            </span>
                                         </div>
 
                                         <h2 className="mt-2 text-xl font-bold text-[var(--text-primary)]">
