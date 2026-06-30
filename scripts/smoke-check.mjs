@@ -32,13 +32,11 @@ const contentChecks = {
     '전체',
     'href="/notes/"',
     '최근 노트',
-    '최신순으로 정리한 공개 노트입니다.',
   ],
   'out/notes/ai-tools/index.html': [
     '전체',
     'href="/notes/"',
     'AI &amp; Tools',
-    'AI 워크플로, 에이전트, 리서치 도구를 다룹니다.',
   ],
 }
 
@@ -62,6 +60,9 @@ const absentContentChecks = {
     'LLM Context 절약을 위한 캐시 최적화 스킬 포함',
   ],
   'out/notes/index.html': [
+    'AI Research Wiki',
+    '최신순으로 정리한 공개 노트입니다.',
+    '>14</span>',
     'href="/notes/meta/"',
     'href="/notes/ai/"',
     'href="/notes/tools/"',
@@ -73,6 +74,8 @@ const absentContentChecks = {
     '계속 읽기',
   ],
   'out/notes/ai-tools/index.html': [
+    'AI 워크플로, 에이전트, 리서치 도구를 다룹니다.',
+    '개 공개 노트',
     'href="/notes/all/"',
     'LLM, agents, AI workflows, prompts, productivity tools, product comparisons',
   ],
