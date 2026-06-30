@@ -142,7 +142,7 @@ export default function AgentSkillsPage() {
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
-            <main className="min-h-[100dvh] bg-[var(--bg-color)]">
+            <main className="min-h-screen min-h-[100dvh] bg-[var(--bg-color)]">
                 <Navigation />
                 <AgentSkillsSection />
                 <Footer />

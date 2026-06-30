@@ -5,7 +5,7 @@ export default function HeroSection() {
     return (
         <section
             id="hero"
-            className="min-h-[100dvh] flex flex-col justify-center lg:justify-start relative overflow-hidden bg-gradient-to-br from-[var(--bg-grad-start)] to-[var(--bg-grad-end)] section-padding"
+            className="min-h-screen min-h-[100dvh] flex flex-col justify-center lg:justify-start relative overflow-hidden bg-gradient-to-br from-[var(--bg-grad-start)] to-[var(--bg-grad-end)] section-padding"
         >
             {/* Ambient Aurora Orbs */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">

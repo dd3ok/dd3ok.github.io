@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function NotesPage() {
     return (
-        <main className="min-h-[100dvh] bg-[var(--bg-color)]">
+        <main className="min-h-screen min-h-[100dvh] bg-[var(--bg-color)]">
             <Navigation />
             <NotesDirectoryView activeCategory={allNotesCategory} notes={getPublicNotes()} />
         </main>

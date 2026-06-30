@@ -48,7 +48,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     }
 
     return (
-        <main className="min-h-[100dvh] bg-[var(--bg-color)]">
+        <main className="min-h-screen min-h-[100dvh] bg-[var(--bg-color)]">
             <Navigation />
             <NotesDirectoryView activeCategory={category} notes={getPublicNotes()} />
         </main>

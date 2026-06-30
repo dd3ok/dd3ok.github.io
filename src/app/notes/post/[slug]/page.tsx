@@ -70,7 +70,7 @@ export default async function NotePostPage({ params }: NotePostPageProps) {
     if (!note) {
         if (slug === emptyPostSlug) {
             return (
-                <main className="min-h-[100dvh] bg-[var(--bg-color)]">
+                <main className="min-h-screen min-h-[100dvh] bg-[var(--bg-color)]">
                     <Navigation />
                     <section className="section-padding pt-28 md:pt-32">
                         <div className="container max-w-3xl">
@@ -100,7 +100,7 @@ export default async function NotePostPage({ params }: NotePostPageProps) {
     const category = getNoteCategoryById(note.category)
 
     return (
-        <main className="min-h-[100dvh] bg-[var(--bg-color)]">
+        <main className="min-h-screen min-h-[100dvh] bg-[var(--bg-color)]">
             <Navigation />
             <article className="section-padding pt-28 md:pt-32">
                 <div className="container max-w-3xl">
