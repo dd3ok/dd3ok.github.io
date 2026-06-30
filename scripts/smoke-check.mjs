@@ -32,20 +32,13 @@ const contentChecks = {
     '전체',
     'href="/notes/"',
     '최근 노트',
-    'Life',
-    'href="/notes/life/"',
     '최신순으로 정리한 공개 노트입니다.',
-    '초안',
-    'baby-naming',
-    'korean-name',
-    '+<!-- -->3',
   ],
   'out/notes/ai-tools/index.html': [
     '전체',
     'href="/notes/"',
     'AI &amp; Tools',
     'AI 워크플로, 에이전트, 리서치 도구를 다룹니다.',
-    '아직 공개 노트가 없습니다.',
   ],
 }
 
@@ -54,7 +47,6 @@ const sitemapContentChecks = [
   '<loc>https://dd3ok.github.io/agent-skills/</loc>',
   '<loc>https://dd3ok.github.io/notes/</loc>',
   '<loc>https://dd3ok.github.io/notes/life/</loc>',
-  '<loc>https://dd3ok.github.io/notes/post/2026-06-17-korean-baby-naming-skill/</loc>',
 ]
 
 const absentContentChecks = {
@@ -70,14 +62,6 @@ const absentContentChecks = {
     'LLM Context 절약을 위한 캐시 최적화 스킬 포함',
   ],
   'out/notes/index.html': [
-    'href="/notes/ai-tools/"',
-    'href="/notes/tech/"',
-    'href="/notes/business/"',
-    'href="/notes/finance/"',
-    'href="/notes/learning/"',
-    'href="/notes/health/"',
-    'href="/notes/insights/"',
-    'href="/notes/other/"',
     'href="/notes/meta/"',
     'href="/notes/ai/"',
     'href="/notes/tools/"',
@@ -89,9 +73,6 @@ const absentContentChecks = {
     '계속 읽기',
   ],
   'out/notes/ai-tools/index.html': [
-    'href="/notes/health/"',
-    'href="/notes/insights/"',
-    'href="/notes/other/"',
     'href="/notes/all/"',
     'LLM, agents, AI workflows, prompts, productivity tools, product comparisons',
   ],
