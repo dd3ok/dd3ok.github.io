@@ -48,22 +48,17 @@ export default function NotesDirectoryView({ activeCategory, notes }: NotesDirec
     const activeCategoryLabel = activeCategory.id === allNotesCategory.id
         ? '최근 노트'
         : activeCategory.title
-    const activeCategoryDescription = activeCategory.description
-    const showSectionCount = activeCategory.id !== allNotesCategory.id
 
     return (
-        <section className="section-padding pt-28 md:pt-32">
+        <section className="px-4 pb-16 pt-24 md:px-12 md:pb-20 md:pt-28">
             <div className="container">
-                <div className="border-b border-[var(--card-border)] pb-6">
-                    <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+                <div className="border-b border-[var(--card-border)] pb-4">
+                    <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
                         <div className="max-w-3xl">
-                            <p className="text-sm font-bold uppercase tracking-[0.18em] text-[var(--accent-color)]">
-                                AI Research Wiki
-                            </p>
-                            <h1 className="mt-3 text-4xl font-extrabold tracking-tight text-[var(--text-primary)] md:text-5xl">
+                            <h1 className="text-3xl font-extrabold tracking-tight text-[var(--text-primary)] md:text-4xl">
                                 Waitworthy
                             </h1>
-                            <p className="mt-4 max-w-2xl text-sm font-medium leading-6 text-[var(--text-secondary)]">
+                            <p className="mt-2 max-w-2xl text-sm font-medium leading-6 text-[var(--text-secondary)]">
                                 Deep Research처럼 기다릴 가치 있는 AI 보고서를 정리합니다.
                             </p>
                         </div>
@@ -73,7 +68,7 @@ export default function NotesDirectoryView({ activeCategory, notes }: NotesDirec
                     </div>
                 </div>
 
-                <nav className="mt-6 flex flex-wrap gap-2" aria-label="노트 카테고리">
+                <nav className="mt-4 flex flex-wrap gap-1.5" aria-label="노트 카테고리">
                     {visibleCategoryTabs.map((category) => {
                         const isActiveCategory = category.id === activeCategory.id
 
@@ -82,36 +77,23 @@ export default function NotesDirectoryView({ activeCategory, notes }: NotesDirec
                                 key={category.id}
                                 href={getCategoryHref(category)}
                                 aria-current={isActiveCategory ? 'page' : undefined}
-                                className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm font-bold transition-colors ${
+                                className={`inline-flex items-center rounded-full border px-3 py-1.5 text-sm font-bold transition-colors ${
                                     isActiveCategory
                                         ? 'border-[var(--accent-color)] bg-[var(--accent-color)] text-white'
                                         : 'border-[var(--card-border)] bg-[var(--card-bg)] text-[var(--text-secondary)] hover:border-[var(--accent-color)] hover:text-[var(--accent-color)]'
                                 }`}
                             >
-                                <span>{category.title}</span>
-                                <span className={isActiveCategory ? 'text-white/80' : 'text-[var(--text-muted)]'}>
-                                    {category.count}
-                                </span>
+                                {category.title}
                             </Link>
                         )
                     })}
                 </nav>
 
-                <div className="mt-10">
-                    <div className="mb-5 flex flex-col gap-3 border-b border-[var(--card-border)] pb-4 sm:flex-row sm:items-end sm:justify-between">
-                        <div>
-                            <h2 className="text-2xl font-extrabold tracking-tight text-[var(--text-primary)]">
-                                {activeCategoryLabel}
-                            </h2>
-                            <p className="mt-1 text-sm font-medium leading-6 text-[var(--text-secondary)]">
-                                {activeCategoryDescription}
-                            </p>
-                        </div>
-                        {showSectionCount && (
-                            <p className="text-sm font-semibold text-[var(--text-muted)]">
-                                {activeNotes.length}개 공개 노트
-                            </p>
-                        )}
+                <div className="mt-6">
+                    <div className="mb-4 border-b border-[var(--card-border)] pb-3">
+                        <h2 className="text-xl font-extrabold tracking-tight text-[var(--text-primary)]">
+                            {activeCategoryLabel}
+                        </h2>
                     </div>
 
                     {activeNotes.length === 0 ? (
