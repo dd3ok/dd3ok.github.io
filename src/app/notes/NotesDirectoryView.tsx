@@ -5,6 +5,7 @@ import {
     noteFilterCategories,
     type NoteCategory,
     type PublicNote,
+    type PublicNoteStatus,
 } from '@/lib/notes'
 
 interface NotesDirectoryViewProps {
@@ -28,41 +29,52 @@ const getCategoryHref = (category: NoteCategory) => {
     return `/notes/${category.id}/`
 }
 
+const statusLabelByStatus: Record<PublicNoteStatus, string> = {
+    draft: '초안',
+    reviewed: '검토 완료',
+    evergreen: '계속 업데이트',
+    archived: '보관됨',
+}
+
 export default function NotesDirectoryView({ activeCategory, notes }: NotesDirectoryViewProps) {
     const activeNotes = getNotesForCategory(notes, activeCategory)
     const categoryTabs = noteFilterCategories.map((category) => ({
         ...category,
         count: getNotesForCategory(notes, category).length,
     }))
-    const title = activeCategory.id === allNotesCategory.id
-        ? 'Waitworthy'
-        : `${activeCategory.title} Notes`
-    const eyebrow = activeCategory.id === allNotesCategory.id
-        ? 'AI Research Wiki'
-        : 'Waitworthy'
+    const visibleCategoryTabs = categoryTabs.filter((category) => (
+        category.id === allNotesCategory.id || category.count > 0
+    ))
+    const activeCategoryLabel = activeCategory.id === allNotesCategory.id
+        ? '최근 노트'
+        : activeCategory.title
+    const activeCategoryDescription = activeCategory.description
+    const showSectionCount = activeCategory.id !== allNotesCategory.id
 
     return (
         <section className="section-padding pt-28 md:pt-32">
             <div className="container">
                 <div className="border-b border-[var(--card-border)] pb-6">
-                    <p className="text-sm font-bold uppercase tracking-[0.18em] text-[var(--accent-color)]">
-                        {eyebrow}
-                    </p>
-                    <div className="mt-3 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-                        <h1 className="text-4xl font-extrabold tracking-tight text-[var(--text-primary)] md:text-5xl">
-                            {title}
-                        </h1>
-                        <p className="max-w-2xl text-sm font-medium leading-6 text-[var(--text-secondary)]">
-                            ChatGPT Deep Research, GPT Pro 워크플로, Gemini Deep Research 등 기다릴 가치가 있었던 AI 심층 리서치 보고서를 위키로 정리합니다.
-                        </p>
+                    <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+                        <div className="max-w-3xl">
+                            <p className="text-sm font-bold uppercase tracking-[0.18em] text-[var(--accent-color)]">
+                                AI Research Wiki
+                            </p>
+                            <h1 className="mt-3 text-4xl font-extrabold tracking-tight text-[var(--text-primary)] md:text-5xl">
+                                Waitworthy
+                            </h1>
+                            <p className="mt-4 max-w-2xl text-sm font-medium leading-6 text-[var(--text-secondary)]">
+                                Deep Research처럼 기다릴 가치 있는 AI 보고서를 정리합니다.
+                            </p>
+                        </div>
                         <p className="text-sm font-semibold text-[var(--text-muted)]">
-                            공개 노트 {activeNotes.length}개
+                            공개 노트 {notes.length}개
                         </p>
                     </div>
                 </div>
 
                 <nav className="mt-6 flex flex-wrap gap-2" aria-label="노트 카테고리">
-                    {categoryTabs.map((category) => {
+                    {visibleCategoryTabs.map((category) => {
                         const isActiveCategory = category.id === activeCategory.id
 
                         return (
@@ -86,6 +98,22 @@ export default function NotesDirectoryView({ activeCategory, notes }: NotesDirec
                 </nav>
 
                 <div className="mt-10">
+                    <div className="mb-5 flex flex-col gap-3 border-b border-[var(--card-border)] pb-4 sm:flex-row sm:items-end sm:justify-between">
+                        <div>
+                            <h2 className="text-2xl font-extrabold tracking-tight text-[var(--text-primary)]">
+                                {activeCategoryLabel}
+                            </h2>
+                            <p className="mt-1 text-sm font-medium leading-6 text-[var(--text-secondary)]">
+                                {activeCategoryDescription}
+                            </p>
+                        </div>
+                        {showSectionCount && (
+                            <p className="text-sm font-semibold text-[var(--text-muted)]">
+                                {activeNotes.length}개 공개 노트
+                            </p>
+                        )}
+                    </div>
+
                     {activeNotes.length === 0 ? (
                         <div className="glass-card p-6">
                             <p className="text-sm text-[var(--text-muted)]">
@@ -105,7 +133,9 @@ export default function NotesDirectoryView({ activeCategory, notes }: NotesDirec
                                             <span aria-hidden="true">·</span>
                                             <span>{note.readingTimeMinutes}분 읽기</span>
                                             <span aria-hidden="true">·</span>
-                                            <span className="capitalize">{note.status}</span>
+                                            <span className="rounded-full border border-[var(--card-border)] px-2 py-0.5">
+                                                {statusLabelByStatus[note.status]}
+                                            </span>
                                         </div>
 
                                         <h2 className="mt-2 text-xl font-bold text-[var(--text-primary)]">
@@ -134,6 +164,15 @@ export default function NotesDirectoryView({ activeCategory, notes }: NotesDirec
                                                 </li>
                                             )}
                                         </ul>
+                                        <div className="mt-4 flex justify-end">
+                                            <Link
+                                                href={`/notes/post/${note.slug}/`}
+                                                aria-label={`${note.title} 계속 읽기`}
+                                                className="text-sm font-bold text-[var(--accent-color)] transition-colors hover:text-[var(--accent-secondary)]"
+                                            >
+                                                계속 읽기
+                                            </Link>
+                                        </div>
                                     </article>
                                 )
                             })}

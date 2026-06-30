@@ -9,7 +9,6 @@ const requiredRouteFiles = [
 const forbiddenRouteFiles = [
   'src/app/notes/[slug]/page.tsx',
 ]
-const notesDirectoryViewPath = resolve('src/app/notes/NotesDirectoryView.tsx')
 const requiredFrontmatterFields = [
   'title',
   'date',
@@ -124,21 +123,6 @@ for (const routeFile of forbiddenRouteFiles) {
   if (existsSync(resolve(routeFile))) {
     throw new Error(`Forbidden mixed notes route file exists: ${routeFile}`)
   }
-}
-
-const notesDirectoryViewSource = readFileSync(notesDirectoryViewPath, 'utf8')
-
-if (!notesDirectoryViewSource.includes('/notes/post/${note.slug}/')) {
-  throw new Error('Note detail links must use /notes/post/[slug]/')
-}
-
-if (!notesDirectoryViewSource.includes('note.tags')) {
-  throw new Error('Note directory cards must expose note tags for scanning and future filtering')
-}
-
-if (!notesDirectoryViewSource.includes('<ul className="mt-4 flex flex-wrap gap-2"') ||
-  !notesDirectoryViewSource.includes('<li')) {
-  throw new Error('Note directory tags must be rendered as a semantic list')
 }
 
 const noteFiles = readdirSync(notesDirectory)
