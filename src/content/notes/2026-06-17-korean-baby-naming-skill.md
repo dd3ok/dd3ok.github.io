@@ -12,7 +12,7 @@ source_repository: "waitworthy"
 
 # 대한민국 아기 이름 짓기 Skill
 
-Version: 1.1 - Direct Hanja Verification Update
+Version: 1.1 — Direct Hanja Verification Update
 Last updated: 2026-06-10
 Primary language: Korean
 Purpose: 대한민국에서 출생신고 가능한 아기 이름을 **법적 사용 가능성, 직접 인명용 한자 검증, 사주 보완, 성명학, 한자 뜻, 발음, 실사용성** 관점에서 체계적으로 검토하고 최종 후보를 제안한다.
@@ -569,10 +569,10 @@ Purpose: 대한민국에서 출생신고 가능한 아기 이름을 **법적 사
 
 이 Skill에서 법적·행정 기준을 확인할 때 우선 사용할 출처:
 
-- 대법원 전자가족관계등록시스템 - 인명용 한자 조회
+- 대법원 전자가족관계등록시스템 — 인명용 한자 조회
   https://efamily.scourt.go.kr/cs/CsBltnWrtList.do?bltnbordId=0000010
-- 국가법령정보센터 - 가족관계의 등록 등에 관한 규칙 제37조
+- 국가법령정보센터 — 가족관계의 등록 등에 관한 규칙 제37조
   https://www.law.go.kr/LSW/lumLsLinkPop.do?chrClsCd=010202&lspttninfSeq=104326
-- 생활법령정보 - 태아 및 신생아, 자녀의 이름 관련 안내
+- 생활법령정보 — 태아 및 신생아, 자녀의 이름 관련 안내
   https://www.easylaw.go.kr/
 - 대법원·법원행정처 가족관계등록예규 및 선례
