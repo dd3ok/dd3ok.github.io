@@ -1,11 +1,16 @@
+'use client'
+
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import type { MouseEvent } from 'react'
 import Link from 'next/link'
 import {
     allNotesCategory,
+    getNoteCategoryById,
     getNotesForCategory,
     noteFilterCategories,
     type NoteCategory,
-    type PublicNote,
-} from '@/lib/notes'
+} from '@/lib/note-categories'
+import type { PublicNote } from '@/lib/notes'
 
 interface NotesDirectoryViewProps {
     activeCategory: NoteCategory
@@ -28,18 +33,97 @@ const getCategoryHref = (category: NoteCategory) => {
     return `/notes/${category.id}/`
 }
 
+const getCategoryFromPathname = (pathname: string) => {
+    const normalizedPathname = pathname.replace(/\/+$/, '')
+
+    if (normalizedPathname === '/notes') {
+        return allNotesCategory
+    }
+
+    const categoryMatch = normalizedPathname.match(/^\/notes\/([^/]+)$/)
+
+    if (!categoryMatch) {
+        return undefined
+    }
+
+    try {
+        return getNoteCategoryById(decodeURIComponent(categoryMatch[1]))
+    } catch {
+        return undefined
+    }
+}
+
 export default function NotesDirectoryView({ activeCategory, notes }: NotesDirectoryViewProps) {
-    const activeNotes = getNotesForCategory(notes, activeCategory)
-    const categoryTabs = noteFilterCategories.map((category) => ({
-        ...category,
-        count: getNotesForCategory(notes, category).length,
-    }))
-    const title = activeCategory.id === allNotesCategory.id
+    const [activeCategoryId, setActiveCategoryId] = useState(activeCategory.id)
+    const currentCategory = useMemo(() => (
+        noteFilterCategories.find((category) => category.id === activeCategoryId) ?? activeCategory
+    ), [activeCategory, activeCategoryId])
+    const activeNotes = useMemo(() => (
+        getNotesForCategory(notes, currentCategory)
+    ), [currentCategory, notes])
+    const categoryTabs = useMemo(() => (
+        noteFilterCategories.map((category) => ({
+            ...category,
+            count: getNotesForCategory(notes, category).length,
+        }))
+    ), [notes])
+    const title = currentCategory.id === allNotesCategory.id
         ? 'Waitworthy'
-        : `${activeCategory.title} Notes`
-    const eyebrow = activeCategory.id === allNotesCategory.id
+        : `${currentCategory.title} Notes`
+    const eyebrow = currentCategory.id === allNotesCategory.id
         ? 'AI Research Wiki'
         : 'Waitworthy'
+
+    useEffect(() => {
+        setActiveCategoryId(activeCategory.id)
+    }, [activeCategory.id])
+
+    useEffect(() => {
+        const handlePopState = () => {
+            const nextCategory = getCategoryFromPathname(window.location.pathname)
+
+            if (nextCategory) {
+                setActiveCategoryId(nextCategory.id)
+            }
+        }
+
+        window.addEventListener('popstate', handlePopState)
+
+        return () => window.removeEventListener('popstate', handlePopState)
+    }, [])
+
+    useEffect(() => {
+        document.title = currentCategory.id === allNotesCategory.id
+            ? 'Notes | dd3ok'
+            : `${currentCategory.title} Notes | dd3ok`
+    }, [currentCategory])
+
+    const handleCategoryClick = useCallback((
+        event: MouseEvent<HTMLAnchorElement>,
+        category: NoteCategory
+    ) => {
+        if (
+            event.defaultPrevented ||
+            event.button !== 0 ||
+            event.metaKey ||
+            event.ctrlKey ||
+            event.altKey ||
+            event.shiftKey
+        ) {
+            return
+        }
+
+        event.preventDefault()
+
+        const nextHref = getCategoryHref(category)
+
+        if (window.location.pathname === nextHref) {
+            return
+        }
+
+        setActiveCategoryId(category.id)
+        window.history.pushState({ notesCategory: category.id }, '', nextHref)
+    }, [])
 
     return (
         <section className="section-padding pt-28 md:pt-32">
@@ -63,13 +147,15 @@ export default function NotesDirectoryView({ activeCategory, notes }: NotesDirec
 
                 <nav className="mt-6 flex flex-wrap gap-2" aria-label="노트 카테고리">
                     {categoryTabs.map((category) => {
-                        const isActiveCategory = category.id === activeCategory.id
+                        const isActiveCategory = category.id === currentCategory.id
 
                         return (
                             <Link
                                 key={category.id}
                                 href={getCategoryHref(category)}
+                                scroll={false}
                                 aria-current={isActiveCategory ? 'page' : undefined}
+                                onClick={(event) => handleCategoryClick(event, category)}
                                 className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm font-bold transition-colors ${
                                     isActiveCategory
                                         ? 'border-[var(--accent-color)] bg-[var(--accent-color)] text-white'

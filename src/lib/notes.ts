@@ -1,13 +1,18 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
+import { noteCategories } from './note-categories'
+
+export {
+    allNotesCategory,
+    getNoteCategoryById,
+    getNotesForCategory,
+    getStaticNoteCategorySlugs,
+    noteCategories,
+    noteFilterCategories,
+    type NoteCategory,
+} from './note-categories'
 
 export type PublicNoteStatus = 'draft' | 'reviewed' | 'evergreen' | 'archived'
-
-export interface NoteCategory {
-    id: string
-    title: string
-    aliases?: string[]
-}
 
 export interface PublicNote {
     slug: string
@@ -37,58 +42,6 @@ const allowedStatuses = new Set<PublicNoteStatus>([
     'evergreen',
     'archived',
 ])
-
-export const noteCategories: NoteCategory[] = [
-    {
-        id: 'ai-tools',
-        title: 'AI & Tools',
-        aliases: ['ai', 'tools', 'ai-workflow', 'agent', 'agents'],
-    },
-    {
-        id: 'tech',
-        title: 'Tech',
-    },
-    {
-        id: 'business',
-        title: 'Business',
-    },
-    {
-        id: 'finance',
-        title: 'Finance',
-    },
-    {
-        id: 'learning',
-        title: 'Learning',
-    },
-    {
-        id: 'life',
-        title: 'Life',
-    },
-    {
-        id: 'health',
-        title: 'Health',
-        aliases: ['health-longevity', 'longevity', 'exercise'],
-    },
-    {
-        id: 'insights',
-        title: 'Insights',
-        aliases: ['insight', 'research-notes', 'notes'],
-    },
-    {
-        id: 'other',
-        title: 'Other',
-    },
-]
-
-export const allNotesCategory: NoteCategory = {
-    id: 'all',
-    title: '전체',
-}
-
-export const noteFilterCategories: NoteCategory[] = [
-    allNotesCategory,
-    ...noteCategories,
-]
 
 const stripQuotes = (value: string) => value.replace(/^['"]|['"]$/g, '')
 
@@ -280,32 +233,6 @@ export const getPublicNoteBySlug = (slug: string) => {
 
 export const getPublicNoteSlugs = () => {
     return getPublicNotes().map((note) => note.slug)
-}
-
-export const getNotesForCategory = (notes: PublicNote[], category: NoteCategory) => {
-    if (category.id === allNotesCategory.id) {
-        return notes
-    }
-
-    const categoryKeys = new Set([
-        category.id,
-        ...(category.aliases ?? []),
-    ])
-
-    return notes.filter((note) => (
-        categoryKeys.has(note.category) ||
-        Boolean(note.domain && categoryKeys.has(note.domain)) ||
-        Boolean(note.type && categoryKeys.has(note.type)) ||
-        note.tags.some((tag) => categoryKeys.has(tag))
-    ))
-}
-
-export const getNoteCategoryById = (id: string) => {
-    return noteCategories.find((category) => category.id === id)
-}
-
-export const getStaticNoteCategorySlugs = () => {
-    return noteCategories.map((category) => category.id)
 }
 
 export const getStaticNotePostSlugs = () => {
