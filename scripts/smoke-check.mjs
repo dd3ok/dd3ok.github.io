@@ -17,8 +17,10 @@ const emptyPostRouteFile = 'out/notes/post/__empty__/index.html'
 
 const contentChecks = {
   'out/index.html': [
+    '<h1',
     'Projects',
     'Contact',
+    'Lab',
     'href="#projects"',
     'href="#contact"',
     'https://dd3ok.github.io/',
@@ -31,6 +33,7 @@ const contentChecks = {
     'https://github.com/dd3ok/who-am-ai',
   ],
   'out/agent-skills/index.html': [
+    '<title>Open Source Agent Skills | dd3ok</title>',
     'Agent Skills',
     'Codex와 Claude Code에서 반복 작업을 줄이기 위해 만든 공개 스킬 저장소입니다.',
     'Finance API Skills',
@@ -39,6 +42,7 @@ const contentChecks = {
     'WATCHLIST.md',
   ],
   'out/notes/index.html': [
+    '<title>Waitworthy | dd3ok</title>',
     'Waitworthy',
     '전체',
     'href="/notes/"',
@@ -65,6 +69,8 @@ const sitemapContentChecks = [
 
 const absentContentChecks = {
   'out/index.html': [
+    'page-enter',
+    'Toys',
     'Who am AI',
     '채팅 AI',
     '이력서 에이전트',
@@ -77,6 +83,9 @@ const absentContentChecks = {
     'LLM Context 절약을 위한 캐시 최적화 스킬 포함',
   ],
   'out/notes/index.html': [
+    'page-enter',
+    'glass-card p-5',
+    'Waitworthy | dd3ok | dd3ok',
     'AI Research Wiki',
     '최신순으로 정리한 공개 노트입니다.',
     '>14</span>',
@@ -95,10 +104,15 @@ const absentContentChecks = {
     '보관됨',
   ],
   'out/notes/ai-tools/index.html': [
+    'page-enter',
     'AI 워크플로, 에이전트, 리서치 도구를 다룹니다.',
     '개 공개 노트',
     'href="/notes/all/"',
     'LLM, agents, AI workflows, prompts, productivity tools, product comparisons',
+  ],
+  'out/agent-skills/index.html': [
+    'page-enter',
+    'Open Source Agent Skills | dd3ok | dd3ok',
   ],
 }
 

@@ -12,10 +12,10 @@ export default function PagesSection() {
             <div className="container">
                 <ScrollAnimation className="text-center mb-16">
                     <h2 className="text-3xl md:text-4xl font-extrabold text-[var(--accent-color)] tracking-tight mb-4">
-                        Toys
+                        Lab
                     </h2>
                     <p className="text-lg text-[var(--text-secondary)] max-w-2xl mx-auto font-medium">
-                        AI, 자동화, 개발 도구를 작게 만들어본 개인 프로젝트입니다
+                        AI, 자동화, 개발 도구를 실험한 개인 프로젝트입니다
                     </p>
                 </ScrollAnimation>
 

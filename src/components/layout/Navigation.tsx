@@ -22,7 +22,7 @@ const sectionNavItems = [
     { id: 'projects', label: 'Projects', type: 'section' },
     {
         id: 'services',
-        label: 'Toys',
+        label: 'Lab',
         type: 'dropdown',
         dropdown: [
             ...navigableServices.map((service) => ({

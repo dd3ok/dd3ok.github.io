@@ -4,7 +4,7 @@ import Footer from '@/components/layout/Footer'
 import AgentSkillsSection from '@/components/sections/AgentSkillsSection'
 
 export const metadata: Metadata = {
-    title: 'Open Source Agent Skills | dd3ok',
+    title: 'Open Source Agent Skills',
     description:
         'dd3ok의 오픈소스 AI Agent Skill 모음: 네이버증권 API, 토스증권 API, 바이낸스 API, 야후 파이낸스, 문서 브리핑 캐시, 세션 핸드오프, WATCHLIST.md. Codex와 Claude Code에서 쓰는 Python 기반 스킬.',
     keywords: [
@@ -142,7 +142,7 @@ export default function AgentSkillsPage() {
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
-            <main className="page-enter min-h-screen bg-[var(--bg-color)]">
+            <main className="min-h-[100dvh] bg-[var(--bg-color)]">
                 <Navigation />
                 <AgentSkillsSection />
                 <Footer />

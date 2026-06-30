@@ -95,20 +95,20 @@ export default function NotesDirectoryView({ activeCategory, notes }: NotesDirec
                             </p>
                         </div>
                     ) : (
-                        <div className="grid gap-4">
+                        <div className="divide-y divide-[var(--card-border)] border-y border-[var(--card-border)]">
                             {activeNotes.map((note) => {
                                 const visibleTags = note.tags.slice(0, 4)
                                 const remainingTagCount = note.tags.length - visibleTags.length
 
                                 return (
-                                    <article key={note.slug} className="glass-card p-5">
+                                    <article key={note.slug} className="py-5 md:py-6">
                                         <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-[var(--text-muted)]">
                                             <time dateTime={note.date}>{formatDate(note.date)}</time>
                                             <span aria-hidden="true">·</span>
                                             <span>{note.readingTimeMinutes}분 읽기</span>
                                         </div>
 
-                                        <h2 className="mt-2 text-xl font-bold text-[var(--text-primary)]">
+                                        <h2 className="mt-2 max-w-3xl text-xl font-bold text-[var(--text-primary)]">
                                             <Link
                                                 href={`/notes/post/${note.slug}/`}
                                                 className="transition-colors hover:text-[var(--accent-color)]"
@@ -116,7 +116,7 @@ export default function NotesDirectoryView({ activeCategory, notes }: NotesDirec
                                                 {note.title}
                                             </Link>
                                         </h2>
-                                        <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+                                        <p className="mt-2 max-w-4xl text-sm leading-6 text-[var(--text-secondary)]">
                                             {note.summary}
                                         </p>
                                         <ul className="mt-4 flex flex-wrap gap-2" aria-label={`${note.title} 태그`}>
