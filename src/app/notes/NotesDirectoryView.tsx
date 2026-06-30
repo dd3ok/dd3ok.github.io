@@ -164,15 +164,6 @@ export default function NotesDirectoryView({ activeCategory, notes }: NotesDirec
                                                 </li>
                                             )}
                                         </ul>
-                                        <div className="mt-4 flex justify-end">
-                                            <Link
-                                                href={`/notes/post/${note.slug}/`}
-                                                aria-label={`${note.title} 계속 읽기`}
-                                                className="text-sm font-bold text-[var(--accent-color)] transition-colors hover:text-[var(--accent-secondary)]"
-                                            >
-                                                계속 읽기
-                                            </Link>
-                                        </div>
                                     </article>
                                 )
                             })}

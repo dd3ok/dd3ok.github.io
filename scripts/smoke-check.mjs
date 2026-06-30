@@ -39,7 +39,6 @@ const contentChecks = {
     'baby-naming',
     'korean-name',
     '+<!-- -->3',
-    '계속 읽기',
   ],
   'out/notes/ai-tools/index.html': [
     '전체',
@@ -87,6 +86,7 @@ const absentContentChecks = {
     '>Decision</h2>',
     'href="/notes/all/"',
     'LLM, agents, AI workflows, prompts, productivity tools, product comparisons',
+    '계속 읽기',
   ],
   'out/notes/ai-tools/index.html': [
     'href="/notes/health/"',
