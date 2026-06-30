@@ -132,6 +132,10 @@ if (!notesDirectoryViewSource.includes('/notes/post/${note.slug}/')) {
   throw new Error('Note detail links must use /notes/post/[slug]/')
 }
 
+if (!notesDirectoryViewSource.includes('note.tags')) {
+  throw new Error('Note directory cards must expose note tags for scanning and future filtering')
+}
+
 const noteFiles = readdirSync(notesDirectory)
   .filter((fileName) => fileName.endsWith('.md'))
   .sort()

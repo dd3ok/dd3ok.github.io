@@ -94,29 +94,49 @@ export default function NotesDirectoryView({ activeCategory, notes }: NotesDirec
                         </div>
                     ) : (
                         <div className="grid gap-4">
-                            {activeNotes.map((note) => (
-                                <article key={note.slug} className="glass-card p-5">
-                                    <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-[var(--text-muted)]">
-                                        <time dateTime={note.date}>{formatDate(note.date)}</time>
-                                        <span aria-hidden="true">·</span>
-                                        <span>{note.readingTimeMinutes}분 읽기</span>
-                                        <span aria-hidden="true">·</span>
-                                        <span className="capitalize">{note.status}</span>
-                                    </div>
+                            {activeNotes.map((note) => {
+                                const visibleTags = note.tags.slice(0, 4)
+                                const remainingTagCount = note.tags.length - visibleTags.length
 
-                                    <h2 className="mt-2 text-xl font-bold text-[var(--text-primary)]">
-                                        <Link
-                                            href={`/notes/post/${note.slug}/`}
-                                            className="transition-colors hover:text-[var(--accent-color)]"
-                                        >
-                                            {note.title}
-                                        </Link>
-                                    </h2>
-                                    <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
-                                        {note.summary}
-                                    </p>
-                                </article>
-                            ))}
+                                return (
+                                    <article key={note.slug} className="glass-card p-5">
+                                        <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-[var(--text-muted)]">
+                                            <time dateTime={note.date}>{formatDate(note.date)}</time>
+                                            <span aria-hidden="true">·</span>
+                                            <span>{note.readingTimeMinutes}분 읽기</span>
+                                            <span aria-hidden="true">·</span>
+                                            <span className="capitalize">{note.status}</span>
+                                        </div>
+
+                                        <h2 className="mt-2 text-xl font-bold text-[var(--text-primary)]">
+                                            <Link
+                                                href={`/notes/post/${note.slug}/`}
+                                                className="transition-colors hover:text-[var(--accent-color)]"
+                                            >
+                                                {note.title}
+                                            </Link>
+                                        </h2>
+                                        <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+                                            {note.summary}
+                                        </p>
+                                        <div className="mt-4 flex flex-wrap gap-2" aria-label={`${note.title} 태그`}>
+                                            {visibleTags.map((tag) => (
+                                                <span
+                                                    key={tag}
+                                                    className="rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] px-2.5 py-1 text-xs font-bold text-[var(--text-muted)]"
+                                                >
+                                                    {tag}
+                                                </span>
+                                            ))}
+                                            {remainingTagCount > 0 && (
+                                                <span className="rounded-full border border-[var(--card-border)] px-2.5 py-1 text-xs font-bold text-[var(--text-muted)]">
+                                                    +{remainingTagCount}
+                                                </span>
+                                            )}
+                                        </div>
+                                    </article>
+                                )
+                            })}
                         </div>
                     )}
                 </div>
