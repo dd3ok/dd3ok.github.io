@@ -4,7 +4,7 @@ import NotesDirectoryView from './NotesDirectoryView'
 import { allNotesCategory, getPublicNotes } from '@/lib/notes'
 
 export const metadata: Metadata = {
-    title: 'Waitworthy | dd3ok',
+    title: 'Waitworthy',
     description: 'Deep Research처럼 기다릴 가치 있는 AI 보고서를 정리합니다.',
     alternates: {
         canonical: '/notes/',
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function NotesPage() {
     return (
-        <main className="page-enter min-h-screen bg-[var(--bg-color)]">
+        <main className="min-h-screen min-h-[100dvh] bg-[var(--bg-color)]">
             <Navigation />
             <NotesDirectoryView activeCategory={allNotesCategory} notes={getPublicNotes()} />
         </main>

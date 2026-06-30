@@ -26,12 +26,12 @@ export const generateMetadata = async ({ params }: CategoryPageProps): Promise<M
 
     if (!category) {
         return {
-            title: 'Category not found | dd3ok',
+            title: 'Category not found',
         }
     }
 
     return {
-        title: `${category.title} Notes | dd3ok`,
+        title: `${category.title} Notes`,
         description: `${category.title} 카테고리의 공개 노트`,
         alternates: {
             canonical: `/notes/${category.id}/`,
@@ -48,7 +48,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     }
 
     return (
-        <main className="page-enter min-h-screen bg-[var(--bg-color)]">
+        <main className="min-h-screen min-h-[100dvh] bg-[var(--bg-color)]">
             <Navigation />
             <NotesDirectoryView activeCategory={category} notes={getPublicNotes()} />
         </main>

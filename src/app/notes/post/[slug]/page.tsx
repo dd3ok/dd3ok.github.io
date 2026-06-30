@@ -41,7 +41,7 @@ export const generateMetadata = async ({ params }: NotePostPageProps): Promise<M
     if (!note) {
         if (slug === emptyPostSlug) {
             return {
-                title: 'No public notes yet | dd3ok',
+                title: 'No public notes yet',
                 robots: {
                     index: false,
                     follow: false,
@@ -50,12 +50,12 @@ export const generateMetadata = async ({ params }: NotePostPageProps): Promise<M
         }
 
         return {
-            title: 'Note not found | dd3ok',
+            title: 'Note not found',
         }
     }
 
     return {
-        title: `${note.title} | dd3ok`,
+        title: note.title,
         description: note.summary,
         alternates: {
             canonical: `/notes/post/${note.slug}/`,
@@ -70,7 +70,7 @@ export default async function NotePostPage({ params }: NotePostPageProps) {
     if (!note) {
         if (slug === emptyPostSlug) {
             return (
-                <main className="page-enter min-h-screen bg-[var(--bg-color)]">
+                <main className="min-h-screen min-h-[100dvh] bg-[var(--bg-color)]">
                     <Navigation />
                     <section className="section-padding pt-28 md:pt-32">
                         <div className="container max-w-3xl">
@@ -100,7 +100,7 @@ export default async function NotePostPage({ params }: NotePostPageProps) {
     const category = getNoteCategoryById(note.category)
 
     return (
-        <main className="page-enter min-h-screen bg-[var(--bg-color)]">
+        <main className="min-h-screen min-h-[100dvh] bg-[var(--bg-color)]">
             <Navigation />
             <article className="section-padding pt-28 md:pt-32">
                 <div className="container max-w-3xl">
