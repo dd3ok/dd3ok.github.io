@@ -37,9 +37,9 @@ function FeaturedProjectCard({ project, index, onImageOpen, variant = 'secondary
     const isPrimary = variant === 'primary'
 
     return (
-        <article className={`glass-card hover-lift overflow-hidden rounded-2xl p-4 ${isPrimary ? '' : 'h-full sm:grid sm:grid-cols-[11rem_1fr] sm:gap-4 lg:block'}`}>
+        <article className={`glass-card hover-lift overflow-hidden rounded-2xl p-4 ${isPrimary ? 'lg:grid lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-stretch lg:gap-5' : 'h-full sm:grid sm:grid-cols-[11rem_1fr] sm:gap-4 lg:block'}`}>
             <div
-                className={`group/image relative cursor-pointer overflow-hidden rounded-xl border border-[var(--card-border)] bg-[var(--input-border)] ${isPrimary ? 'aspect-video' : 'aspect-video sm:aspect-square lg:aspect-video'}`}
+                className={`group/image relative cursor-pointer overflow-hidden rounded-xl border border-[var(--card-border)] bg-[var(--input-border)] ${isPrimary ? 'aspect-video lg:aspect-auto lg:min-h-[18rem]' : 'aspect-video sm:aspect-square lg:aspect-video'}`}
                 onClick={() => onImageOpen(project.image, project.title)}
                 onKeyDown={(event) => {
                     if (event.key === 'Enter' || event.key === ' ') {
@@ -102,9 +102,9 @@ function FeaturedProjectCard({ project, index, onImageOpen, variant = 'secondary
     )
 }
 
-function SupportingProjectCard({ project }: { project: Project }) {
+function SupportingProjectCard({ project, isFirst }: { project: Project; isFirst: boolean }) {
     return (
-        <article className="grid gap-4 py-5 first:pt-0 last:pb-0 md:grid-cols-[minmax(0,1fr)_12rem] md:items-start">
+        <article className={`grid gap-4 py-5 md:grid-cols-[minmax(0,1fr)_9rem] md:items-center ${isFirst ? 'pt-0' : 'border-t border-[var(--card-border)]'}`}>
             <div>
                 <p className="mb-2 text-xs font-bold text-[var(--accent-color)]">
                     {project.displayLabel}
@@ -126,7 +126,7 @@ function SupportingProjectCard({ project }: { project: Project }) {
                 href={project.demo}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-between self-start rounded-xl border border-[var(--card-border)] bg-[var(--input-bg)] px-4 py-3 text-sm font-bold text-[var(--text-primary)] transition-all duration-300 hover:border-[var(--card-hover-border)] hover:text-[var(--accent-color)] md:w-full"
+                className="inline-flex h-11 items-center justify-center gap-3 rounded-xl border border-[var(--card-border)] bg-[var(--input-bg)] px-4 text-sm font-bold text-[var(--text-primary)] transition-all duration-300 hover:border-[var(--card-hover-border)] hover:text-[var(--accent-color)] md:w-full"
             >
                 방문하기
                 <span aria-hidden="true">→</span>
@@ -161,7 +161,7 @@ export default function ProjectGallery() {
     return (
         <>
             <div className="space-y-8">
-                <div className="grid gap-6 lg:grid-cols-[minmax(0,1.3fr)_minmax(20rem,0.7fr)]">
+                <div className="grid gap-5">
                     <ScrollAnimation animation="fade">
                         <FeaturedProjectCard
                             project={primaryProject}
@@ -171,7 +171,7 @@ export default function ProjectGallery() {
                         />
                     </ScrollAnimation>
 
-                    <div className="grid gap-6">
+                    <div className="grid gap-5 lg:grid-cols-2">
                         {relatedProjects.map((project, index) => (
                             <ScrollAnimation
                                 key={project.title}
@@ -203,14 +203,14 @@ export default function ProjectGallery() {
                         </span>
                     </div>
 
-                    <div className="divide-y divide-[var(--card-border)]">
+                    <div>
                         {supportingProjects.map((project, index) => (
                             <ScrollAnimation
                                 key={project.title}
                                 animation="fade"
                                 delay={index * 90}
                             >
-                                <SupportingProjectCard project={project} />
+                                <SupportingProjectCard project={project} isFirst={index === 0} />
                             </ScrollAnimation>
                         ))}
                     </div>

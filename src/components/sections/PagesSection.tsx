@@ -26,20 +26,22 @@ export default function PagesSection() {
                             animation="fade"
                             delay={index * 80}
                         >
-                            <article className="group grid gap-4 py-5 transition-colors duration-300 hover:bg-[var(--accent-glow)]/40 md:grid-cols-[6rem_minmax(0,1fr)_11rem] md:items-start md:px-3">
-                                <div className="flex items-center gap-3 md:block">
+                            <article className="group grid gap-4 py-5 transition-colors duration-300 hover:bg-[var(--accent-glow)]/40 md:grid-cols-[3.5rem_minmax(0,1fr)_auto] md:items-center md:px-3">
+                                <div className="flex items-center">
                                     <span className="font-mono text-xs font-bold tabular-nums text-[var(--text-muted)]">
                                         {String(index + 1).padStart(2, '0')}
-                                    </span>
-                                    <span className="rounded-md border border-[var(--card-border)] bg-[var(--input-bg)] px-2 py-1 text-[10px] font-bold text-[var(--text-muted)] md:mt-2 md:inline-flex">
-                                        {service.buttonType === 'repo' ? '저장소' : '서비스'}
                                     </span>
                                 </div>
 
                                 <div>
-                                    <h3 className="text-lg font-extrabold text-[var(--text-primary)] transition-colors group-hover:text-[var(--accent-color)]">
-                                        {service.title}
-                                    </h3>
+                                    <div className="flex flex-wrap items-center gap-2">
+                                        <h3 className="text-lg font-extrabold text-[var(--text-primary)] transition-colors group-hover:text-[var(--accent-color)]">
+                                            {service.title}
+                                        </h3>
+                                        <span className="rounded-md border border-[var(--card-border)] bg-[var(--input-bg)] px-2 py-1 text-[10px] font-bold text-[var(--text-muted)]">
+                                            {service.buttonType === 'repo' ? '저장소' : '서비스'}
+                                        </span>
+                                    </div>
 
                                     <p className="mt-2 text-sm font-medium leading-relaxed text-[var(--text-secondary)]">
                                         {service.description}
@@ -60,7 +62,7 @@ export default function PagesSection() {
                                 <div className="md:justify-self-end">
                                     {service.status === 'coming_soon' ? (
                                         <span
-                                            className="inline-flex w-full cursor-not-allowed items-center justify-center rounded-xl border border-[var(--card-border)] bg-[var(--card-border)] px-4 py-2.5 text-sm font-semibold text-[var(--text-muted)] md:w-auto"
+                                            className="inline-flex h-11 w-full cursor-not-allowed items-center justify-center rounded-xl border border-[var(--card-border)] bg-[var(--card-border)] px-4 text-sm font-semibold text-[var(--text-muted)] md:w-auto md:min-w-[8.5rem]"
                                             aria-disabled="true"
                                         >
                                             {service.buttonText}
@@ -68,7 +70,7 @@ export default function PagesSection() {
                                     ) : (
                                         <Link
                                             href={service.path}
-                                            className="inline-flex w-full items-center justify-center whitespace-nowrap rounded-xl bg-[var(--button-primary-bg)] px-4 py-2.5 text-sm font-semibold text-[var(--button-primary-text)] transition-all duration-300 hover:bg-[var(--button-primary-hover)] active:translate-y-px md:w-auto"
+                                            className="inline-flex h-11 w-full items-center justify-center whitespace-nowrap rounded-xl bg-[var(--button-primary-bg)] px-4 text-sm font-semibold text-[var(--button-primary-text)] transition-all duration-300 hover:bg-[var(--button-primary-hover)] active:translate-y-px md:w-auto md:min-w-[8.5rem]"
                                             target={isExternalLink(service.path) ? '_blank' : undefined}
                                             rel={isExternalLink(service.path) ? 'noopener noreferrer' : undefined}
                                         >
