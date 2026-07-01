@@ -28,7 +28,7 @@ const contentChecks = {
     'who-am-ai',
     'Agent Skills',
     'href="/agent-skills/"',
-    '포트폴리오 데이터를 대화형으로 조회하는 커리어 Q&amp;A 에이전트',
+    '경력, 프로젝트, 기술 스택을 대화형으로 확인할 수 있는 포트폴리오 Q&amp;A 에이전트',
     '커리어 기반 맞춤 답변',
     'https://github.com/dd3ok/who-am-ai',
   ],

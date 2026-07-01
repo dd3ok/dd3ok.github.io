@@ -1,10 +1,5 @@
 export type ProjectDisplayGroup = 'primary' | 'related' | 'supporting'
 
-export interface ProjectCaseNote {
-    label: string
-    text: string
-}
-
 export interface Project {
     title: string
     description: string
@@ -14,7 +9,6 @@ export interface Project {
     demo: string
     displayGroup: ProjectDisplayGroup
     displayLabel: string
-    caseNotes?: ProjectCaseNote[]
 }
 
 export interface Service {

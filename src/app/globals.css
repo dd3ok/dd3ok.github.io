@@ -186,18 +186,18 @@ body {
 }
 
 .section-padding {
-  padding: var(--space-2xl) var(--space-md);
+  padding: 3rem var(--space-md);
 }
 
 @media (min-width: 768px) {
   .section-padding {
-    padding: 6rem var(--space-xl);
+    padding: 4.5rem var(--space-xl);
   }
 }
 
 @media (min-width: 1024px) {
   .section-padding {
-    padding: 8rem var(--space-2xl);
+    padding: 6.5rem var(--space-2xl);
   }
 }
 

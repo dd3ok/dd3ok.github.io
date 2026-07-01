@@ -32,7 +32,7 @@ export default function PagesSection() {
                                         {String(index + 1).padStart(2, '0')}
                                     </span>
                                     <span className="rounded-md border border-[var(--card-border)] bg-[var(--input-bg)] px-2 py-1 text-[10px] font-bold text-[var(--text-muted)] md:mt-2 md:inline-flex">
-                                        {service.buttonType === 'repo' ? 'Repository' : 'Service'}
+                                        {service.buttonType === 'repo' ? '저장소' : '서비스'}
                                     </span>
                                 </div>
 

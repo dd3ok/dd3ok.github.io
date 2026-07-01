@@ -75,10 +75,6 @@ const projectGalleryUsesDisplayMetadata =
   !projectGallery.includes('projects.slice(') &&
   !projectGallery.includes('supportingLabels') &&
   !projectGallery.includes('indexOf(project)')
-const projectGalleryShowsCaseNotes =
-  projectGallery.includes('project.caseNotes') &&
-  projectGallery.includes('caseNote.label') &&
-  projectGallery.includes('caseNote.text')
 const pagesSectionUsesCompactIndex =
   pagesSection.includes('max-w-5xl') &&
   pagesSection.includes('divide-y') &&
@@ -279,10 +275,6 @@ const checks = [
   {
     name: 'ProjectGallery separates work by display metadata',
     passed: projectGalleryUsesDisplayMetadata,
-  },
-  {
-    name: 'ProjectGallery renders case-note detail for featured work',
-    passed: projectGalleryShowsCaseNotes,
   },
   {
     name: 'ProjectGallery CTA avoids uppercase treatment',
