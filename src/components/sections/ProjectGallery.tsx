@@ -191,18 +191,10 @@ export default function ProjectGallery() {
                 </div>
 
                 <div className="glass-card rounded-2xl p-5 md:p-6">
-                    <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-                        <div>
-                            <h3 className="text-lg font-extrabold text-[var(--text-primary)]">
-                                그 외 담당 범위
-                            </h3>
-                            <p className="mt-1 text-sm font-medium leading-relaxed text-[var(--text-secondary)]">
-                                판매자센터 운영과 B2B 업무 시스템에서 맡았던 일을 범위별로 정리했습니다.
-                            </p>
-                        </div>
-                        <span className="text-xs font-bold text-[var(--text-muted)]">
-                            {supportingProjects.length}개 작업
-                        </span>
+                    <div className="mb-4">
+                        <h3 className="text-lg font-extrabold text-[var(--text-primary)]">
+                            그 외
+                        </h3>
                     </div>
 
                     <div>

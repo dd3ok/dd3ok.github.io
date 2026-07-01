@@ -63,8 +63,8 @@ export default function HeroSection() {
                         </h1>
 
                         <p className="mx-auto mb-8 max-w-2xl text-base font-medium leading-relaxed text-[var(--text-secondary)] md:mb-12 md:text-xl lg:mx-0">
-                            Spring 백엔드와 운영 경험을 바탕으로,<br />
-                            서비스 흐름을 안정적으로 설계합니다.
+                            인증, API, 업무 시스템을 만들며<br />
+                            백엔드의 기본기를 다져왔습니다.
                         </p>
 
                         <div className="flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4 lg:justify-start">

@@ -1,12 +1,12 @@
 import type { AboutContent, Experience, Project, Service, Skill } from '@/types'
 
 export const aboutContent: AboutContent = {
-    summaryTags: ['Spring', '분산시스템', 'AI에이전트', 'RAG', '자동화'],
-    title: '백엔드 운영 경험을 바탕으로 AI 실험을 이어가고 있습니다',
+    summaryTags: ['백엔드', '인증·API', '운영', 'AI 도구', '자동화'],
+    title: '백엔드 경험을 기반으로 개발 도구와 자동화 파이프라인을 만들어보고 있습니다',
     paragraphs: [
-        'Spring 백엔드 개발과 운영을 해왔고, 최근에는 RAG, AI Agent, LLMOps, 자동화 파이프라인을 개인 프로젝트에서 검증하고 있습니다.',
-        '지마켓 ESM+와 삼성전자 BQMS에서 로그인·인증, 판매자 API, 업무 시스템 운영을 맡았습니다. 안정성과 확장성을 우선해 일했습니다.',
-        'who-am-ai, Repoclip, Agent Skill, 데이터 브리핑 파이프라인을 만들며 AI를 백엔드 흐름에 자연스럽게 붙이는 방법을 탐색하고 있습니다.',
+        '로그인·인증, 판매자 도메인, B2B 커머스 업무 시스템을 중심으로 백엔드 개발과 운영을 해왔습니다.',
+        '지마켓과 미라콤아이앤씨에서 시스템 연동과 운영 과정의 문제를 해결하며 서비스를 유지하고 개선했습니다.',
+        '최근에는 Spring 기반 커리어 에이전트, Agent Skills, 데이터 브리핑 파이프라인을 만들며 개발 도구와 자동화 흐름에 AI를 적용해 보고 있습니다.',
     ],
 }
 
