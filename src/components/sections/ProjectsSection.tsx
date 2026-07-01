@@ -13,7 +13,7 @@ export default function ProjectsSection() {
                         Projects
                     </h2>
                     <p className="text-lg text-[var(--text-secondary)] max-w-2xl mx-auto font-medium">
-                        로그인·가입, 판매자 API, 업무 시스템 운영 등 백엔드 중심 업무를 맡았습니다.
+                        로그인·가입, 판매자 API, 업무 시스템 운영을 대표 사례와 보조 작업으로 나눠 정리했습니다.
                     </p>
                 </ScrollAnimation>
 

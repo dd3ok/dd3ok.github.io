@@ -13,6 +13,8 @@ const contactForm = read('src/components/sections/ContactForm.tsx')
 const aiChat = read('src/components/sections/AIChat.tsx')
 const notesDirectory = read('src/app/notes/NotesDirectoryView.tsx')
 const tailwind = read('tailwind.config.mjs')
+const card = read('src/components/ui/Card.tsx')
+const portfolioData = read('src/data/portfolio.ts')
 
 const extractCssBlock = (source, marker) => {
   const markerIndex = source.indexOf(marker)
@@ -73,6 +75,16 @@ const projectGalleryUsesDisplayMetadata =
   !projectGallery.includes('projects.slice(') &&
   !projectGallery.includes('supportingLabels') &&
   !projectGallery.includes('indexOf(project)')
+const projectGalleryShowsCaseNotes =
+  projectGallery.includes('project.caseNotes') &&
+  projectGallery.includes('caseNote.label') &&
+  projectGallery.includes('caseNote.text')
+const pagesSectionUsesCompactIndex =
+  pagesSection.includes('max-w-5xl') &&
+  pagesSection.includes('divide-y') &&
+  pagesSection.includes("padStart(2, '0')") &&
+  !pagesSection.includes('grid gap-5 md:grid-cols-2 lg:grid-cols-3') &&
+  !pagesSection.includes('glass-card group flex h-full flex-col')
 const requiredReducedMotionFragments = [
   'scroll-behavior: auto',
   'animation: none !important',
@@ -269,6 +281,10 @@ const checks = [
     passed: projectGalleryUsesDisplayMetadata,
   },
   {
+    name: 'ProjectGallery renders case-note detail for featured work',
+    passed: projectGalleryShowsCaseNotes,
+  },
+  {
     name: 'ProjectGallery CTA avoids uppercase treatment',
     passed:
       !projectGalleryDemoLinkClass.includes('uppercase') &&
@@ -287,8 +303,24 @@ const checks = [
     passed: pagesSectionActiveLinkClass.includes('text-[var(--button-primary-text)]'),
   },
   {
+    name: 'PagesSection uses compact lab index layout',
+    passed: pagesSectionUsesCompactIndex,
+  },
+  {
     name: 'PagesSection avoids emoji icons and typed service marks',
-    passed: !pagesSection.includes('serviceMarks') && !pagesSection.includes('{service.icon}'),
+    passed:
+      !pagesSection.includes('serviceMarks') &&
+      !pagesSection.includes('{service.icon}') &&
+      !navigation.includes('dropdownItem.icon') &&
+      !portfolioData.includes('icon:'),
+  },
+  {
+    name: 'Lab service data does not keep unused gradient metadata',
+    passed: !portfolioData.includes('color:'),
+  },
+  {
+    name: 'shared Card avoids hard-coded white shadow base',
+    passed: !card.includes('bg-white') && !card.includes('shadow-lg') && !card.includes('hover:shadow-xl'),
   },
   {
     name: 'ContactForm submit CTA uses button background token',

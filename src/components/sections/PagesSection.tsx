@@ -19,65 +19,64 @@ export default function PagesSection() {
                     </p>
                 </ScrollAnimation>
 
-                <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+                <div className="mx-auto max-w-5xl divide-y divide-[var(--card-border)] border-y border-[var(--card-border)]">
                     {services.map((service, index) => (
                         <ScrollAnimation
                             key={service.title}
                             animation="fade"
-                            delay={index * 120}
+                            delay={index * 80}
                         >
-                            <div className="glass-card group flex h-full flex-col rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[var(--card-hover-border)]">
-                                <div className="mb-4 flex items-start justify-between gap-4">
-                                    <h3 className="text-xl font-bold text-[var(--text-primary)] transition-colors group-hover:text-[var(--accent-color)]">
-                                        {service.title}
-                                    </h3>
-                                    <span className="shrink-0 rounded-full border border-[var(--card-border)] bg-[var(--input-bg)] px-2.5 py-1 text-[10px] font-bold text-[var(--text-muted)]">
-                                        {service.buttonType === 'repo' ? '저장소' : '서비스'}
+                            <article className="group grid gap-4 py-5 transition-colors duration-300 hover:bg-[var(--accent-glow)]/40 md:grid-cols-[6rem_minmax(0,1fr)_11rem] md:items-start md:px-3">
+                                <div className="flex items-center gap-3 md:block">
+                                    <span className="font-mono text-xs font-bold tabular-nums text-[var(--text-muted)]">
+                                        {String(index + 1).padStart(2, '0')}
+                                    </span>
+                                    <span className="rounded-md border border-[var(--card-border)] bg-[var(--input-bg)] px-2 py-1 text-[10px] font-bold text-[var(--text-muted)] md:mt-2 md:inline-flex">
+                                        {service.buttonType === 'repo' ? 'Repository' : 'Service'}
                                     </span>
                                 </div>
 
-                                <div className="flex flex-grow flex-col">
-                                    <p className="mb-4 text-sm font-medium leading-relaxed text-[var(--text-secondary)]">
+                                <div>
+                                    <h3 className="text-lg font-extrabold text-[var(--text-primary)] transition-colors group-hover:text-[var(--accent-color)]">
+                                        {service.title}
+                                    </h3>
+
+                                    <p className="mt-2 text-sm font-medium leading-relaxed text-[var(--text-secondary)]">
                                         {service.description}
                                     </p>
 
-                                    <div className="mb-6 flex-grow">
-                                        <ul className="space-y-2">
-                                            {service.features.map((feature, idx) => (
-                                                <li key={idx} className="flex items-center text-sm font-medium text-[var(--text-secondary)]">
-                                                    <svg className="mr-2 h-4 w-4 flex-shrink-0 text-[var(--accent-color)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                                                    </svg>
+                                    <ul className="mt-3 flex flex-wrap gap-2">
+                                        {service.features.map((feature) => (
+                                            <li
+                                                key={feature}
+                                                className="rounded-md border border-[var(--card-border)] bg-[var(--input-bg)] px-2.5 py-1 text-xs font-semibold text-[var(--text-secondary)]"
+                                            >
                                                     {feature}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-
-                                    <div className="mt-auto">
-                                        {service.status === 'coming_soon' ? (
-                                            <span
-                                                className="inline-flex w-full cursor-not-allowed items-center justify-center rounded-xl border border-[var(--card-border)] bg-[var(--card-border)] px-4 py-3 font-semibold text-[var(--text-muted)]"
-                                                aria-disabled="true"
-                                            >
-                                                {service.buttonText}
-                                            </span>
-                                        ) : (
-                                            <Link
-                                                href={service.path}
-                                                className="inline-flex w-full items-center justify-center rounded-xl bg-[var(--button-primary-bg)] px-4 py-3 font-semibold text-[var(--button-primary-text)] transition-all duration-300 hover:bg-[var(--button-primary-hover)] hover:shadow-[0_0_20px_var(--accent-glow)] group-hover:scale-[1.02]"
-                                                target={isExternalLink(service.path) ? '_blank' : undefined}
-                                                rel={isExternalLink(service.path) ? 'noopener noreferrer' : undefined}
-                                            >
-                                                {service.buttonText}
-                                                <svg className="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                                                </svg>
-                                            </Link>
-                                        )}
-                                    </div>
+                                            </li>
+                                        ))}
+                                    </ul>
                                 </div>
-                            </div>
+
+                                <div className="md:justify-self-end">
+                                    {service.status === 'coming_soon' ? (
+                                        <span
+                                            className="inline-flex w-full cursor-not-allowed items-center justify-center rounded-xl border border-[var(--card-border)] bg-[var(--card-border)] px-4 py-2.5 text-sm font-semibold text-[var(--text-muted)] md:w-auto"
+                                            aria-disabled="true"
+                                        >
+                                            {service.buttonText}
+                                        </span>
+                                    ) : (
+                                        <Link
+                                            href={service.path}
+                                            className="inline-flex w-full items-center justify-center whitespace-nowrap rounded-xl bg-[var(--button-primary-bg)] px-4 py-2.5 text-sm font-semibold text-[var(--button-primary-text)] transition-all duration-300 hover:bg-[var(--button-primary-hover)] active:translate-y-px md:w-auto"
+                                            target={isExternalLink(service.path) ? '_blank' : undefined}
+                                            rel={isExternalLink(service.path) ? 'noopener noreferrer' : undefined}
+                                        >
+                                            {service.buttonText}
+                                        </Link>
+                                    )}
+                                </div>
+                            </article>
                         </ScrollAnimation>
                     ))}
                 </div>

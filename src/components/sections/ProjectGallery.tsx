@@ -87,6 +87,21 @@ function FeaturedProjectCard({ project, index, onImageOpen, variant = 'secondary
                     {project.description}
                 </p>
 
+                {project.caseNotes && (
+                    <dl className="mb-5 grid gap-2 rounded-xl border border-[var(--card-border)] bg-[var(--input-bg)] p-3">
+                        {project.caseNotes.map((caseNote) => (
+                            <div key={caseNote.label} className="grid gap-1 sm:grid-cols-[4.5rem_1fr]">
+                                <dt className="text-[11px] font-extrabold text-[var(--accent-color)]">
+                                    {caseNote.label}
+                                </dt>
+                                <dd className="text-xs font-medium leading-relaxed text-[var(--text-secondary)]">
+                                    {caseNote.text}
+                                </dd>
+                            </div>
+                        ))}
+                    </dl>
+                )}
+
                 <TechPills tech={project.tech} />
 
                 <a

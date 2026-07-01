@@ -13,7 +13,7 @@ export default function ExperienceSection() {
                         Experience
                     </h2>
                     <p className="text-lg text-[var(--text-secondary)] max-w-2xl mx-auto font-medium">
-                        다양한 환경에서 개발을 경험했습니다.
+                        인증, 판매자센터, B2B 업무 시스템을 중심으로 백엔드를 만들고 운영했습니다.
                     </p>
                 </ScrollAnimation>
 
