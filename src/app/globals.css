@@ -20,6 +20,9 @@
   --accent-color: #0d9488; /* Sage Teal */
   --accent-secondary: #0891b2; /* Deep Cyan */
   --accent-glow: rgba(13, 148, 136, 0.15);
+  --button-primary-bg: #0f766e;
+  --button-primary-hover: #115e59;
+  --button-primary-text: #ffffff;
 
   --nav-bg: rgba(251, 252, 254, 0.94);
   --dropdown-bg: rgba(255, 255, 255, 0.96);
@@ -65,6 +68,9 @@
   --accent-color: #34d399; /* Softer Emerald */
   --accent-secondary: #22d3ee; /* Softer Cyan */
   --accent-glow: rgba(52, 211, 153, 0.18);
+  --button-primary-bg: #34d399;
+  --button-primary-hover: #6ee7b7;
+  --button-primary-text: #052e26;
 
   --nav-bg: rgba(28, 28, 28, 0.94);
   --dropdown-bg: rgba(32, 32, 32, 0.97);
@@ -96,7 +102,6 @@ html {
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   line-height: 1.6;
   color: var(--text-primary);
   background-color: var(--bg-color);
@@ -381,4 +386,27 @@ body {
 
 .chat-scroll::-webkit-scrollbar-thumb:hover {
   background: var(--scroll-thumb-hover);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .fade-in,
+  .slide-in-left,
+  .slide-in-right,
+  .slide-in-up,
+  .scale-in,
+  .enter-up {
+    opacity: 1;
+    transform: none;
+  }
 }

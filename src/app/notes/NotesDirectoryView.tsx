@@ -95,7 +95,7 @@ export default function NotesDirectoryView({ activeCategory, notes }: NotesDirec
                             </p>
                         </div>
                     ) : (
-                        <div className="divide-y divide-[var(--card-border)] border-y border-[var(--card-border)]">
+                        <div className="divide-y divide-[var(--card-border)] border-b border-[var(--card-border)]">
                             {activeNotes.map((note) => {
                                 const visibleTags = note.tags.slice(0, 4)
                                 const remainingTagCount = note.tags.length - visibleTags.length

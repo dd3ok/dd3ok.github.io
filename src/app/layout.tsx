@@ -5,6 +5,7 @@ import './globals.css'
 const notoSansKR = Noto_Sans_KR({
     subsets: ['latin'],
     weight: ['300', '400', '500', '700'],
+    variable: '--font-sans',
     display: 'swap',
 })
 const siteUrl = 'https://dd3ok.github.io'
@@ -119,7 +120,7 @@ export default function RootLayout({
                 }}
             />
         </head>
-        <body className={notoSansKR.className}>
+        <body className={`${notoSansKR.variable} font-sans`}>
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

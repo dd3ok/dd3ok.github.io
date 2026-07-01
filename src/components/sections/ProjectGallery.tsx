@@ -96,7 +96,7 @@ export default function ProjectGallery() {
                                         href={project.demo}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="w-full font-bold rounded-xl transition-all duration-300 bg-[var(--accent-color)] hover:bg-[var(--accent-secondary)] text-white hover:scale-[1.02] shadow-md shadow-[var(--accent-color)]/10 hover:shadow-[var(--accent-color)]/20 px-4 py-2.5 text-xs inline-flex items-center justify-center tracking-wider uppercase"
+                                        className="w-full font-bold rounded-xl transition-all duration-300 bg-[var(--button-primary-bg)] hover:bg-[var(--button-primary-hover)] text-[var(--button-primary-text)] hover:scale-[1.02] shadow-md shadow-[var(--accent-color)]/10 hover:shadow-[var(--accent-color)]/20 px-4 py-2.5 text-xs inline-flex items-center justify-center tracking-wider uppercase"
                                     >
                                         방문하기
                                     </a>
