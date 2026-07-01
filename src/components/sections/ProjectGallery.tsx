@@ -71,9 +71,11 @@ function FeaturedProjectCard({ project, index, onImageOpen, variant = 'secondary
 
             <div className={`flex flex-1 flex-col ${isPrimary ? 'p-4' : 'px-1 pt-4 sm:p-0 lg:p-4'}`}>
                 <div className="mb-3 flex items-center gap-3">
-                    <span className="rounded-full border border-[var(--card-border)] bg-[var(--input-bg)] px-3 py-1 text-[11px] font-bold text-[var(--text-muted)]">
-                        {isPrimary ? '대표 작업' : '관련 작업'}
-                    </span>
+                    {!isPrimary && (
+                        <span className="rounded-full border border-[var(--card-border)] bg-[var(--input-bg)] px-3 py-1 text-[11px] font-bold text-[var(--text-muted)]">
+                            관련 작업
+                        </span>
+                    )}
                     <span className="text-xs font-bold text-[var(--accent-color)]">
                         {project.displayLabel}
                     </span>

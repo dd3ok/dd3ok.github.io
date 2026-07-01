@@ -55,8 +55,8 @@ export const experiences: Experience[] = [
 
 export const projects: Project[] = [
     {
-        title: 'ESM+ 로그인·인증 및 ATO 연동/개발',
-        description: '로그인 서비스를 .NET에서 Spring으로 전환하고, 같은 로그인 흐름에 ATO 솔루션을 연동했습니다.',
+        title: 'ESM+ 로그인, 인증 개편 및 FDS 연동/개발',
+        description: '로그인·인증 흐름을 개편하고, 같은 로그인 화면에 FDS 솔루션을 연동했습니다.',
         tech: ['Spring Boot', '.NET', 'MSSQL', 'Redis', 'Kafka', 'jQuery'],
         image: '/image/projects/esm-signin.png',
         github: '#',
