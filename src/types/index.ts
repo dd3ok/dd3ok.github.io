@@ -1,3 +1,5 @@
+export type ProjectDisplayGroup = 'primary' | 'related' | 'supporting'
+
 export interface Project {
     title: string
     description: string
@@ -5,6 +7,8 @@ export interface Project {
     image: string
     github: string
     demo: string
+    displayGroup: ProjectDisplayGroup
+    displayLabel: string
 }
 
 export interface Service {

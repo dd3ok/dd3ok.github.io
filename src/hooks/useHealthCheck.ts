@@ -14,13 +14,6 @@ const useHealthCheck = (): void => {
         const performHealthCheck = async (): Promise<void> => {
             try {
                 const config = getEnvConfig();
-
-                if (config.isDevelopment) {
-                    console.warn('Skipping external API health checks in local development.');
-                    localStorage.setItem(CACHE_KEY, Date.now().toString());
-                    return;
-                }
-
                 const healthCheckTargets: HealthCheckTarget[] = [];
                 const hasConfiguredPagesApi = Boolean(process.env.NEXT_PUBLIC_PAGES_KOYEB_API);
 
@@ -49,7 +42,14 @@ const useHealthCheck = (): void => {
 
                 await Promise.all(
                     healthCheckTargets.map(async (target) => {
-                        await fetch(target.url, { method: 'GET', mode: 'no-cors' });
+                        const response = await fetch(target.url, { method: 'GET' });
+
+                        if (!response.ok) {
+                            throw new Error(`[${target.name}] health check failed with status: ${response.status}`);
+                        }
+
+                        // Some health-check endpoints return primitive values (e.g., long); consume the body to avoid reader lock.
+                        await response.text();
                     }),
                 );
 

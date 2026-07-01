@@ -7,9 +7,9 @@ import ScrollAnimation from '@/components/animations/ScrollAnimations'
 import { projects } from '@/data/portfolio'
 import type { Project } from '@/types'
 
-const featuredProjects = projects.slice(0, 3)
-const supportingProjects = projects.slice(3)
-const supportingLabels = ['신청 프로세스', '관리 화면', 'API·Gateway', 'B2B 업무']
+const primaryProject = projects.find((project) => project.displayGroup === 'primary') ?? projects[0]
+const relatedProjects = projects.filter((project) => project.displayGroup === 'related')
+const supportingProjects = projects.filter((project) => project.displayGroup === 'supporting')
 
 interface ProjectCardProps {
     project: Project
@@ -75,7 +75,7 @@ function FeaturedProjectCard({ project, index, onImageOpen, variant = 'secondary
                         {isPrimary ? '대표 작업' : '관련 작업'}
                     </span>
                     <span className="text-xs font-bold text-[var(--accent-color)]">
-                        계정·인증
+                        {project.displayLabel}
                     </span>
                 </div>
 
@@ -107,7 +107,7 @@ function SupportingProjectCard({ project }: { project: Project }) {
         <article className="grid gap-4 py-5 first:pt-0 last:pb-0 md:grid-cols-[minmax(0,1fr)_12rem] md:items-start">
             <div>
                 <p className="mb-2 text-xs font-bold text-[var(--accent-color)]">
-                    {supportingLabels[supportingProjects.indexOf(project)] ?? '담당 범위'}
+                    {project.displayLabel}
                 </p>
                 <h3 className="text-base font-extrabold leading-snug text-[var(--text-primary)]">
                     {project.title}
@@ -164,7 +164,7 @@ export default function ProjectGallery() {
                 <div className="grid gap-6 lg:grid-cols-[minmax(0,1.3fr)_minmax(20rem,0.7fr)]">
                     <ScrollAnimation animation="fade">
                         <FeaturedProjectCard
-                            project={featuredProjects[0]}
+                            project={primaryProject}
                             index={0}
                             onImageOpen={openImageModal}
                             variant="primary"
@@ -172,7 +172,7 @@ export default function ProjectGallery() {
                     </ScrollAnimation>
 
                     <div className="grid gap-6">
-                        {featuredProjects.slice(1).map((project, index) => (
+                        {relatedProjects.map((project, index) => (
                             <ScrollAnimation
                                 key={project.title}
                                 animation="fade"

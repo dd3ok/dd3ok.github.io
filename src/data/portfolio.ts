@@ -61,6 +61,8 @@ export const projects: Project[] = [
         image: '/image/projects/esm-signin.png',
         github: '#',
         demo: 'https://signin.esmplus.com',
+        displayGroup: 'primary',
+        displayLabel: '계정·인증',
     },
     {
         title: 'ESM+ 판매자 가입 개선',
@@ -69,6 +71,8 @@ export const projects: Project[] = [
         image: '/image/projects/esm-signup.png',
         github: '#',
         demo: 'https://signup.esmplus.com/signup/seller',
+        displayGroup: 'related',
+        displayLabel: '계정·인증',
     },
     {
         title: 'ESM+ 로그인 및 인증 서비스 개발',
@@ -77,6 +81,8 @@ export const projects: Project[] = [
         image: '/image/projects/esm-signin.png',
         github: '#',
         demo: 'https://signin.esmplus.com',
+        displayGroup: 'related',
+        displayLabel: '계정·인증',
     },
     {
         title: 'ESM+ 슈퍼딜/올킬 신청 프로세스',
@@ -85,6 +91,8 @@ export const projects: Project[] = [
         image: '/image/projects/esm-seller-deal.png',
         github: '#',
         demo: 'https://signin.esmplus.com',
+        displayGroup: 'supporting',
+        displayLabel: '신청 프로세스',
     },
     {
         title: 'ESM+ 카테고리 담당자 관리',
@@ -93,6 +101,8 @@ export const projects: Project[] = [
         image: '/image/projects/esm-category-manager.png',
         github: '#',
         demo: 'https://signin.esmplus.com',
+        displayGroup: 'supporting',
+        displayLabel: '관리 화면',
     },
     {
         title: '판매자 관련 API, Gateway 담당 및 안정화',
@@ -101,6 +111,8 @@ export const projects: Project[] = [
         image: '/image/projects/esm-etapi.png',
         github: '#',
         demo: 'https://etapi.gmarket.com/pages/API-%EA%B0%80%EC%9D%B4%EB%93%9C',
+        displayGroup: 'supporting',
+        displayLabel: 'API·Gateway',
     },
     {
         title: '삼성전자 입찰견적관리시스템(BQMS) MRO 몰',
@@ -109,6 +121,8 @@ export const projects: Project[] = [
         image: '/image/projects/sec-bqms.png',
         github: '#',
         demo: 'https://www.sec-bqms.com/bqms/partnerLogin/anonymous/loginPage.do?_frameF=true',
+        displayGroup: 'supporting',
+        displayLabel: 'B2B 업무',
     },
 ]
 

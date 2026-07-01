@@ -63,6 +63,16 @@ const aiChatSubmitButtonClass =
   aiChat.match(/type="submit"[\s\S]*?className="([^"]+)"[\s\S]*?disabled=\{!inputValue\.trim\(\)/)?.[1] ?? ''
 const notesDirectoryListClass =
   notesDirectory.match(/<div className="([^"]+)">\s*\{activeNotes\.map/)?.[1] ?? ''
+const heroMobilePreviewBlock = hero.match(/<div className="lg:hidden">[\s\S]*?<HeroAgentPreview \/>[\s\S]*?<\/div>/)?.[0] ?? ''
+const heroDesktopChatBlock = hero.match(/<div className="hidden lg:block">[\s\S]*?<DeferredAIChat \/>[\s\S]*?<\/div>/)?.[0] ?? ''
+const projectGalleryUsesDisplayMetadata =
+  projectGallery.includes("displayGroup === 'primary'") &&
+  projectGallery.includes("displayGroup === 'related'") &&
+  projectGallery.includes("displayGroup === 'supporting'") &&
+  projectGallery.includes('project.displayLabel') &&
+  !projectGallery.includes('projects.slice(') &&
+  !projectGallery.includes('supportingLabels') &&
+  !projectGallery.includes('indexOf(project)')
 const requiredReducedMotionFragments = [
   'scroll-behavior: auto',
   'animation: none !important',
@@ -195,8 +205,8 @@ const checks = [
     passed: !hero.includes('min-h-screen'),
   },
   {
-    name: 'hero keeps full AI chat desktop-only',
-    passed: hero.includes('hidden lg:block') && hero.includes('lg:hidden'),
+    name: 'hero uses mobile preview and desktop full AI chat',
+    passed: heroMobilePreviewBlock.includes('<HeroAgentPreview />') && heroDesktopChatBlock.includes('<DeferredAIChat />'),
   },
   {
     name: 'shared Button has pressed translate feedback',
@@ -255,8 +265,8 @@ const checks = [
     passed: projectGalleryDemoLinkClass.includes('text-[var(--button-primary-text)]'),
   },
   {
-    name: 'ProjectGallery separates featured and supporting work',
-    passed: projectGallery.includes('featuredProjects') && projectGallery.includes('supportingProjects'),
+    name: 'ProjectGallery separates work by display metadata',
+    passed: projectGalleryUsesDisplayMetadata,
   },
   {
     name: 'ProjectGallery CTA avoids uppercase treatment',
