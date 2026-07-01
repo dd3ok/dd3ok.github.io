@@ -54,7 +54,6 @@ export interface AgentSkill {
     shortDescription: string
     tech: string[]
     github: string
-    category: 'finance' | 'productivity'
     keywords: string[]
 }
 

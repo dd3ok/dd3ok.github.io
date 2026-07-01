@@ -2,6 +2,102 @@ import type { AgentSkill } from '@/types'
 
 export const agentSkills: AgentSkill[] = [
     {
+        id: 'newbie-lens',
+        title: 'Newbie Lens',
+        description:
+            'SOP, PRD, 런북, 티켓, 핸드오프 문서를 처음 보는 사람이나 가벼운 모델이 실행할 때 막히는 모호성을 찾아내는 스킬입니다. 숨은 전제, 누락된 입력, 검증 기준, 권한 경계를 점검합니다.',
+        shortDescription: '문서 실행 모호성 점검 스킬',
+        tech: ['Python', 'Codex', 'Claude Code'],
+        github: 'https://github.com/dd3ok/newbie-lens',
+        keywords: [
+            'document review',
+            'ambiguity check',
+            'SOP review',
+            'PRD review',
+            'agent skill',
+        ],
+    },
+    {
+        id: 'document-briefing-cache-skill',
+        title: 'Document Briefing Cache Skill',
+        description:
+            '문서를 구조화된 브리핑으로 변환하고 캐싱하는 스킬입니다. 핑거프린트 기반 캐시로 LLM 호출을 최소화하며, 한 번 요약하면 포맷 변환이나 반복 요청에 재사용합니다.',
+        shortDescription: '문서 브리핑 캐시 스킬',
+        tech: ['Python', 'Codex', 'OpenAI'],
+        github: 'https://github.com/dd3ok/document-briefing-cache-skill',
+        keywords: [
+            'document summarization',
+            'LLM caching',
+            'briefing',
+            'agent skill',
+            '문서 요약',
+        ],
+    },
+    {
+        id: 'watchlist-md',
+        title: 'WATCHLIST.md',
+        description:
+            '리포지토리 로컬 WATCHLIST.md에 후속 확인 사항을 기록하는 경량 Agent Skill입니다. 데몬이나 cron 없이 AI 에이전트가 보류 중인 체크 항목을 구조화된 형식으로 관리합니다.',
+        shortDescription: '워치리스트 관리 스킬',
+        tech: ['Python', 'Codex', 'OpenAI'],
+        github: 'https://github.com/dd3ok/WATCHLIST.md',
+        keywords: [
+            'watchlist',
+            'deferred checks',
+            'agent skill',
+            'developer tools',
+            '후속 확인',
+        ],
+    },
+    {
+        id: 'savepoint',
+        title: 'Savepoint',
+        description:
+            '코딩 에이전트가 압축, 리셋, 핸드오프 이후에도 현재 repo와 Git 상태를 검증하며 이어갈 수 있도록 .savepoint/SAVEPOINT.md를 만들거나 확인하는 스킬입니다.',
+        shortDescription: 'repo/Git 체크포인트 스킬',
+        tech: ['Python', 'Codex', 'Claude Code'],
+        github: 'https://github.com/dd3ok/savepoint',
+        keywords: [
+            'savepoint',
+            'checkpoint',
+            'context handoff',
+            'coding agents',
+            'agent skill',
+        ],
+    },
+    {
+        id: 'rabbit-hole',
+        title: 'Rabbit Hole',
+        description:
+            '낯선 코드, 새 API, 논문 아이디어, 애매한 기능, 원인 분석처럼 바로 구현하기 어려운 작업에서 가장 작은 검증 산출물과 다음 결정을 만들도록 돕는 instruction-only 스킬입니다.',
+        shortDescription: '기술 탐색 선행 스킬',
+        tech: ['Markdown', 'Codex', 'Claude Code'],
+        github: 'https://github.com/dd3ok/rabbit-hole',
+        keywords: [
+            'technical exploration',
+            'research spike',
+            'debugging',
+            'agent skill',
+            'instruction-only',
+        ],
+    },
+    {
+        id: 'lucid',
+        title: 'Lucid',
+        description:
+            '에이전트가 읽는 repo 컨텍스트를 대상으로 오래되었거나 과도하게 구체적인 지시, 충돌하는 규칙, 안전하지 않은 기억, prompt debt를 점검하고 정리 계획을 만드는 스킬입니다.',
+        shortDescription: '컨텍스트 위생 점검 스킬',
+        tech: ['Python', 'Codex', 'Claude Code'],
+        github: 'https://github.com/dd3ok/lucid',
+        keywords: [
+            'context hygiene',
+            'prompt debt',
+            'agent context',
+            'skill-first',
+            'audit',
+        ],
+    },
+    {
         id: 'naverstock-api-skill',
         title: 'NaverStock API Skill',
         description:
@@ -9,7 +105,6 @@ export const agentSkills: AgentSkill[] = [
         shortDescription: '네이버증권 API 스킬',
         tech: ['Python', 'Codex', 'OpenAI'],
         github: 'https://github.com/dd3ok/naverstock-api-skill',
-        category: 'finance',
         keywords: [
             '네이버증권 API',
             'Naver Stock API',
@@ -26,98 +121,12 @@ export const agentSkills: AgentSkill[] = [
         shortDescription: '토스증권 API 스킬',
         tech: ['Python', 'Codex', 'Claude Code'],
         github: 'https://github.com/dd3ok/tossinvest-api-skill',
-        category: 'finance',
         keywords: [
             '토스증권 API',
             'TossInvest API',
             '주식 데이터',
             '재무제표',
             '스크리너',
-        ],
-    },
-    {
-        id: 'binance-api-skill',
-        title: 'Binance API Skill',
-        description:
-            'Binance Spot REST API를 다루는 비공식 Codex/OpenAI 스킬입니다. 공식 문서 기반의 엔드포인트 라우팅, 서명 방식, 필터, 에러 코드, Testnet 안전 가이드를 제공합니다.',
-        shortDescription: '바이낸스 API 스킬',
-        tech: ['Python', 'Codex', 'OpenAI'],
-        github: 'https://github.com/dd3ok/binance-api-skill',
-        category: 'finance',
-        keywords: [
-            'Binance API',
-            '바이낸스 API',
-            'crypto API',
-            'Spot REST API',
-            'trading',
-        ],
-    },
-    {
-        id: 'yahoo-finance-market-skill',
-        title: 'Yahoo Finance Market Skill',
-        description:
-            'yfinance 라이브러리를 활용한 Yahoo Finance 시장 조사 Agent Skill입니다. 주가 조회, 재무제표, 차트 데이터, 글로벌 시장 데이터를 AI 에이전트에서 다룹니다.',
-        shortDescription: '야후 파이낸스 스킬',
-        tech: ['Python', 'yfinance'],
-        github: 'https://github.com/dd3ok/yahoo-finance-market-skill',
-        category: 'finance',
-        keywords: [
-            'Yahoo Finance API',
-            'yfinance',
-            'stock market data',
-            'financial data',
-            'market research',
-        ],
-    },
-    {
-        id: 'document-briefing-cache-skill',
-        title: 'Document Briefing Cache Skill',
-        description:
-            '문서를 구조화된 브리핑으로 변환하고 캐싱하는 스킬입니다. 핑거프린트 기반 캐시로 LLM 호출을 최소화하며, 한 번 요약하면 포맷 변환이나 반복 요청에 재사용합니다.',
-        shortDescription: '문서 브리핑 캐시 스킬',
-        tech: ['Python', 'Codex', 'OpenAI'],
-        github: 'https://github.com/dd3ok/document-briefing-cache-skill',
-        category: 'productivity',
-        keywords: [
-            'document summarization',
-            'LLM caching',
-            'briefing',
-            'agent skill',
-            '문서 요약',
-        ],
-    },
-    {
-        id: 'new-session-handoff-skill',
-        title: 'New Session Handoff Skill',
-        description:
-            '새 에이전트 세션에서 이전 작업을 이어갈 수 있도록 검증된 HANDOFF.md를 생성하는 스킬입니다. 채팅 히스토리 없이도 작업 컨텍스트를 안전하게 전달합니다.',
-        shortDescription: '세션 핸드오프 스킬',
-        tech: ['Python', 'Codex', 'OpenAI'],
-        github: 'https://github.com/dd3ok/new-session-handoff-skill',
-        category: 'productivity',
-        keywords: [
-            'session handoff',
-            'agent continuity',
-            'HANDOFF.md',
-            'coding agent',
-            '세션 인수인계',
-        ],
-    },
-    {
-        id: 'watchlist-md',
-        title: 'WATCHLIST.md',
-        description:
-            '리포지토리 로컬 WATCHLIST.md에 후속 확인 사항을 기록하는 경량 Agent Skill입니다. 데몬이나 cron 없이 AI 에이전트가 보류 중인 체크 항목을 구조화된 형식으로 관리합니다.',
-        shortDescription: '워치리스트 관리 스킬',
-        tech: ['Python', 'Codex', 'OpenAI'],
-        github: 'https://github.com/dd3ok/WATCHLIST.md',
-        category: 'productivity',
-        keywords: [
-            'watchlist',
-            'deferred checks',
-            'agent skill',
-            'developer tools',
-            '후속 확인',
         ],
     },
 ]

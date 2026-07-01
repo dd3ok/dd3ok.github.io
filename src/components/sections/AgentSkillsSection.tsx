@@ -1,26 +1,5 @@
 import Link from 'next/link'
 import { agentSkills } from '@/data/agentSkills'
-import type { AgentSkill } from '@/types'
-
-const categoryContent: Record<AgentSkill['category'], {
-    title: string
-    description: string
-}> = {
-    finance: {
-        title: 'Finance API Skills',
-        description: '시장 데이터와 금융 API 조회를 에이전트가 반복 없이 다루도록 정리했습니다.',
-    },
-    productivity: {
-        title: 'Productivity Skills',
-        description: '문서 요약, 세션 인수인계, 후속 확인처럼 반복되는 작업을 줄입니다.',
-    },
-}
-
-const categoryOrder: AgentSkill['category'][] = ['finance', 'productivity']
-
-const getSkillsForCategory = (category: AgentSkill['category']) => (
-    agentSkills.filter((skill) => skill.category === category)
-)
 
 export default function AgentSkillsSection() {
     return (
@@ -30,6 +9,15 @@ export default function AgentSkillsSection() {
             aria-labelledby="agent-skills-title"
         >
             <div className="container">
+                <div className="mb-5">
+                    <Link
+                        href="/"
+                        className="inline-flex items-center rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] px-4 py-2 text-sm font-bold text-[var(--text-secondary)] transition-colors hover:text-[var(--text-primary)]"
+                    >
+                        ← 홈으로
+                    </Link>
+                </div>
+
                 <header className="border-b border-[var(--card-border)] pb-5">
                     <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
                         <div className="max-w-3xl">
@@ -49,66 +37,43 @@ export default function AgentSkillsSection() {
                     </div>
                 </header>
 
-                <div className="mt-8 space-y-10">
-                    {categoryOrder.map((category) => {
-                        const skills = getSkillsForCategory(category)
-                        const content = categoryContent[category]
+                <div className="mt-8 grid gap-4 md:grid-cols-2">
+                    {agentSkills.map((skill) => (
+                        <article key={skill.id} className="glass-card flex h-full flex-col p-5">
+                            <div className="flex flex-col gap-2">
+                                <h2 className="text-lg font-bold text-[var(--text-primary)]">
+                                    {skill.title}
+                                </h2>
+                                <p className="text-xs font-bold text-[var(--text-muted)]">
+                                    {skill.shortDescription}
+                                </p>
+                            </div>
 
-                        return (
-                            <section key={category} aria-labelledby={`${category}-skills-title`}>
-                                <div className="mb-4 border-b border-[var(--card-border)] pb-3">
-                                    <h2
-                                        id={`${category}-skills-title`}
-                                        className="text-xl font-extrabold tracking-tight text-[var(--text-primary)]"
+                            <p className="mt-3 flex-1 text-sm font-medium leading-6 text-[var(--text-secondary)]">
+                                {skill.description}
+                            </p>
+
+                            <ul className="mt-4 flex flex-wrap gap-2" aria-label={`${skill.title} 기술`}>
+                                {skill.tech.map((tech) => (
+                                    <li
+                                        key={tech}
+                                        className="rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] px-2.5 py-1 text-xs font-bold text-[var(--text-muted)]"
                                     >
-                                        {content.title}
-                                    </h2>
-                                    <p className="mt-1 text-sm font-medium leading-6 text-[var(--text-secondary)]">
-                                        {content.description}
-                                    </p>
-                                </div>
+                                        {tech}
+                                    </li>
+                                ))}
+                            </ul>
 
-                                <div className="grid gap-4 md:grid-cols-2">
-                                    {skills.map((skill) => (
-                                        <article key={skill.id} className="glass-card flex h-full flex-col p-5">
-                                            <div className="flex flex-wrap items-center gap-2">
-                                                <h3 className="text-lg font-bold text-[var(--text-primary)]">
-                                                    {skill.title}
-                                                </h3>
-                                                <span className="rounded-full border border-[var(--card-border)] px-2.5 py-1 text-xs font-bold text-[var(--text-muted)]">
-                                                    {categoryContent[skill.category].title.replace(' Skills', '')}
-                                                </span>
-                                            </div>
-
-                                            <p className="mt-3 flex-1 text-sm font-medium leading-6 text-[var(--text-secondary)]">
-                                                {skill.description}
-                                            </p>
-
-                                            <ul className="mt-4 flex flex-wrap gap-2" aria-label={`${skill.title} 기술`}>
-                                                {skill.tech.map((tech) => (
-                                                    <li
-                                                        key={tech}
-                                                        className="rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] px-2.5 py-1 text-xs font-bold text-[var(--text-muted)]"
-                                                    >
-                                                        {tech}
-                                                    </li>
-                                                ))}
-                                            </ul>
-
-                                            <Link
-                                                href={skill.github}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="mt-5 inline-flex text-sm font-bold text-[var(--accent-color)] transition-colors hover:text-[var(--accent-secondary)]"
-                                            >
-                                                Repository
-                                            </Link>
-                                        </article>
-                                    ))}
-                                </div>
-                            </section>
-                        )
-                    })}
+                            <Link
+                                href={skill.github}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="mt-5 inline-flex text-sm font-bold text-[var(--accent-color)] transition-colors hover:text-[var(--accent-secondary)]"
+                            >
+                                Repository
+                            </Link>
+                        </article>
+                    ))}
                 </div>
             </div>
         </section>
