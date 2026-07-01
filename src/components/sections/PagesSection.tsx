@@ -15,81 +15,70 @@ export default function PagesSection() {
                         Lab
                     </h2>
                     <p className="text-lg text-[var(--text-secondary)] max-w-2xl mx-auto font-medium">
-                        AI, 자동화, 개발 도구를 실험한 개인 프로젝트입니다
+                        AI, 자동화, 개발 도구를 직접 실험하며 정리한 개인 프로젝트입니다
                     </p>
                 </ScrollAnimation>
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="mx-auto max-w-5xl divide-y divide-[var(--card-border)] border-y border-[var(--card-border)]">
                     {services.map((service, index) => (
                         <ScrollAnimation
                             key={service.title}
                             animation="fade"
-                            delay={index * 120}
+                            delay={index * 80}
                         >
-                            <div className="glass-card group hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col h-full rounded-2xl">
-                                {/* 은은한 테마 그라데이션 헤더 */}
-                                <div className="h-32 bg-gradient-to-br from-[var(--accent-glow)] to-[var(--card-border)] border-b border-[var(--card-border)] relative overflow-hidden">
-                                    <div className="absolute inset-0 bg-black/[0.02]" />
-                                    <div className="absolute inset-0 flex items-center justify-center">
-                                        <div className="w-16 h-16 rounded-full bg-[var(--card-bg)] border border-[var(--card-border)] flex items-center justify-center shadow-md shadow-black/[0.02] group-hover:scale-110 transition-transform duration-500">
-                                            <span className="text-3xl filter drop-shadow-sm select-none">
-                                                {service.icon}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    {/* 장식 요소 (오로라 역광 구체) */}
-                                    <div className="absolute -top-4 -right-4 w-20 h-20 bg-[var(--accent-color)]/10 rounded-full blur-xl" />
-                                    <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-[var(--accent-secondary)]/10 rounded-full blur-xl" />
+                            <article className="group grid gap-4 py-5 transition-colors duration-300 hover:bg-[var(--accent-glow)]/40 md:grid-cols-[3.5rem_minmax(0,1fr)_auto] md:items-center md:px-3">
+                                <div className="flex items-center">
+                                    <span className="font-mono text-xs font-bold tabular-nums text-[var(--text-muted)]">
+                                        {String(index + 1).padStart(2, '0')}
+                                    </span>
                                 </div>
 
-                                {/* 컨텐츠 영역 - flex-grow로 공간 확장 */}
-                                <div className="p-6 flex flex-col flex-grow">
-                                    <h3 className="text-xl font-bold text-[var(--text-primary)] mb-3 group-hover:text-[var(--accent-color)] transition-colors">
-                                        {service.title}
-                                    </h3>
+                                <div>
+                                    <div className="flex flex-wrap items-center gap-2">
+                                        <h3 className="text-lg font-extrabold text-[var(--text-primary)] transition-colors group-hover:text-[var(--accent-color)]">
+                                            {service.title}
+                                        </h3>
+                                        <span className="rounded-md border border-[var(--card-border)] bg-[var(--input-bg)] px-2 py-1 text-[10px] font-bold text-[var(--text-muted)]">
+                                            {service.buttonType === 'repo' ? '저장소' : '서비스'}
+                                        </span>
+                                    </div>
 
-                                    <p className="text-[var(--text-secondary)] mb-4 leading-relaxed text-sm font-medium">
+                                    <p className="mt-2 text-sm font-medium leading-relaxed text-[var(--text-secondary)]">
                                         {service.description}
                                     </p>
 
-                                    {/* 기능 목록 - flex-grow로 남은 공간 차지 */}
-                                    <div className="mb-6 flex-grow">
-                                        <ul className="space-y-2">
-                                            {service.features.map((feature, idx) => (
-                                                <li key={idx} className="flex items-center text-sm text-[var(--text-secondary)] font-medium">
-                                                    <svg className="w-4 h-4 text-[var(--accent-color)] mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                                                    </svg>
+                                    <ul className="mt-3 flex flex-wrap gap-2">
+                                        {service.features.map((feature) => (
+                                            <li
+                                                key={feature}
+                                                className="rounded-md border border-[var(--card-border)] bg-[var(--input-bg)] px-2.5 py-1 text-xs font-semibold text-[var(--text-secondary)]"
+                                            >
                                                     {feature}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-
-                                    <div className="mt-auto">
-                                        {service.status === 'coming_soon' ? (
-                                            <span
-                                                className="inline-flex items-center justify-center w-full px-4 py-3 rounded-xl font-semibold bg-[var(--card-border)] border border-[var(--card-border)] text-[var(--text-muted)] cursor-not-allowed"
-                                                aria-disabled="true"
-                                            >
-                                                {service.buttonText}
-                                            </span>
-                                        ) : (
-                                            <Link
-                                                href={service.path}
-                                                className="inline-flex items-center justify-center w-full px-4 py-3 rounded-xl transition-all duration-300 group-hover:scale-105 font-semibold bg-[var(--button-primary-bg)] hover:bg-[var(--button-primary-hover)] text-[var(--button-primary-text)] hover:shadow-[0_0_20px_var(--accent-glow)]"
-                                                target={isExternalLink(service.path) ? '_blank' : undefined}
-                                                rel={isExternalLink(service.path) ? 'noopener noreferrer' : undefined}
-                                            >
-                                                {service.buttonText}
-                                                <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                                                </svg>
-                                            </Link>
-                                        )}
-                                    </div>
+                                            </li>
+                                        ))}
+                                    </ul>
                                 </div>
-                            </div>
+
+                                <div className="md:justify-self-end">
+                                    {service.status === 'coming_soon' ? (
+                                        <span
+                                            className="inline-flex h-11 w-full cursor-not-allowed items-center justify-center rounded-xl border border-[var(--card-border)] bg-[var(--card-border)] px-4 text-sm font-semibold text-[var(--text-muted)] md:w-auto md:min-w-[8.5rem]"
+                                            aria-disabled="true"
+                                        >
+                                            {service.buttonText}
+                                        </span>
+                                    ) : (
+                                        <Link
+                                            href={service.path}
+                                            className="inline-flex h-11 w-full items-center justify-center whitespace-nowrap rounded-xl bg-[var(--button-primary-bg)] px-4 text-sm font-semibold text-[var(--button-primary-text)] transition-all duration-300 hover:bg-[var(--button-primary-hover)] active:translate-y-px md:w-auto md:min-w-[8.5rem]"
+                                            target={isExternalLink(service.path) ? '_blank' : undefined}
+                                            rel={isExternalLink(service.path) ? 'noopener noreferrer' : undefined}
+                                        >
+                                            {service.buttonText}
+                                        </Link>
+                                    )}
+                                </div>
+                            </article>
                         </ScrollAnimation>
                     ))}
                 </div>

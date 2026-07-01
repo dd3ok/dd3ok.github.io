@@ -29,7 +29,6 @@ const sectionNavItems = [
                 id: service.id,
                 label: service.navLabel ?? service.title,
                 path: service.path,
-                icon: service.icon,
             })),
         ],
     },
@@ -345,7 +344,9 @@ export default function Navigation() {
                                                             className="flex items-center px-4 py-3 text-sm text-[var(--text-secondary)] hover:bg-[var(--accent-glow)] hover:text-[var(--text-primary)] transition-all duration-300 rounded-xl mx-2 my-0.5 group"
                                                             onClick={() => closeDesktopDropdown()}
                                                         >
-                                                            <span className="mr-3 text-base">{dropdownItem.icon}</span>
+                                                            <span className="mr-3 w-5 font-mono text-xs font-bold tabular-nums text-[var(--text-muted)]">
+                                                                {String(dropdownIndex + 1).padStart(2, '0')}
+                                                            </span>
                                                             <span className="font-medium">{dropdownItem.label}</span>
                                                             {external && (
                                                                 <svg

@@ -13,6 +13,8 @@ const contactForm = read('src/components/sections/ContactForm.tsx')
 const aiChat = read('src/components/sections/AIChat.tsx')
 const notesDirectory = read('src/app/notes/NotesDirectoryView.tsx')
 const tailwind = read('tailwind.config.mjs')
+const card = read('src/components/ui/Card.tsx')
+const portfolioData = read('src/data/portfolio.ts')
 
 const extractCssBlock = (source, marker) => {
   const markerIndex = source.indexOf(marker)
@@ -63,6 +65,8 @@ const aiChatSubmitButtonClass =
   aiChat.match(/type="submit"[\s\S]*?className="([^"]+)"[\s\S]*?disabled=\{!inputValue\.trim\(\)/)?.[1] ?? ''
 const notesDirectoryListClass =
   notesDirectory.match(/<div className="([^"]+)">\s*\{activeNotes\.map/)?.[1] ?? ''
+const heroMobilePreviewBlock = hero.match(/<div className="lg:hidden">[\s\S]*?<HeroAgentPreview \/>[\s\S]*?<\/div>/)?.[0] ?? ''
+const heroDesktopChatBlock = hero.match(/<div className="hidden lg:block">[\s\S]*?<DeferredAIChat \/>[\s\S]*?<\/div>/)?.[0] ?? ''
 const requiredReducedMotionFragments = [
   'scroll-behavior: auto',
   'animation: none !important',
@@ -182,12 +186,21 @@ const checks = [
     passed: hasReducedMotionQuery && requiredReducedMotionFragments.every((fragment) => reducedMotionCss.includes(fragment)),
   },
   {
+    name: 'mobile scroll animations avoid lateral overflow',
+    passed:
+      /@media\s*\(max-width:\s*640px\)[\s\S]*?\.slide-in-left[\s\S]*?\.slide-in-right[\s\S]*?translateY\(24px\)/.test(globals),
+  },
+  {
     name: 'hero uses dynamic viewport height',
     passed: hero.includes('min-h-[100dvh]'),
   },
   {
     name: 'hero does not use min-h-screen',
     passed: !hero.includes('min-h-screen'),
+  },
+  {
+    name: 'hero uses mobile preview and desktop full AI chat',
+    passed: heroMobilePreviewBlock.includes('<HeroAgentPreview />') && heroDesktopChatBlock.includes('<DeferredAIChat />'),
   },
   {
     name: 'shared Button has pressed translate feedback',
@@ -246,6 +259,12 @@ const checks = [
     passed: projectGalleryDemoLinkClass.includes('text-[var(--button-primary-text)]'),
   },
   {
+    name: 'ProjectGallery CTA avoids uppercase treatment',
+    passed:
+      !projectGalleryDemoLinkClass.includes('uppercase') &&
+      !projectGalleryDemoLinkClass.includes('tracking-wider'),
+  },
+  {
     name: 'PagesSection active CTA uses button background token',
     passed: pagesSectionActiveLinkClass.includes('bg-[var(--button-primary-bg)]'),
   },
@@ -256,6 +275,22 @@ const checks = [
   {
     name: 'PagesSection active CTA uses button text token',
     passed: pagesSectionActiveLinkClass.includes('text-[var(--button-primary-text)]'),
+  },
+  {
+    name: 'PagesSection avoids emoji icons and typed service marks',
+    passed:
+      !pagesSection.includes('serviceMarks') &&
+      !pagesSection.includes('{service.icon}') &&
+      !navigation.includes('dropdownItem.icon') &&
+      !portfolioData.includes('icon:'),
+  },
+  {
+    name: 'Lab service data does not keep unused gradient metadata',
+    passed: !portfolioData.includes('color:'),
+  },
+  {
+    name: 'shared Card avoids hard-coded white shadow base',
+    passed: !card.includes('bg-white') && !card.includes('shadow-lg') && !card.includes('hover:shadow-xl'),
   },
   {
     name: 'ContactForm submit CTA uses button background token',
