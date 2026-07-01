@@ -2,10 +2,138 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
-import Card from '@/components/ui/Card'
 import ImageModal from '@/components/ui/ImageModal'
 import ScrollAnimation from '@/components/animations/ScrollAnimations'
 import { projects } from '@/data/portfolio'
+import type { Project } from '@/types'
+
+const featuredProjects = projects.slice(0, 3)
+const supportingProjects = projects.slice(3)
+const supportingLabels = ['신청 프로세스', '관리 화면', 'API·Gateway', 'B2B 업무']
+
+interface ProjectCardProps {
+    project: Project
+    index: number
+    onImageOpen: (imageSrc: string, imageAlt: string) => void
+    variant?: 'primary' | 'secondary'
+}
+
+function TechPills({ tech, compact = false }: { tech: string[]; compact?: boolean }) {
+    return (
+        <div className={`flex flex-wrap gap-2 ${compact ? '' : 'mb-6'}`}>
+            {tech.map((item) => (
+                <span
+                    key={item}
+                    className="rounded-full border border-[var(--accent-color)]/10 bg-[var(--accent-glow)] px-2.5 py-1 text-[10px] font-bold text-[var(--accent-color)] shadow-sm"
+                >
+                    {item}
+                </span>
+            ))}
+        </div>
+    )
+}
+
+function FeaturedProjectCard({ project, index, onImageOpen, variant = 'secondary' }: ProjectCardProps) {
+    const isPrimary = variant === 'primary'
+
+    return (
+        <article className={`glass-card hover-lift overflow-hidden rounded-2xl p-4 ${isPrimary ? '' : 'h-full sm:grid sm:grid-cols-[11rem_1fr] sm:gap-4 lg:block'}`}>
+            <div
+                className={`group/image relative cursor-pointer overflow-hidden rounded-xl border border-[var(--card-border)] bg-[var(--input-border)] ${isPrimary ? 'aspect-video' : 'aspect-video sm:aspect-square lg:aspect-video'}`}
+                onClick={() => onImageOpen(project.image, project.title)}
+                onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault()
+                        onImageOpen(project.image, project.title)
+                    }
+                }}
+                tabIndex={0}
+                role="button"
+                aria-label={`${project.title} 이미지 크게 보기`}
+            >
+                <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    sizes={index === 0 ? '(max-width: 1024px) 100vw, 66vw' : '(max-width: 1024px) 100vw, 33vw'}
+                    className="object-cover transition-transform duration-500 group-hover/image:scale-105"
+                    priority={index === 0}
+                />
+
+                <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/0 transition-all duration-500 group-hover/image:bg-black/30">
+                    <div className="scale-75 rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] p-3 text-[var(--accent-color)] opacity-0 shadow-lg backdrop-blur-md transition-all duration-500 group-hover/image:scale-100 group-hover/image:opacity-100">
+                        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div className={`flex flex-1 flex-col ${isPrimary ? 'p-4' : 'px-1 pt-4 sm:p-0 lg:p-4'}`}>
+                <div className="mb-3 flex items-center gap-3">
+                    <span className="rounded-full border border-[var(--card-border)] bg-[var(--input-bg)] px-3 py-1 text-[11px] font-bold text-[var(--text-muted)]">
+                        {isPrimary ? '대표 작업' : '관련 작업'}
+                    </span>
+                    <span className="text-xs font-bold text-[var(--accent-color)]">
+                        계정·인증
+                    </span>
+                </div>
+
+                <h3 className={`${isPrimary ? 'text-xl md:text-2xl' : 'text-lg'} mb-3 font-extrabold tracking-tight text-[var(--text-primary)]`}>
+                    {project.title}
+                </h3>
+
+                <p className="mb-5 flex-1 text-sm font-medium leading-relaxed text-[var(--text-secondary)]">
+                    {project.description}
+                </p>
+
+                <TechPills tech={project.tech} />
+
+                <a
+                    href={project.demo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex w-full items-center justify-center rounded-xl bg-[var(--button-primary-bg)] px-4 py-2.5 text-xs font-bold text-[var(--button-primary-text)] shadow-md shadow-[var(--accent-color)]/10 transition-all duration-300 hover:scale-[1.02] hover:bg-[var(--button-primary-hover)] hover:shadow-[var(--accent-color)]/20"
+                >
+                    방문하기
+                </a>
+            </div>
+        </article>
+    )
+}
+
+function SupportingProjectCard({ project }: { project: Project }) {
+    return (
+        <article className="grid gap-4 py-5 first:pt-0 last:pb-0 md:grid-cols-[minmax(0,1fr)_12rem] md:items-start">
+            <div>
+                <p className="mb-2 text-xs font-bold text-[var(--accent-color)]">
+                    {supportingLabels[supportingProjects.indexOf(project)] ?? '담당 범위'}
+                </p>
+                <h3 className="text-base font-extrabold leading-snug text-[var(--text-primary)]">
+                    {project.title}
+                </h3>
+
+                <p className="mt-2 text-sm font-medium leading-relaxed text-[var(--text-secondary)]">
+                    {project.description}
+                </p>
+
+                <div className="mt-4">
+                    <TechPills tech={project.tech.slice(0, 4)} compact />
+                </div>
+            </div>
+
+            <a
+                href={project.demo}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-between self-start rounded-xl border border-[var(--card-border)] bg-[var(--input-bg)] px-4 py-3 text-sm font-bold text-[var(--text-primary)] transition-all duration-300 hover:border-[var(--card-hover-border)] hover:text-[var(--accent-color)] md:w-full"
+            >
+                방문하기
+                <span aria-hidden="true">→</span>
+            </a>
+        </article>
+    )
+}
 
 export default function ProjectGallery() {
     const [modalState, setModalState] = useState({
@@ -32,79 +160,61 @@ export default function ProjectGallery() {
 
     return (
         <>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {projects.map((project, index) => (
-                    <ScrollAnimation
-                        key={project.title}
-                        animation="fade"
-                        delay={index * 160}
-                    >
-                        <Card className="glass-card hover-lift h-full flex flex-col p-4">
-                            <div
-                                className="aspect-video bg-[var(--input-border)] border border-[var(--card-border)] rounded-xl overflow-hidden cursor-pointer relative group/image"
-                                onClick={() => openImageModal(project.image, project.title)}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter' || e.key === ' ') {
-                                        e.preventDefault()
-                                        openImageModal(project.image, project.title)
-                                    }
-                                }}
-                                tabIndex={0}
-                                role="button"
-                                aria-label={`${project.title} 이미지 크게 보기`}
-                            >
-                                <Image
-                                    src={project.image}
-                                    alt={project.title}
-                                    fill
-                                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                                    priority={index < 2}
-                                />
-
-                                <div className="absolute inset-0 bg-black/0 group-hover/image:bg-black/30 transition-all duration-500 flex items-center justify-center pointer-events-none">
-                                    <div className="opacity-0 scale-75 group-hover/image:opacity-100 group-hover/image:scale-100 transition-all duration-500 bg-[var(--card-bg)] backdrop-blur-md rounded-full p-3 shadow-lg border border-[var(--card-border)] text-[var(--accent-color)]">
-                                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="p-4 flex flex-col flex-1">
-                                <h3 className="text-xl font-extrabold text-[var(--text-primary)] mb-3 tracking-tight">
-                                    {project.title}
-                                </h3>
-
-                                <p className="text-[var(--text-secondary)] mb-5 leading-relaxed text-sm font-medium flex-1">
-                                    {project.description}
-                                </p>
-
-                                <div className="flex flex-wrap gap-2 mb-6">
-                                    {project.tech.map((tech) => (
-                                        <span
-                                            key={tech}
-                                            className="text-[10px] font-bold bg-[var(--accent-glow)] text-[var(--accent-color)] border border-[var(--accent-color)]/10 px-2.5 py-1 rounded-full shadow-sm"
-                                        >
-                                            {tech}
-                                        </span>
-                                    ))}
-                                </div>
-
-                                <div className="flex gap-3">
-                                    <a
-                                        href={project.demo}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="w-full font-bold rounded-xl transition-all duration-300 bg-[var(--button-primary-bg)] hover:bg-[var(--button-primary-hover)] text-[var(--button-primary-text)] hover:scale-[1.02] shadow-md shadow-[var(--accent-color)]/10 hover:shadow-[var(--accent-color)]/20 px-4 py-2.5 text-xs inline-flex items-center justify-center tracking-wider uppercase"
-                                    >
-                                        방문하기
-                                    </a>
-                                </div>
-                            </div>
-                        </Card>
+            <div className="space-y-8">
+                <div className="grid gap-6 lg:grid-cols-[minmax(0,1.3fr)_minmax(20rem,0.7fr)]">
+                    <ScrollAnimation animation="fade">
+                        <FeaturedProjectCard
+                            project={featuredProjects[0]}
+                            index={0}
+                            onImageOpen={openImageModal}
+                            variant="primary"
+                        />
                     </ScrollAnimation>
-                ))}
+
+                    <div className="grid gap-6">
+                        {featuredProjects.slice(1).map((project, index) => (
+                            <ScrollAnimation
+                                key={project.title}
+                                animation="fade"
+                                delay={(index + 1) * 120}
+                            >
+                                <FeaturedProjectCard
+                                    project={project}
+                                    index={index + 1}
+                                    onImageOpen={openImageModal}
+                                />
+                            </ScrollAnimation>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="glass-card rounded-2xl p-5 md:p-6">
+                    <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                        <div>
+                            <h3 className="text-lg font-extrabold text-[var(--text-primary)]">
+                                그 외 담당 범위
+                            </h3>
+                            <p className="mt-1 text-sm font-medium leading-relaxed text-[var(--text-secondary)]">
+                                판매자센터 운영과 B2B 업무 시스템에서 맡았던 일을 범위별로 정리했습니다.
+                            </p>
+                        </div>
+                        <span className="text-xs font-bold text-[var(--text-muted)]">
+                            {supportingProjects.length}개 작업
+                        </span>
+                    </div>
+
+                    <div className="divide-y divide-[var(--card-border)]">
+                        {supportingProjects.map((project, index) => (
+                            <ScrollAnimation
+                                key={project.title}
+                                animation="fade"
+                                delay={index * 90}
+                            >
+                                <SupportingProjectCard project={project} />
+                            </ScrollAnimation>
+                        ))}
+                    </div>
+                </div>
             </div>
 
             <ImageModal

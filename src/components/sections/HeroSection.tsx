@@ -1,20 +1,53 @@
 import Button from '@/components/ui/Button'
 import DeferredAIChat from '@/components/sections/DeferredAIChat'
 
+function HeroAgentPreview() {
+    const quickTopics = ['프로젝트', '기술 스택', '경력']
+
+    return (
+        <div className="mx-auto w-full max-w-md rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)]/85 p-5 text-left shadow-[0_20px_60px_rgba(15,23,42,0.10)] backdrop-blur">
+            <div className="flex items-center gap-4">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-[var(--card-border)] bg-[var(--accent-glow)] text-sm font-black text-[var(--accent-color)]">
+                    AI
+                </div>
+                <div>
+                    <p className="text-sm font-bold text-[var(--text-primary)]">
+                        커리어 에이전트 미리보기
+                    </p>
+                    <p className="text-xs font-medium text-[var(--text-muted)]">
+                        프로젝트와 기술 스택을 빠르게 탐색합니다
+                    </p>
+                </div>
+            </div>
+
+            <div className="mt-4 grid grid-cols-3 gap-2">
+                {quickTopics.map((topic) => (
+                    <span
+                        key={topic}
+                        className="rounded-xl border border-[var(--card-border)] bg-[var(--input-bg)] px-2 py-2 text-center text-xs font-bold text-[var(--text-secondary)]"
+                    >
+                        {topic}
+                    </span>
+                ))}
+            </div>
+        </div>
+    )
+}
+
 export default function HeroSection() {
     return (
         <section
             id="hero"
-            className="min-h-[100dvh] flex flex-col justify-center lg:justify-start relative overflow-hidden bg-gradient-to-br from-[var(--bg-grad-start)] to-[var(--bg-grad-end)] section-padding"
+            className="min-h-[100dvh] flex flex-col justify-center relative overflow-hidden bg-gradient-to-br from-[var(--bg-grad-start)] to-[var(--bg-grad-end)] section-padding"
         >
             {/* Ambient Aurora Orbs */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <div
-                    className="absolute -top-20 -right-20 w-[450px] h-[450px] bg-[var(--orb-color-1)] aurora-orb"
+                    className="absolute -top-20 -right-20 hidden h-[450px] w-[450px] bg-[var(--orb-color-1)] aurora-orb sm:block"
                     style={{ animationDelay: '0s' }}
                 />
                 <div
-                    className="absolute -bottom-20 -left-20 w-[400px] h-[400px] bg-[var(--orb-color-2)] aurora-orb"
+                    className="absolute -bottom-20 -left-20 hidden h-[400px] w-[400px] bg-[var(--orb-color-2)] aurora-orb sm:block"
                     style={{ animationDelay: '-7s' }}
                 />
             </div>
@@ -30,8 +63,8 @@ export default function HeroSection() {
                         </h1>
 
                         <p className="text-lg md:text-xl text-[var(--text-secondary)] mb-12 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-medium">
-                            스프링 백엔드 경험을 살려,<br />
-                            확장성·안정성을 갖춘 서비스를 설계하고 개발합니다.
+                            Spring 백엔드와 운영 경험을 바탕으로,<br />
+                            서비스 흐름을 안정적으로 설계합니다.
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center">
@@ -52,8 +85,13 @@ export default function HeroSection() {
                         </div>
                     </div>
 
-                    <div className="w-full max-w-md justify-self-start lg:ml-8">
-                        <DeferredAIChat />
+                    <div className="w-full max-w-md justify-self-center lg:justify-self-start lg:ml-8">
+                        <div className="lg:hidden">
+                            <HeroAgentPreview />
+                        </div>
+                        <div className="hidden lg:block">
+                            <DeferredAIChat />
+                        </div>
                     </div>
                 </div>
             </div>

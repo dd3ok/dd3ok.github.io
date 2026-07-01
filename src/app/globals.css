@@ -246,6 +246,13 @@ body {
   transform: translateX(0);
 }
 
+@media (max-width: 640px) {
+  .slide-in-left,
+  .slide-in-right {
+    transform: translateY(24px);
+  }
+}
+
 .slide-in-up {
   opacity: 0;
   transform: translateY(30px);

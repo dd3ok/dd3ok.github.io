@@ -10,7 +10,7 @@ export default function ContactSection() {
             {/* Ambient Aurora Orb */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <div
-                    className="absolute -bottom-20 -right-20 w-[350px] h-[350px] bg-[var(--orb-color-1)] aurora-orb"
+                    className="absolute -bottom-20 -right-20 hidden h-[350px] w-[350px] bg-[var(--orb-color-1)] aurora-orb sm:block"
                     style={{ animationDelay: '-12s' }}
                 />
             </div>
@@ -32,7 +32,7 @@ export default function ContactSection() {
                                 {/* 왼쪽: 소개 및 연락처 정보 */}
                                 <div className="order-2 lg:order-1">
                                     <h3 className="text-xl md:text-2xl font-bold text-[var(--text-primary)] mb-4 md:mb-6">
-                                        함께 일해요!
+                                        함께 일해요
                                     </h3>
                                     <p className="text-[var(--text-secondary)] mb-6 md:mb-8 leading-relaxed text-sm md:text-base font-medium">
                                         흥미로운 프로젝트나 새로운 기회가 있다면 편하게 이야기해 주세요.

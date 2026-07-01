@@ -14,12 +14,24 @@ const useHealthCheck = (): void => {
         const performHealthCheck = async (): Promise<void> => {
             try {
                 const config = getEnvConfig();
-                const healthCheckTargets: HealthCheckTarget[] = [
-                    {
+
+                if (config.isDevelopment) {
+                    console.warn('Skipping external API health checks in local development.');
+                    localStorage.setItem(CACHE_KEY, Date.now().toString());
+                    return;
+                }
+
+                const healthCheckTargets: HealthCheckTarget[] = [];
+                const hasConfiguredPagesApi = Boolean(process.env.NEXT_PUBLIC_PAGES_KOYEB_API);
+
+                if (hasConfiguredPagesApi || !config.isDevelopment) {
+                    healthCheckTargets.push({
                         name: 'Pages API',
                         url: `${config.pagesApi.baseUrl}/api/healthcheck`,
-                    },
-                ];
+                    });
+                } else {
+                    console.warn('NEXT_PUBLIC_PAGES_KOYEB_API is not configured; skipping local Pages API health check.');
+                }
 
                 if (config.whoAmAiApi?.baseUrl) {
                     healthCheckTargets.push({
@@ -27,28 +39,26 @@ const useHealthCheck = (): void => {
                         url: `${config.whoAmAiApi.baseUrl}/api/healthcheck`,
                     });
                 } else {
-                    console.warn('⚠️ NEXT_PUBLIC_WHO_AM_AI_API is not configured; skipping WhoAmAI health check.');
+                    console.warn('NEXT_PUBLIC_WHO_AM_AI_API is not configured; skipping WhoAmAI health check.');
+                }
+
+                if (healthCheckTargets.length === 0) {
+                    localStorage.setItem(CACHE_KEY, Date.now().toString());
+                    return;
                 }
 
                 await Promise.all(
                     healthCheckTargets.map(async (target) => {
-                        const response = await fetch(target.url, { method: 'GET' });
-
-                        if (!response.ok) {
-                            throw new Error(`[${target.name}] health check failed with status: ${response.status}`);
-                        }
-
-                        // Some health-check endpoints return primitive values (e.g., long); consume the body to avoid reader lock.
-                        await response.text();
+                        await fetch(target.url, { method: 'GET', mode: 'no-cors' });
                     }),
                 );
 
                 localStorage.setItem(CACHE_KEY, Date.now().toString());
             } catch (error) {
                 if (error instanceof Error) {
-                    console.error('❌ Error during health check:', error.message);
+                    console.warn('Health check could not complete:', error.message);
                 } else {
-                    console.error('❌ An unknown error occurred during health check:', error);
+                    console.warn('Health check could not complete:', error);
                 }
             }
         };

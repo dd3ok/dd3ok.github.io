@@ -13,7 +13,7 @@ export default function ProjectsSection() {
                         Projects
                     </h2>
                     <p className="text-lg text-[var(--text-secondary)] max-w-2xl mx-auto font-medium">
-                        지마켓/옥션 판매자센터 ESM Plus와 삼성전자 BQMS의 MRO몰을 담당했습니다.
+                        로그인·가입, 판매자 API, 업무 시스템 운영 등 백엔드 중심 업무를 맡았습니다.
                     </p>
                 </ScrollAnimation>
 

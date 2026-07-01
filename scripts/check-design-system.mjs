@@ -182,12 +182,21 @@ const checks = [
     passed: hasReducedMotionQuery && requiredReducedMotionFragments.every((fragment) => reducedMotionCss.includes(fragment)),
   },
   {
+    name: 'mobile scroll animations avoid lateral overflow',
+    passed:
+      /@media\s*\(max-width:\s*640px\)[\s\S]*?\.slide-in-left[\s\S]*?\.slide-in-right[\s\S]*?translateY\(24px\)/.test(globals),
+  },
+  {
     name: 'hero uses dynamic viewport height',
     passed: hero.includes('min-h-[100dvh]'),
   },
   {
     name: 'hero does not use min-h-screen',
     passed: !hero.includes('min-h-screen'),
+  },
+  {
+    name: 'hero keeps full AI chat desktop-only',
+    passed: hero.includes('hidden lg:block') && hero.includes('lg:hidden'),
   },
   {
     name: 'shared Button has pressed translate feedback',
@@ -246,6 +255,16 @@ const checks = [
     passed: projectGalleryDemoLinkClass.includes('text-[var(--button-primary-text)]'),
   },
   {
+    name: 'ProjectGallery separates featured and supporting work',
+    passed: projectGallery.includes('featuredProjects') && projectGallery.includes('supportingProjects'),
+  },
+  {
+    name: 'ProjectGallery CTA avoids uppercase treatment',
+    passed:
+      !projectGalleryDemoLinkClass.includes('uppercase') &&
+      !projectGalleryDemoLinkClass.includes('tracking-wider'),
+  },
+  {
     name: 'PagesSection active CTA uses button background token',
     passed: pagesSectionActiveLinkClass.includes('bg-[var(--button-primary-bg)]'),
   },
@@ -256,6 +275,10 @@ const checks = [
   {
     name: 'PagesSection active CTA uses button text token',
     passed: pagesSectionActiveLinkClass.includes('text-[var(--button-primary-text)]'),
+  },
+  {
+    name: 'PagesSection avoids emoji icons and typed service marks',
+    passed: !pagesSection.includes('serviceMarks') && !pagesSection.includes('{service.icon}'),
   },
   {
     name: 'ContactForm submit CTA uses button background token',
