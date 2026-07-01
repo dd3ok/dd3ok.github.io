@@ -13,8 +13,43 @@ const contactForm = read('src/components/sections/ContactForm.tsx')
 const aiChat = read('src/components/sections/AIChat.tsx')
 const notesDirectory = read('src/app/notes/NotesDirectoryView.tsx')
 const tailwind = read('tailwind.config.mjs')
-const hasReducedMotionQuery = globals.includes('@media (prefers-reduced-motion: reduce)')
+
+const extractCssBlock = (source, marker) => {
+  const markerIndex = source.indexOf(marker)
+  if (markerIndex === -1) {
+    return ''
+  }
+
+  const openBraceIndex = source.indexOf('{', markerIndex)
+  if (openBraceIndex === -1) {
+    return ''
+  }
+
+  let depth = 0
+
+  for (let index = openBraceIndex; index < source.length; index += 1) {
+    const char = source[index]
+
+    if (char === '{') {
+      depth += 1
+    }
+
+    if (char === '}') {
+      depth -= 1
+
+      if (depth === 0) {
+        return source.slice(openBraceIndex + 1, index)
+      }
+    }
+  }
+
+  return ''
+}
+
+const reducedMotionCss = extractCssBlock(globals, '@media (prefers-reduced-motion: reduce)')
+const hasReducedMotionQuery = reducedMotionCss.length > 0
 const buttonBaseClasses = button.match(/const baseClasses = '([^']+)'/)?.[1] ?? ''
+const buttonPrimaryVariantClass = button.match(/primary:\s*(['"`])([\s\S]*?)\1/)?.[2] ?? ''
 const navigationHasScrollListener = /window\s*\.\s*addEventListener\s*\(\s*['"]scroll['"]/.test(navigation)
 const projectGalleryDemoLinkClass =
   projectGallery.match(/href=\{project\.demo\}[\s\S]*?className="([^"]+)"/)?.[1] ?? ''
@@ -132,19 +167,19 @@ const checks = [
   },
   {
     name: 'reduced-motion fallback disables animations',
-    passed: hasReducedMotionQuery && globals.includes('animation: none !important'),
+    passed: hasReducedMotionQuery && reducedMotionCss.includes('animation: none !important'),
   },
   {
     name: 'reduced-motion fallback disables transitions',
-    passed: hasReducedMotionQuery && globals.includes('transition: none !important'),
+    passed: hasReducedMotionQuery && reducedMotionCss.includes('transition: none !important'),
   },
   {
     name: 'reduced-motion fallback prevents smooth scrolling',
-    passed: hasReducedMotionQuery && globals.includes('scroll-behavior: auto'),
+    passed: hasReducedMotionQuery && reducedMotionCss.includes('scroll-behavior: auto'),
   },
   {
     name: 'reduced-motion fallback reveals scroll animation elements',
-    passed: hasReducedMotionQuery && requiredReducedMotionFragments.every((fragment) => globals.includes(fragment)),
+    passed: hasReducedMotionQuery && requiredReducedMotionFragments.every((fragment) => reducedMotionCss.includes(fragment)),
   },
   {
     name: 'hero uses dynamic viewport height',
@@ -172,15 +207,15 @@ const checks = [
   },
   {
     name: 'shared Button primary uses button background token',
-    passed: button.includes('bg-[var(--button-primary-bg)]'),
+    passed: buttonPrimaryVariantClass.includes('bg-[var(--button-primary-bg)]'),
   },
   {
     name: 'shared Button primary uses button hover token',
-    passed: button.includes('hover:bg-[var(--button-primary-hover)]'),
+    passed: buttonPrimaryVariantClass.includes('hover:bg-[var(--button-primary-hover)]'),
   },
   {
     name: 'shared Button primary uses button text token',
-    passed: button.includes('text-[var(--button-primary-text)]'),
+    passed: buttonPrimaryVariantClass.includes('text-[var(--button-primary-text)]'),
   },
   {
     name: 'shared Button light primary contrast passes AA',
