@@ -77,7 +77,7 @@ export default function PagesSection() {
                                         ) : (
                                             <Link
                                                 href={service.path}
-                                                className="inline-flex items-center justify-center w-full px-4 py-3 rounded-xl transition-all duration-300 group-hover:scale-105 font-semibold bg-[var(--accent-color)] hover:bg-[var(--accent-secondary)] text-white hover:shadow-[0_0_20px_var(--accent-glow)]"
+                                                className="inline-flex items-center justify-center w-full px-4 py-3 rounded-xl transition-all duration-300 group-hover:scale-105 font-semibold bg-[var(--button-primary-bg)] hover:bg-[var(--button-primary-hover)] text-[var(--button-primary-text)] hover:shadow-[0_0_20px_var(--accent-glow)]"
                                                 target={isExternalLink(service.path) ? '_blank' : undefined}
                                                 rel={isExternalLink(service.path) ? 'noopener noreferrer' : undefined}
                                             >

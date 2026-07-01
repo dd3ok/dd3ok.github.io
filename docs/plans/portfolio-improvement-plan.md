@@ -179,6 +179,11 @@ Establish a repeatable development workflow and then improve the portfolio in sm
 - Keep section active states scoped to the home route so Waitworthy pages do not also highlight Home
 - Preserve static export and mobile navigation behavior
 
+### Ticket 23: Incremental Design Tightening
+- Apply small, reviewable design-system cleanups one task at a time
+- Start with the font token mismatch between `next/font`, global CSS, and Tailwind
+- Verify each task with local checks and a subagent review before moving to the next task
+
 ## Progress Log
 ... (Skipping past logs to append today's entry) ...
 - 2026-05-21: Started Ticket 21 on branch `feature/hybrid-theme-premium-ui`
@@ -202,3 +207,21 @@ Establish a repeatable development workflow and then improve the portfolio in sm
 - 2026-06-22: Followed up Ticket 22 by reducing the header height, compacting nav controls, and keeping a subtle top-of-page header shadow instead of hiding it entirely.
 - 2026-06-22: Fine-tuned Ticket 22 by lowering the header to 52px and increasing the Waitworthy separator contrast slightly.
 - 2026-06-22: Removed the redundant `Agent` badge from the career agent chat header and fallback header.
+- 2026-07-01: Started Ticket 23 on branch `codex/portfolio-design-tightening`; Task 1 is the font token cleanup only.
+- 2026-07-01: Completed Ticket 23 Task 1 font token cleanup with local verification and subagent approval; started Task 2 reduced-motion fallback.
+- 2026-07-01: Completed Ticket 23 Task 2 reduced-motion fallback with local verification and subagent approval; started Task 3 hero viewport stability.
+- 2026-07-01: Completed Ticket 23 Task 3 hero viewport stability with local verification and subagent approval; started Task 4 shared Button tactile state.
+- 2026-07-01: Completed Ticket 23 Task 4 shared Button tactile state with local verification and subagent approval; started Task 5 navigation scroll-listener removal.
+- 2026-07-01: Completed Ticket 23 Task 5 navigation scroll-listener removal with local verification and subagent approval; started Task 6 shared Button primary contrast.
+- 2026-07-01: Completed Ticket 23 Task 6 shared Button primary contrast with local verification and subagent approval after strengthening hover-token and hover-contrast guards.
+- 2026-07-01: Started Ticket 23 Task 7 ProjectGallery card CTA contrast; local verification passed and subagent review is pending.
+- 2026-07-01: Completed Ticket 23 Task 7 ProjectGallery card CTA contrast with local verification, subagent approval, and browser visual check; started Task 8 PagesSection card CTA contrast.
+- 2026-07-01: Completed Ticket 23 Task 8 PagesSection card CTA contrast with local verification, subagent approval, and browser visual check.
+- 2026-07-01: Started Ticket 23 Task 9 ContactForm submit CTA contrast; local verification passed and subagent review is pending.
+- 2026-07-01: Completed Ticket 23 Task 9 ContactForm submit CTA contrast with local verification, subagent approval, and browser visual check.
+- 2026-07-01: Started Ticket 23 Task 10 AIChat timeout retry CTA contrast; local verification passed and subagent review is pending.
+- 2026-07-01: Completed Ticket 23 Task 10 AIChat timeout retry CTA contrast with local verification and subagent approval.
+- 2026-07-01: Started Ticket 23 Task 11 AIChat input submit CTA contrast; local verification passed and subagent review is pending.
+- 2026-07-01: Completed Ticket 23 Task 11 AIChat input submit CTA contrast with local verification and subagent approval; remaining accent uses are non-CTA states or decorative accents.
+- 2026-07-01: Rebased `codex/portfolio-design-tightening` onto latest `origin/main` (`3a45ab2`), preserving both the new notes category validation and the design-system check; verified with `npm run build`.
+- 2026-07-01: Fixed duplicate divider lines under Waitworthy recent notes by replacing the notes list `border-y` with `border-b`, adding a design-system regression check, and verifying with `npm run build` plus browser inspection.

@@ -36,7 +36,7 @@ const TimeoutMessage = ({ onRetry }: { onRetry: () => void }) => (
         <button
             type="button"
             onClick={onRetry}
-            className="px-4 py-2 bg-[var(--accent-color)] text-white text-xs font-semibold rounded-xl hover:bg-[var(--accent-secondary)] shadow-sm transition-all duration-300"
+            className="px-4 py-2 bg-[var(--button-primary-bg)] text-[var(--button-primary-text)] text-xs font-semibold rounded-xl hover:bg-[var(--button-primary-hover)] shadow-sm transition-all duration-300"
         >
             새 연결로 다시 요청하기
         </button>
@@ -414,7 +414,7 @@ function ConfiguredAIChat({
                     />
                     <button
                         type="submit"
-                        className="w-9 h-9 flex items-center justify-center bg-[var(--accent-color)] text-white rounded-full hover:bg-[var(--accent-secondary)] focus:outline-none transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed shrink-0 shadow-md shadow-black/[0.04]"
+                        className="w-9 h-9 flex items-center justify-center bg-[var(--button-primary-bg)] text-[var(--button-primary-text)] rounded-full hover:bg-[var(--button-primary-hover)] focus:outline-none transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed shrink-0 shadow-md shadow-black/[0.04]"
                         disabled={!inputValue.trim() || (isResponding && !isTimeout) || readyState !== ReadyState.OPEN}
                     >
                         <SendIcon />
