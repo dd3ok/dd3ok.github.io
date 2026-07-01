@@ -55,9 +55,9 @@ export const experiences: Experience[] = [
 
 export const projects: Project[] = [
     {
-        title: 'ESM+ 부정로그인탐지(ATO) 연동/개발',
-        description: 'ATO 솔루션 도입을 위한 협의, 설계, 개발을 담당했습니다.',
-        tech: ['.NET', 'Spring Boot', 'MSSQL', 'Redis', 'jQuery', 'Kafka'],
+        title: 'ESM+ 로그인·인증 및 ATO 연동/개발',
+        description: '로그인 서비스를 .NET에서 Spring으로 전환하고, 같은 로그인 흐름에 ATO 솔루션을 연동했습니다.',
+        tech: ['Spring Boot', '.NET', 'MSSQL', 'Redis', 'Kafka', 'jQuery'],
         image: '/image/projects/esm-signin.png',
         github: '#',
         demo: 'https://signin.esmplus.com',
@@ -75,23 +75,13 @@ export const projects: Project[] = [
         displayLabel: '계정·인증',
     },
     {
-        title: 'ESM+ 로그인 및 인증 서비스 개발',
-        description: 'ESM+ MSA 전환 과정에서 로그인 서비스를 .NET에서 Spring으로 마이그레이션했습니다.',
-        tech: ['Spring Boot', 'MSSQL', 'Redis', 'Kafka'],
-        image: '/image/projects/esm-signin.png',
-        github: '#',
-        demo: 'https://signin.esmplus.com',
-        displayGroup: 'related',
-        displayLabel: '계정·인증',
-    },
-    {
         title: 'ESM+ 슈퍼딜/올킬 신청 프로세스',
         description: '판매자가 슈퍼딜/올킬을 직접 신청하는 프로세스로, 프론트와 백엔드를 모두 담당했습니다.',
         tech: ['Spring Boot', 'MSSQL', 'Next.js', 'React'],
         image: '/image/projects/esm-seller-deal.png',
         github: '#',
         demo: 'https://signin.esmplus.com',
-        displayGroup: 'supporting',
+        displayGroup: 'related',
         displayLabel: '신청 프로세스',
     },
     {
