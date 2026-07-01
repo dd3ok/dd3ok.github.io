@@ -29,3 +29,4 @@ This pass keeps the redesign small: preserve routes, data shape, and runtime beh
 - 2026-07-01: Removed local frontend dev noise by skipping automatic Pages API health checks when no local API URL is configured.
 - 2026-07-01: Removed typed Lab marks, reshaped Projects into a primary case plus supporting work ranges, and softened overstrong portfolio copy.
 - 2026-07-01: Replaced the awkward `서비스 안쪽 흐름` phrasing with `백엔드 중심 업무`.
+- 2026-07-01: Added a project data invariant check after PR review and loosened design checks that were tied to exact source markup.

@@ -67,20 +67,6 @@ const notesDirectoryListClass =
   notesDirectory.match(/<div className="([^"]+)">\s*\{activeNotes\.map/)?.[1] ?? ''
 const heroMobilePreviewBlock = hero.match(/<div className="lg:hidden">[\s\S]*?<HeroAgentPreview \/>[\s\S]*?<\/div>/)?.[0] ?? ''
 const heroDesktopChatBlock = hero.match(/<div className="hidden lg:block">[\s\S]*?<DeferredAIChat \/>[\s\S]*?<\/div>/)?.[0] ?? ''
-const projectGalleryUsesDisplayMetadata =
-  projectGallery.includes("displayGroup === 'primary'") &&
-  projectGallery.includes("displayGroup === 'related'") &&
-  projectGallery.includes("displayGroup === 'supporting'") &&
-  projectGallery.includes('project.displayLabel') &&
-  !projectGallery.includes('projects.slice(') &&
-  !projectGallery.includes('supportingLabels') &&
-  !projectGallery.includes('indexOf(project)')
-const pagesSectionUsesCompactIndex =
-  pagesSection.includes('max-w-5xl') &&
-  pagesSection.includes('divide-y') &&
-  pagesSection.includes("padStart(2, '0')") &&
-  !pagesSection.includes('grid gap-5 md:grid-cols-2 lg:grid-cols-3') &&
-  !pagesSection.includes('glass-card group flex h-full flex-col')
 const requiredReducedMotionFragments = [
   'scroll-behavior: auto',
   'animation: none !important',
@@ -273,10 +259,6 @@ const checks = [
     passed: projectGalleryDemoLinkClass.includes('text-[var(--button-primary-text)]'),
   },
   {
-    name: 'ProjectGallery separates work by display metadata',
-    passed: projectGalleryUsesDisplayMetadata,
-  },
-  {
     name: 'ProjectGallery CTA avoids uppercase treatment',
     passed:
       !projectGalleryDemoLinkClass.includes('uppercase') &&
@@ -293,10 +275,6 @@ const checks = [
   {
     name: 'PagesSection active CTA uses button text token',
     passed: pagesSectionActiveLinkClass.includes('text-[var(--button-primary-text)]'),
-  },
-  {
-    name: 'PagesSection uses compact lab index layout',
-    passed: pagesSectionUsesCompactIndex,
   },
   {
     name: 'PagesSection avoids emoji icons and typed service marks',

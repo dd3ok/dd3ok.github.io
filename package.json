@@ -8,12 +8,13 @@
     "start": "node node_modules/serve/build/main.js out -l 3000",
     "lint": "node node_modules/eslint/bin/eslint.js . --max-warnings=0",
     "smoke": "node scripts/smoke-check.mjs",
-    "validate": "npm run test:notes-import && npm run test:notes-categories && npm run design:check && npm run lint && node node_modules/typescript/bin/tsc --noEmit && npm run notes:check",
+    "validate": "npm run test:notes-import && npm run test:notes-categories && npm run test:projects-data && npm run design:check && npm run lint && node node_modules/typescript/bin/tsc --noEmit && npm run notes:check",
     "design:check": "node scripts/check-design-system.mjs",
     "notes:import:waitworthy": "node scripts/import-waitworthy-notes.mjs",
     "notes:check": "node scripts/check-notes.mjs",
     "test:notes-import": "node scripts/test-import-waitworthy-notes.mjs",
     "test:notes-categories": "node scripts/test-notes-categories.mjs",
+    "test:projects-data": "node scripts/check-projects-data.mjs",
     "preview": "npm run build && node node_modules/serve/build/main.js out -l 3000"
   },
   "dependencies": {
