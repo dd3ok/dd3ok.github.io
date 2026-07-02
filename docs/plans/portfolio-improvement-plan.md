@@ -223,5 +223,7 @@ Establish a repeatable development workflow and then improve the portfolio in sm
 - 2026-07-01: Completed Ticket 23 Task 10 AIChat timeout retry CTA contrast with local verification and subagent approval.
 - 2026-07-01: Started Ticket 23 Task 11 AIChat input submit CTA contrast; local verification passed and subagent review is pending.
 - 2026-07-01: Completed Ticket 23 Task 11 AIChat input submit CTA contrast with local verification and subagent approval; remaining accent uses are non-CTA states or decorative accents.
+- 2026-07-02: Started AIChat typing-indicator polish. Goal: keep waiting dots only before the first streamed token while preserving input lockout until the stream settles.
+- 2026-07-02: Completed AIChat typing-indicator polish by splitting first-token waiting state from stream lockout state, adding a design-system regression check, and verifying with `npm run validate` plus `npm run build`.
 - 2026-07-01: Rebased `codex/portfolio-design-tightening` onto latest `origin/main` (`3a45ab2`), preserving both the new notes category validation and the design-system check; verified with `npm run build`.
 - 2026-07-01: Fixed duplicate divider lines under Waitworthy recent notes by replacing the notes list `border-y` with `border-b`, adding a design-system regression check, and verifying with `npm run build` plus browser inspection.

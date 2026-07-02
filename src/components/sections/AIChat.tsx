@@ -156,6 +156,7 @@ function ConfiguredAIChat({
     const userId = useUserIdentifier()
     const [inputValue, setInputValue] = useState('')
     const [isResponding, setIsResponding] = useState(false)
+    const [isAwaitingFirstToken, setIsAwaitingFirstToken] = useState(false)
     const [isTimeout, setIsTimeout] = useState(false)
     const [lastUserMessage, setLastUserMessage] = useState('')
     const chatContainerRef = useRef<HTMLDivElement>(null)
@@ -185,6 +186,7 @@ function ConfiguredAIChat({
         clearSettleTimer()
         responseTimeoutRef.current = setTimeout(() => {
             activeAssistantMessageIdRef.current = null
+            setIsAwaitingFirstToken(false)
             setIsResponding(false)
             setIsTimeout(true)
             responseTimeoutRef.current = null
@@ -234,6 +236,7 @@ function ConfiguredAIChat({
         activeAssistantMessageIdRef.current = createMessageId()
         setLastUserMessage(content)
         setIsResponding(true)
+        setIsAwaitingFirstToken(true)
         setIsTimeout(false)
         setInputValue('')
 
@@ -260,6 +263,7 @@ function ConfiguredAIChat({
 
         clearResponseTimer()
         setIsTimeout(false)
+        setIsAwaitingFirstToken(false)
         setIsResponding(true)
         appendAssistantToken(assistantMessageId, String(lastMessage.data))
         scheduleSettleTimer()
@@ -367,7 +371,7 @@ function ConfiguredAIChat({
                     </div>
                 ))}
 
-                {isResponding && !isTimeout && (
+                {isAwaitingFirstToken && !isTimeout && (
                     <div className="flex items-start gap-2.5 justify-start">
                         <div className="w-8 h-8 rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] flex items-center justify-center shrink-0 ring-1 ring-[var(--card-border)] shadow-sm overflow-hidden p-0.5">
                             <Image

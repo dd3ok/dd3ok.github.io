@@ -63,6 +63,11 @@ const aiChatRetryButtonClass =
   aiChat.match(/onClick=\{onRetry\}[\s\S]*?className="([^"]+)"/)?.[1] ?? ''
 const aiChatSubmitButtonClass =
   aiChat.match(/type="submit"[\s\S]*?className="([^"]+)"[\s\S]*?disabled=\{!inputValue\.trim\(\)/)?.[1] ?? ''
+const aiChatLoadingDotsUseFirstTokenState =
+  aiChat.includes('const [isAwaitingFirstToken') &&
+  aiChat.includes('setIsAwaitingFirstToken(false)') &&
+  /\{isAwaitingFirstToken && !isTimeout && \([\s\S]*?<LoadingDots \/>/.test(aiChat) &&
+  !/\{isResponding && !isTimeout && \([\s\S]*?<LoadingDots \/>/.test(aiChat)
 const notesDirectoryListClass =
   notesDirectory.match(/<div className="([^"]+)">\s*\{activeNotes\.map/)?.[1] ?? ''
 const heroMobilePreviewBlock = hero.match(/<div className="lg:hidden">[\s\S]*?<HeroAgentPreview \/>[\s\S]*?<\/div>/)?.[0] ?? ''
@@ -327,6 +332,10 @@ const checks = [
   {
     name: 'AIChat submit CTA uses button text token',
     passed: aiChatSubmitButtonClass.includes('text-[var(--button-primary-text)]'),
+  },
+  {
+    name: 'AIChat loading dots disappear after the first streamed token',
+    passed: aiChatLoadingDotsUseFirstTokenState,
   },
   {
     name: 'NotesDirectory note list avoids duplicate top divider',
