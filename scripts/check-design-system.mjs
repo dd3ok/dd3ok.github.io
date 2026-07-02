@@ -68,6 +68,13 @@ const aiChatLoadingDotsUseFirstTokenState =
   aiChat.includes('setIsAwaitingFirstToken(false)') &&
   /\{isAwaitingFirstToken && !isTimeout && \([\s\S]*?<LoadingDots \/>/.test(aiChat) &&
   !/\{isResponding && !isTimeout && \([\s\S]*?<LoadingDots \/>/.test(aiChat)
+const aiChatResponseTimeoutWaitsForColdStarts =
+  aiChat.includes('const RESPONSE_TIMEOUT_MS = 60000')
+const aiChatTimeoutKeepsLateResponseReceivable =
+  !/responseTimeoutRef\.current = setTimeout\(\(\) => \{[\s\S]*?activeAssistantMessageIdRef\.current = null[\s\S]*?\}, RESPONSE_TIMEOUT_MS\)/.test(aiChat) &&
+  /responseTimeoutRef\.current = setTimeout\(\(\) => \{[\s\S]*?setIsTimeout\(true\)[\s\S]*?\}, RESPONSE_TIMEOUT_MS\)/.test(aiChat)
+const aiChatInputStaysLockedDuringTimeout =
+  aiChat.includes('disabled={!inputValue.trim() || isResponding || readyState !== ReadyState.OPEN}')
 const notesDirectoryListClass =
   notesDirectory.match(/<div className="([^"]+)">\s*\{activeNotes\.map/)?.[1] ?? ''
 const heroMobilePreviewBlock = hero.match(/<div className="lg:hidden">[\s\S]*?<HeroAgentPreview \/>[\s\S]*?<\/div>/)?.[0] ?? ''
@@ -336,6 +343,18 @@ const checks = [
   {
     name: 'AIChat loading dots disappear after the first streamed token',
     passed: aiChatLoadingDotsUseFirstTokenState,
+  },
+  {
+    name: 'AIChat response timeout allows cold starts and slow first tokens',
+    passed: aiChatResponseTimeoutWaitsForColdStarts,
+  },
+  {
+    name: 'AIChat timeout state keeps late streamed responses receivable',
+    passed: aiChatTimeoutKeepsLateResponseReceivable,
+  },
+  {
+    name: 'AIChat input stays locked while a timed-out response can still arrive',
+    passed: aiChatInputStaysLockedDuringTimeout,
   },
   {
     name: 'NotesDirectory note list avoids duplicate top divider',

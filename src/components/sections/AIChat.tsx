@@ -9,7 +9,7 @@ import Image from 'next/image'
 import ReactMarkdown, { type Components } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 
-const RESPONSE_TIMEOUT_MS = 10000
+const RESPONSE_TIMEOUT_MS = 60000
 const RESPONSE_SETTLE_DELAY_MS = 1500
 
 const SendIcon = () => (
@@ -185,9 +185,7 @@ function ConfiguredAIChat({
         clearResponseTimer()
         clearSettleTimer()
         responseTimeoutRef.current = setTimeout(() => {
-            activeAssistantMessageIdRef.current = null
             setIsAwaitingFirstToken(false)
-            setIsResponding(false)
             setIsTimeout(true)
             responseTimeoutRef.current = null
         }, RESPONSE_TIMEOUT_MS)
@@ -419,7 +417,7 @@ function ConfiguredAIChat({
                     <button
                         type="submit"
                         className="w-9 h-9 flex items-center justify-center bg-[var(--button-primary-bg)] text-[var(--button-primary-text)] rounded-full hover:bg-[var(--button-primary-hover)] focus:outline-none transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed shrink-0 shadow-md shadow-black/[0.04]"
-                        disabled={!inputValue.trim() || (isResponding && !isTimeout) || readyState !== ReadyState.OPEN}
+                        disabled={!inputValue.trim() || isResponding || readyState !== ReadyState.OPEN}
                     >
                         <SendIcon />
                     </button>
