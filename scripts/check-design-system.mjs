@@ -63,18 +63,28 @@ const aiChatRetryButtonClass =
   aiChat.match(/onClick=\{onRetry\}[\s\S]*?className="([^"]+)"/)?.[1] ?? ''
 const aiChatSubmitButtonClass =
   aiChat.match(/type="submit"[\s\S]*?className="([^"]+)"[\s\S]*?disabled=\{!inputValue\.trim\(\)/)?.[1] ?? ''
+const hasUseStateTuple = (source, stateName, setterName) =>
+  new RegExp(`const\\s*\\[\\s*${stateName}\\s*,\\s*${setterName}\\s*\\]\\s*=\\s*useState`).test(source)
+const matchesLoadingDotsExpression = (source, stateName) =>
+  new RegExp(`\\{\\s*${stateName}\\s*&&\\s*!isTimeout\\s*&&\\s*\\([\\s\\S]*?<LoadingDots\\s*/>`).test(source)
+const aiChatResponseTimeoutBody =
+  aiChat.match(/responseTimeoutRef\.current\s*=\s*setTimeout\(\s*\(\)\s*=>\s*\{([\s\S]*?)\}\s*,\s*RESPONSE_TIMEOUT_MS\s*\)/)?.[1] ?? ''
+const aiChatSubmitButtonBlock =
+  aiChat.match(/<button\b(?:(?!<\/button>)[\s\S])*?type="submit"(?:(?!<\/button>)[\s\S])*?<\/button>/)?.[0] ?? ''
 const aiChatLoadingDotsUseFirstTokenState =
-  aiChat.includes('const [isAwaitingFirstToken') &&
-  aiChat.includes('setIsAwaitingFirstToken(false)') &&
-  /\{isAwaitingFirstToken && !isTimeout && \([\s\S]*?<LoadingDots \/>/.test(aiChat) &&
-  !/\{isResponding && !isTimeout && \([\s\S]*?<LoadingDots \/>/.test(aiChat)
+  hasUseStateTuple(aiChat, 'isAwaitingFirstToken', 'setIsAwaitingFirstToken') &&
+  /setIsAwaitingFirstToken\s*\(\s*false\s*\)/.test(aiChat) &&
+  matchesLoadingDotsExpression(aiChat, 'isAwaitingFirstToken') &&
+  !matchesLoadingDotsExpression(aiChat, 'isResponding')
 const aiChatResponseTimeoutWaitsForColdStarts =
-  aiChat.includes('const RESPONSE_TIMEOUT_MS = 60000')
+  /const\s+RESPONSE_TIMEOUT_MS\s*=\s*60000\b/.test(aiChat)
 const aiChatTimeoutKeepsLateResponseReceivable =
-  !/responseTimeoutRef\.current = setTimeout\(\(\) => \{[\s\S]*?activeAssistantMessageIdRef\.current = null[\s\S]*?\}, RESPONSE_TIMEOUT_MS\)/.test(aiChat) &&
-  /responseTimeoutRef\.current = setTimeout\(\(\) => \{[\s\S]*?setIsTimeout\(true\)[\s\S]*?\}, RESPONSE_TIMEOUT_MS\)/.test(aiChat)
+  aiChatResponseTimeoutBody.length > 0 &&
+  /setIsTimeout\s*\(\s*true\s*\)/.test(aiChatResponseTimeoutBody) &&
+  !/activeAssistantMessageIdRef\.current\s*=\s*null/.test(aiChatResponseTimeoutBody) &&
+  !/setIsResponding\s*\(\s*false\s*\)/.test(aiChatResponseTimeoutBody)
 const aiChatInputStaysLockedDuringTimeout =
-  aiChat.includes('disabled={!inputValue.trim() || isResponding || readyState !== ReadyState.OPEN}')
+  /disabled=\{\s*!inputValue\.trim\(\)\s*\|\|\s*isResponding\s*\|\|\s*readyState\s*!==\s*ReadyState\.OPEN\s*\}/.test(aiChatSubmitButtonBlock)
 const notesDirectoryListClass =
   notesDirectory.match(/<div className="([^"]+)">\s*\{activeNotes\.map/)?.[1] ?? ''
 const heroMobilePreviewBlock = hero.match(/<div className="lg:hidden">[\s\S]*?<HeroAgentPreview \/>[\s\S]*?<\/div>/)?.[0] ?? ''
