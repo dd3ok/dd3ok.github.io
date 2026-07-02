@@ -22,14 +22,13 @@ const sectionNavItems = [
     { id: 'projects', label: 'Projects', type: 'section' },
     {
         id: 'services',
-        label: 'Toys',
+        label: 'Lab',
         type: 'dropdown',
         dropdown: [
             ...navigableServices.map((service) => ({
                 id: service.id,
                 label: service.navLabel ?? service.title,
                 path: service.path,
-                icon: service.icon,
             })),
         ],
     },
@@ -39,7 +38,6 @@ const sectionNavItems = [
 const waitworthyNavItem = { id: 'notes', label: 'Waitworthy', path: '/notes/' } as const
 
 export default function Navigation() {
-    const [isScrolled, setIsScrolled] = useState(false)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
     const activeSection = useActiveSection()
@@ -49,15 +47,6 @@ export default function Navigation() {
     const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null)
     const desktopServicesButtonRef = useRef<HTMLButtonElement | null>(null)
     const desktopDropdownItemRefs = useRef<Array<HTMLAnchorElement | null>>([])
-
-    useEffect(() => {
-        const handleScroll = () => {
-            setIsScrolled(window.scrollY > 50)
-        }
-
-        window.addEventListener('scroll', handleScroll)
-        return () => window.removeEventListener('scroll', handleScroll)
-    }, [])
 
     const closeMobileMenu = useCallback(() => {
         setIsMobileMenuOpen(false)
@@ -241,11 +230,7 @@ export default function Navigation() {
     return (
         <nav
             className={`
-                fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-[var(--nav-bg)] backdrop-blur-xl border-b
-                ${isScrolled
-                    ? 'border-[var(--card-border)] shadow-[0_8px_24px_-18px_rgba(15,23,42,0.35)]'
-                    : 'border-[var(--card-border)] shadow-[0_1px_10px_-8px_rgba(15,23,42,0.28)]'
-                }
+                fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-[var(--nav-bg)] backdrop-blur-xl border-b border-[var(--card-border)] shadow-[0_1px_10px_-8px_rgba(15,23,42,0.28)]
             `}
         >
             <div className="container">
@@ -359,7 +344,9 @@ export default function Navigation() {
                                                             className="flex items-center px-4 py-3 text-sm text-[var(--text-secondary)] hover:bg-[var(--accent-glow)] hover:text-[var(--text-primary)] transition-all duration-300 rounded-xl mx-2 my-0.5 group"
                                                             onClick={() => closeDesktopDropdown()}
                                                         >
-                                                            <span className="mr-3 text-base">{dropdownItem.icon}</span>
+                                                            <span className="mr-3 w-5 font-mono text-xs font-bold tabular-nums text-[var(--text-muted)]">
+                                                                {String(dropdownIndex + 1).padStart(2, '0')}
+                                                            </span>
                                                             <span className="font-medium">{dropdownItem.label}</span>
                                                             {external && (
                                                                 <svg

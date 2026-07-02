@@ -1,3 +1,5 @@
+export type ProjectDisplayGroup = 'primary' | 'related' | 'supporting'
+
 export interface Project {
     title: string
     description: string
@@ -5,6 +7,8 @@ export interface Project {
     image: string
     github: string
     demo: string
+    displayGroup: ProjectDisplayGroup
+    displayLabel: string
 }
 
 export interface Service {
@@ -13,10 +17,8 @@ export interface Service {
     navLabel?: string
     status?: 'active' | 'coming_soon'
     description: string
-    icon: string
     path: string
     features: string[]
-    color: string
     buttonText: string
     buttonType: 'service' | 'repo'
 }

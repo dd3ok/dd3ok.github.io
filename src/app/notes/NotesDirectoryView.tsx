@@ -1,7 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import type { MouseEvent } from 'react'
+import { useCallback, useEffect, useMemo, useState, type MouseEvent } from 'react'
 import Link from 'next/link'
 import {
     allNotesCategory,
@@ -13,7 +12,7 @@ import {
 import type { PublicNote } from '@/lib/notes'
 
 interface NotesDirectoryViewProps {
-    activeCategory: NoteCategory
+    activeCategoryId: string
     notes: PublicNote[]
 }
 
@@ -53,11 +52,11 @@ const getCategoryFromPathname = (pathname: string) => {
     }
 }
 
-export default function NotesDirectoryView({ activeCategory, notes }: NotesDirectoryViewProps) {
-    const [activeCategoryId, setActiveCategoryId] = useState(activeCategory.id)
+export default function NotesDirectoryView({ activeCategoryId, notes }: NotesDirectoryViewProps) {
+    const [selectedCategoryId, setSelectedCategoryId] = useState(activeCategoryId)
     const currentCategory = useMemo(() => (
-        noteFilterCategories.find((category) => category.id === activeCategoryId) ?? activeCategory
-    ), [activeCategory, activeCategoryId])
+        noteFilterCategories.find((category) => category.id === selectedCategoryId) ?? allNotesCategory
+    ), [selectedCategoryId])
     const activeNotes = useMemo(() => (
         getNotesForCategory(notes, currentCategory)
     ), [currentCategory, notes])
@@ -67,23 +66,25 @@ export default function NotesDirectoryView({ activeCategory, notes }: NotesDirec
             count: getNotesForCategory(notes, category).length,
         }))
     ), [notes])
-    const title = currentCategory.id === allNotesCategory.id
-        ? 'Waitworthy'
-        : `${currentCategory.title} Notes`
-    const eyebrow = currentCategory.id === allNotesCategory.id
-        ? 'AI Research Wiki'
-        : 'Waitworthy'
+    const visibleCategoryTabs = useMemo(() => (
+        categoryTabs.filter((category) => (
+            category.id === allNotesCategory.id || category.id === currentCategory.id || category.count > 0
+        ))
+    ), [categoryTabs, currentCategory.id])
+    const activeCategoryLabel = currentCategory.id === allNotesCategory.id
+        ? '최근 노트'
+        : currentCategory.title
 
     useEffect(() => {
-        setActiveCategoryId(activeCategory.id)
-    }, [activeCategory.id])
+        setSelectedCategoryId(activeCategoryId)
+    }, [activeCategoryId])
 
     useEffect(() => {
         const handlePopState = () => {
             const nextCategory = getCategoryFromPathname(window.location.pathname)
 
             if (nextCategory) {
-                setActiveCategoryId(nextCategory.id)
+                setSelectedCategoryId(nextCategory.id)
             }
         }
 
@@ -121,32 +122,31 @@ export default function NotesDirectoryView({ activeCategory, notes }: NotesDirec
             return
         }
 
-        setActiveCategoryId(category.id)
+        setSelectedCategoryId(category.id)
         window.history.pushState({ notesCategory: category.id }, '', nextHref)
     }, [])
 
     return (
-        <section className="section-padding pt-28 md:pt-32">
+        <section className="px-4 pb-16 pt-24 md:px-12 md:pb-20 md:pt-28">
             <div className="container">
-                <div className="border-b border-[var(--card-border)] pb-6">
-                    <p className="text-sm font-bold uppercase tracking-[0.18em] text-[var(--accent-color)]">
-                        {eyebrow}
-                    </p>
-                    <div className="mt-3 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-                        <h1 className="text-4xl font-extrabold tracking-tight text-[var(--text-primary)] md:text-5xl">
-                            {title}
-                        </h1>
-                        <p className="max-w-2xl text-sm font-medium leading-6 text-[var(--text-secondary)]">
-                            ChatGPT Deep Research, GPT Pro 워크플로, Gemini Deep Research 등 기다릴 가치가 있었던 AI 심층 리서치 보고서를 위키로 정리합니다.
-                        </p>
+                <div className="border-b border-[var(--card-border)] pb-4">
+                    <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+                        <div className="max-w-3xl">
+                            <h1 className="text-3xl font-extrabold tracking-tight text-[var(--text-primary)] md:text-4xl">
+                                Waitworthy
+                            </h1>
+                            <p className="mt-2 max-w-2xl text-sm font-medium leading-6 text-[var(--text-secondary)]">
+                                Deep Research처럼 기다릴 가치 있는 AI 보고서를 정리합니다.
+                            </p>
+                        </div>
                         <p className="text-sm font-semibold text-[var(--text-muted)]">
-                            공개 노트 {activeNotes.length}개
+                            공개 노트 {notes.length}개
                         </p>
                     </div>
                 </div>
 
-                <nav className="mt-6 flex flex-wrap gap-2" aria-label="노트 카테고리">
-                    {categoryTabs.map((category) => {
+                <nav className="mt-4 flex flex-wrap gap-1.5" aria-label="노트 카테고리">
+                    {visibleCategoryTabs.map((category) => {
                         const isActiveCategory = category.id === currentCategory.id
 
                         return (
@@ -156,22 +156,25 @@ export default function NotesDirectoryView({ activeCategory, notes }: NotesDirec
                                 scroll={false}
                                 aria-current={isActiveCategory ? 'page' : undefined}
                                 onClick={(event) => handleCategoryClick(event, category)}
-                                className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm font-bold transition-colors ${
+                                className={`inline-flex items-center rounded-full border px-3 py-1.5 text-sm font-bold transition-colors ${
                                     isActiveCategory
                                         ? 'border-[var(--accent-color)] bg-[var(--accent-color)] text-white'
                                         : 'border-[var(--card-border)] bg-[var(--card-bg)] text-[var(--text-secondary)] hover:border-[var(--accent-color)] hover:text-[var(--accent-color)]'
                                 }`}
                             >
-                                <span>{category.title}</span>
-                                <span className={isActiveCategory ? 'text-white/80' : 'text-[var(--text-muted)]'}>
-                                    {category.count}
-                                </span>
+                                {category.title}
                             </Link>
                         )
                     })}
                 </nav>
 
-                <div className="mt-10">
+                <div className="mt-6">
+                    <div className="mb-4 border-b border-[var(--card-border)] pb-3">
+                        <h2 className="text-xl font-extrabold tracking-tight text-[var(--text-primary)]">
+                            {activeCategoryLabel}
+                        </h2>
+                    </div>
+
                     {activeNotes.length === 0 ? (
                         <div className="glass-card p-6">
                             <p className="text-sm text-[var(--text-muted)]">
@@ -179,30 +182,48 @@ export default function NotesDirectoryView({ activeCategory, notes }: NotesDirec
                             </p>
                         </div>
                     ) : (
-                        <div className="grid gap-4">
-                            {activeNotes.map((note) => (
-                                <article key={note.slug} className="glass-card p-5">
-                                    <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-[var(--text-muted)]">
-                                        <time dateTime={note.date}>{formatDate(note.date)}</time>
-                                        <span aria-hidden="true">·</span>
-                                        <span>{note.readingTimeMinutes}분 읽기</span>
-                                        <span aria-hidden="true">·</span>
-                                        <span className="capitalize">{note.status}</span>
-                                    </div>
+                        <div className="divide-y divide-[var(--card-border)] border-b border-[var(--card-border)]">
+                            {activeNotes.map((note) => {
+                                const visibleTags = note.tags.slice(0, 4)
+                                const remainingTagCount = note.tags.length - visibleTags.length
 
-                                    <h2 className="mt-2 text-xl font-bold text-[var(--text-primary)]">
-                                        <Link
-                                            href={`/notes/post/${note.slug}/`}
-                                            className="transition-colors hover:text-[var(--accent-color)]"
-                                        >
-                                            {note.title}
-                                        </Link>
-                                    </h2>
-                                    <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
-                                        {note.summary}
-                                    </p>
-                                </article>
-                            ))}
+                                return (
+                                    <article key={note.slug} className="py-5 md:py-6">
+                                        <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-[var(--text-muted)]">
+                                            <time dateTime={note.date}>{formatDate(note.date)}</time>
+                                            <span aria-hidden="true">·</span>
+                                            <span>{note.readingTimeMinutes}분 읽기</span>
+                                        </div>
+
+                                        <h2 className="mt-2 max-w-3xl text-xl font-bold text-[var(--text-primary)]">
+                                            <Link
+                                                href={`/notes/post/${note.slug}/`}
+                                                className="transition-colors hover:text-[var(--accent-color)]"
+                                            >
+                                                {note.title}
+                                            </Link>
+                                        </h2>
+                                        <p className="mt-2 max-w-4xl text-sm leading-6 text-[var(--text-secondary)]">
+                                            {note.summary}
+                                        </p>
+                                        <ul className="mt-4 flex flex-wrap gap-2" aria-label={`${note.title} 태그`}>
+                                            {visibleTags.map((tag) => (
+                                                <li
+                                                    key={tag}
+                                                    className="rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] px-2.5 py-1 text-xs font-bold text-[var(--text-muted)]"
+                                                >
+                                                    {tag}
+                                                </li>
+                                            ))}
+                                            {remainingTagCount > 0 && (
+                                                <li className="rounded-full border border-[var(--card-border)] px-2.5 py-1 text-xs font-bold text-[var(--text-muted)]">
+                                                    +{remainingTagCount}
+                                                </li>
+                                            )}
+                                        </ul>
+                                    </article>
+                                )
+                            })}
                         </div>
                     )}
                 </div>

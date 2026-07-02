@@ -9,7 +9,7 @@ import Image from 'next/image'
 import ReactMarkdown, { type Components } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 
-const RESPONSE_TIMEOUT_MS = 10000
+const RESPONSE_TIMEOUT_MS = 60000
 const RESPONSE_SETTLE_DELAY_MS = 1500
 
 const SendIcon = () => (
@@ -36,7 +36,7 @@ const TimeoutMessage = ({ onRetry }: { onRetry: () => void }) => (
         <button
             type="button"
             onClick={onRetry}
-            className="px-4 py-2 bg-[var(--accent-color)] text-white text-xs font-semibold rounded-xl hover:bg-[var(--accent-secondary)] shadow-sm transition-all duration-300"
+            className="px-4 py-2 bg-[var(--button-primary-bg)] text-[var(--button-primary-text)] text-xs font-semibold rounded-xl hover:bg-[var(--button-primary-hover)] shadow-sm transition-all duration-300"
         >
             새 연결로 다시 요청하기
         </button>
@@ -156,6 +156,7 @@ function ConfiguredAIChat({
     const userId = useUserIdentifier()
     const [inputValue, setInputValue] = useState('')
     const [isResponding, setIsResponding] = useState(false)
+    const [isAwaitingFirstToken, setIsAwaitingFirstToken] = useState(false)
     const [isTimeout, setIsTimeout] = useState(false)
     const [lastUserMessage, setLastUserMessage] = useState('')
     const chatContainerRef = useRef<HTMLDivElement>(null)
@@ -184,8 +185,7 @@ function ConfiguredAIChat({
         clearResponseTimer()
         clearSettleTimer()
         responseTimeoutRef.current = setTimeout(() => {
-            activeAssistantMessageIdRef.current = null
-            setIsResponding(false)
+            setIsAwaitingFirstToken(false)
             setIsTimeout(true)
             responseTimeoutRef.current = null
         }, RESPONSE_TIMEOUT_MS)
@@ -234,6 +234,7 @@ function ConfiguredAIChat({
         activeAssistantMessageIdRef.current = createMessageId()
         setLastUserMessage(content)
         setIsResponding(true)
+        setIsAwaitingFirstToken(true)
         setIsTimeout(false)
         setInputValue('')
 
@@ -260,6 +261,7 @@ function ConfiguredAIChat({
 
         clearResponseTimer()
         setIsTimeout(false)
+        setIsAwaitingFirstToken(false)
         setIsResponding(true)
         appendAssistantToken(assistantMessageId, String(lastMessage.data))
         scheduleSettleTimer()
@@ -367,7 +369,7 @@ function ConfiguredAIChat({
                     </div>
                 ))}
 
-                {isResponding && !isTimeout && (
+                {isAwaitingFirstToken && !isTimeout && (
                     <div className="flex items-start gap-2.5 justify-start">
                         <div className="w-8 h-8 rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] flex items-center justify-center shrink-0 ring-1 ring-[var(--card-border)] shadow-sm overflow-hidden p-0.5">
                             <Image
@@ -414,8 +416,8 @@ function ConfiguredAIChat({
                     />
                     <button
                         type="submit"
-                        className="w-9 h-9 flex items-center justify-center bg-[var(--accent-color)] text-white rounded-full hover:bg-[var(--accent-secondary)] focus:outline-none transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed shrink-0 shadow-md shadow-black/[0.04]"
-                        disabled={!inputValue.trim() || (isResponding && !isTimeout) || readyState !== ReadyState.OPEN}
+                        className="w-9 h-9 flex items-center justify-center bg-[var(--button-primary-bg)] text-[var(--button-primary-text)] rounded-full hover:bg-[var(--button-primary-hover)] focus:outline-none transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed shrink-0 shadow-md shadow-black/[0.04]"
+                        disabled={!inputValue.trim() || isResponding || readyState !== ReadyState.OPEN}
                     >
                         <SendIcon />
                     </button>

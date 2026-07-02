@@ -5,10 +5,11 @@ import './globals.css'
 const notoSansKR = Noto_Sans_KR({
     subsets: ['latin'],
     weight: ['300', '400', '500', '700'],
+    variable: '--font-sans',
     display: 'swap',
 })
 const siteUrl = 'https://dd3ok.github.io'
-const siteTitle = 'dd3ok — Backend Developer Portfolio'
+const siteTitle = 'dd3ok | Backend Developer Portfolio'
 const siteDescription =
     'Backend Developer dd3ok의 포트폴리오. Spring Boot 기반 백엔드 경험과 who-am-ai, Waitworthy, Repoclip, Agent Skill 등 AI 백엔드·자동화 토이 프로젝트를 정리합니다.'
 
@@ -119,7 +120,7 @@ export default function RootLayout({
                 }}
             />
         </head>
-        <body className={notoSansKR.className}>
+        <body className={`${notoSansKR.variable} font-sans`}>
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

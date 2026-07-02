@@ -19,10 +19,10 @@ export default function Button({
                                    type = 'button',
                                    href
                                }: ButtonProps) {
-    const baseClasses = 'font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2'
+    const baseClasses = 'font-medium rounded-lg transition-all duration-200 active:translate-y-px active:scale-[0.99] focus:outline-none focus:ring-2 focus:ring-offset-2'
 
     const variants = {
-        primary: 'bg-[var(--accent-color)] hover:bg-[var(--accent-secondary)] text-white focus:ring-[var(--accent-color)] hover:shadow-[0_0_15px_var(--accent-glow)]',
+        primary: 'bg-[var(--button-primary-bg)] hover:bg-[var(--button-primary-hover)] text-[var(--button-primary-text)] focus:ring-[var(--accent-color)] hover:shadow-[0_0_15px_var(--accent-glow)]',
         outline: 'border border-[var(--accent-color)] text-[var(--accent-color)] hover:bg-[var(--accent-color)] hover:text-white focus:ring-[var(--accent-color)]',
         ghost: 'text-[var(--accent-color)] hover:bg-[var(--accent-glow)] focus:ring-[var(--accent-color)]'
     }
