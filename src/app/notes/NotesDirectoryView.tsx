@@ -1,14 +1,18 @@
+'use client'
+
+import { useCallback, useEffect, useMemo, useState, type MouseEvent } from 'react'
 import Link from 'next/link'
 import {
     allNotesCategory,
+    getNoteCategoryById,
     getNotesForCategory,
     noteFilterCategories,
     type NoteCategory,
-    type PublicNote,
-} from '@/lib/notes'
+} from '@/lib/note-categories'
+import type { PublicNote } from '@/lib/notes'
 
 interface NotesDirectoryViewProps {
-    activeCategory: NoteCategory
+    activeCategoryId: string
     notes: PublicNote[]
 }
 
@@ -28,18 +32,99 @@ const getCategoryHref = (category: NoteCategory) => {
     return `/notes/${category.id}/`
 }
 
-export default function NotesDirectoryView({ activeCategory, notes }: NotesDirectoryViewProps) {
-    const activeNotes = getNotesForCategory(notes, activeCategory)
-    const categoryTabs = noteFilterCategories.map((category) => ({
-        ...category,
-        count: getNotesForCategory(notes, category).length,
-    }))
-    const visibleCategoryTabs = categoryTabs.filter((category) => (
-        category.id === allNotesCategory.id || category.id === activeCategory.id || category.count > 0
-    ))
-    const activeCategoryLabel = activeCategory.id === allNotesCategory.id
+const getCategoryFromPathname = (pathname: string) => {
+    const normalizedPathname = pathname.replace(/\/+$/, '')
+
+    if (normalizedPathname === '/notes') {
+        return allNotesCategory
+    }
+
+    const categoryMatch = normalizedPathname.match(/^\/notes\/([^/]+)$/)
+
+    if (!categoryMatch) {
+        return undefined
+    }
+
+    try {
+        return getNoteCategoryById(decodeURIComponent(categoryMatch[1]))
+    } catch {
+        return undefined
+    }
+}
+
+export default function NotesDirectoryView({ activeCategoryId, notes }: NotesDirectoryViewProps) {
+    const [selectedCategoryId, setSelectedCategoryId] = useState(activeCategoryId)
+    const currentCategory = useMemo(() => (
+        noteFilterCategories.find((category) => category.id === selectedCategoryId) ?? allNotesCategory
+    ), [selectedCategoryId])
+    const activeNotes = useMemo(() => (
+        getNotesForCategory(notes, currentCategory)
+    ), [currentCategory, notes])
+    const categoryTabs = useMemo(() => (
+        noteFilterCategories.map((category) => ({
+            ...category,
+            count: getNotesForCategory(notes, category).length,
+        }))
+    ), [notes])
+    const visibleCategoryTabs = useMemo(() => (
+        categoryTabs.filter((category) => (
+            category.id === allNotesCategory.id || category.id === currentCategory.id || category.count > 0
+        ))
+    ), [categoryTabs, currentCategory.id])
+    const activeCategoryLabel = currentCategory.id === allNotesCategory.id
         ? '최근 노트'
-        : activeCategory.title
+        : currentCategory.title
+
+    useEffect(() => {
+        setSelectedCategoryId(activeCategoryId)
+    }, [activeCategoryId])
+
+    useEffect(() => {
+        const handlePopState = () => {
+            const nextCategory = getCategoryFromPathname(window.location.pathname)
+
+            if (nextCategory) {
+                setSelectedCategoryId(nextCategory.id)
+            }
+        }
+
+        window.addEventListener('popstate', handlePopState)
+
+        return () => window.removeEventListener('popstate', handlePopState)
+    }, [])
+
+    useEffect(() => {
+        document.title = currentCategory.id === allNotesCategory.id
+            ? 'Notes | dd3ok'
+            : `${currentCategory.title} Notes | dd3ok`
+    }, [currentCategory])
+
+    const handleCategoryClick = useCallback((
+        event: MouseEvent<HTMLAnchorElement>,
+        category: NoteCategory
+    ) => {
+        if (
+            event.defaultPrevented ||
+            event.button !== 0 ||
+            event.metaKey ||
+            event.ctrlKey ||
+            event.altKey ||
+            event.shiftKey
+        ) {
+            return
+        }
+
+        event.preventDefault()
+
+        const nextHref = getCategoryHref(category)
+
+        if (window.location.pathname === nextHref) {
+            return
+        }
+
+        setSelectedCategoryId(category.id)
+        window.history.pushState({ notesCategory: category.id }, '', nextHref)
+    }, [])
 
     return (
         <section className="px-4 pb-16 pt-24 md:px-12 md:pb-20 md:pt-28">
@@ -62,13 +147,15 @@ export default function NotesDirectoryView({ activeCategory, notes }: NotesDirec
 
                 <nav className="mt-4 flex flex-wrap gap-1.5" aria-label="노트 카테고리">
                     {visibleCategoryTabs.map((category) => {
-                        const isActiveCategory = category.id === activeCategory.id
+                        const isActiveCategory = category.id === currentCategory.id
 
                         return (
                             <Link
                                 key={category.id}
                                 href={getCategoryHref(category)}
+                                scroll={false}
                                 aria-current={isActiveCategory ? 'page' : undefined}
+                                onClick={(event) => handleCategoryClick(event, category)}
                                 className={`inline-flex items-center rounded-full border px-3 py-1.5 text-sm font-bold transition-colors ${
                                     isActiveCategory
                                         ? 'border-[var(--accent-color)] bg-[var(--accent-color)] text-white'

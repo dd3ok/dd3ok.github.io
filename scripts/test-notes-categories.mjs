@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs'
 import { Buffer } from 'node:buffer'
 import ts from 'typescript'
 
-const source = readFileSync('src/lib/notes.ts', 'utf8')
+const source = readFileSync('src/lib/note-categories.ts', 'utf8')
 const transpiled = ts.transpileModule(source, {
   compilerOptions: {
     module: ts.ModuleKind.ES2022,
