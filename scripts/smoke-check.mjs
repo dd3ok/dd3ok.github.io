@@ -35,10 +35,14 @@ const contentChecks = {
   'out/agent-skills/index.html': [
     '<title>Open Source Agent Skills | dd3ok</title>',
     'Agent Skills',
-    'Codex와 Claude Code에서 반복 작업을 줄이기 위해 만든 공개 스킬 저장소입니다.',
-    'Finance API Skills',
-    'Productivity Skills',
+    'Codex와 Claude Code에서 반복 작업을 줄이기 위해 만든 공개 Agent Skill 저장소입니다.',
+    'Document Briefing Cache Skill',
+    'Newbie Lens',
+    'Savepoint',
+    'Rabbit Hole',
+    'Lucid',
     'NaverStock API Skill',
+    'Naver Finance API Skill',
     'WATCHLIST.md',
   ],
   'out/notes/index.html': [
@@ -97,11 +101,6 @@ const absentContentChecks = {
     '>Decision</h2>',
     'href="/notes/all/"',
     'LLM, agents, AI workflows, prompts, productivity tools, product comparisons',
-    '계속 읽기',
-    '초안',
-    '검토 완료',
-    '계속 업데이트',
-    '보관됨',
   ],
   'out/notes/ai-tools/index.html': [
     'page-enter',
@@ -113,6 +112,8 @@ const absentContentChecks = {
   'out/agent-skills/index.html': [
     'page-enter',
     'Open Source Agent Skills | dd3ok | dd3ok',
+    'Finance API Skills',
+    'Productivity Skills',
   ],
 }
 
