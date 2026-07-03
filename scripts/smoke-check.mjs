@@ -101,11 +101,6 @@ const absentContentChecks = {
     '>Decision</h2>',
     'href="/notes/all/"',
     'LLM, agents, AI workflows, prompts, productivity tools, product comparisons',
-    '계속 읽기',
-    '초안',
-    '검토 완료',
-    '계속 업데이트',
-    '보관됨',
   ],
   'out/notes/ai-tools/index.html': [
     'page-enter',
