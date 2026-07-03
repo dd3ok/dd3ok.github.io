@@ -41,7 +41,7 @@ const contentChecks = {
     'Savepoint',
     'Rabbit Hole',
     'Lucid',
-    'NaverStock API Skill',
+    'Market Data Skills',
     'WATCHLIST.md',
   ],
   'out/notes/index.html': [
@@ -115,6 +115,10 @@ const absentContentChecks = {
     'Productivity Skills',
     'New Session Handoff Skill',
     'Naver Finance API Skill',
+    'NaverStock API Skill',
+    'TossInvest API Skill',
+    'Binance API Skill',
+    'Yahoo Finance Market Skill',
   ],
 }
 
