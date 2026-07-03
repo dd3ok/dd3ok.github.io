@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { agentSkills } from '@/data/agentSkills'
 
 export default function AgentSkillsSection() {
@@ -50,14 +49,14 @@ export default function AgentSkillsSection() {
                                 ))}
                             </ul>
 
-                            <Link
+                            <a
                                 href={skill.github}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="mt-5 inline-flex text-sm font-bold text-[var(--accent-color)] transition-colors hover:text-[var(--accent-secondary)]"
                             >
                                 Repository
-                            </Link>
+                            </a>
                         </article>
                     ))}
                 </div>
