@@ -7,7 +7,7 @@ import { agentSkills } from '@/data/agentSkills'
 const programmingLanguages = new Set(['Python', 'TypeScript', 'JavaScript', 'Go', 'Rust'])
 
 const pageDescription =
-    'dd3ok가 공개한 AI Agent Skill 저장소 모음입니다. 세션 인수인계, 문서 브리핑, 실행 모호성 리뷰, 컨텍스트 정리, 시장 데이터 조회처럼 반복되는 에이전트 작업을 다룹니다.'
+    'dd3ok가 공개한 AI Agent Skill 저장소 모음입니다. 문서 브리핑, 실행 모호성 리뷰, 컨텍스트 정리, 시장 데이터 조회처럼 반복되는 에이전트 작업을 다룹니다.'
 
 export const metadata: Metadata = {
     title: 'Open Source Agent Skills',
@@ -17,10 +17,8 @@ export const metadata: Metadata = {
         'codex skill',
         'openai skill',
         'AI coding agent',
-        'session handoff',
         'document summarization',
         'context hygiene',
-        'Naver Finance API',
         'TossInvest API',
         'Binance API skill',
         'Yahoo Finance skill',

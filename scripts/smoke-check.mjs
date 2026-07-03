@@ -42,7 +42,6 @@ const contentChecks = {
     'Rabbit Hole',
     'Lucid',
     'NaverStock API Skill',
-    'Naver Finance API Skill',
     'WATCHLIST.md',
   ],
   'out/notes/index.html': [
@@ -114,6 +113,8 @@ const absentContentChecks = {
     'Open Source Agent Skills | dd3ok | dd3ok',
     'Finance API Skills',
     'Productivity Skills',
+    'New Session Handoff Skill',
+    'Naver Finance API Skill',
   ],
 }
 

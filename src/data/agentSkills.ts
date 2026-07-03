@@ -19,23 +19,6 @@ export const agentSkills: AgentSkill[] = [
         ],
     },
     {
-        id: 'new-session-handoff-skill',
-        title: 'New Session Handoff Skill',
-        description:
-            '새 에이전트 세션에서 이전 작업을 이어갈 수 있도록 검증된 HANDOFF.md를 만드는 Agent Skill입니다. 긴 작업의 목표, 현재 상태, 다음 행동, 검증 결과를 안전하게 넘기는 데 초점을 둡니다.',
-        shortDescription: '세션 핸드오프',
-        tech: ['Python', 'Codex', 'OpenAI'],
-        github: 'https://github.com/dd3ok/new-session-handoff-skill',
-        category: 'workflow',
-        keywords: [
-            'session handoff',
-            'agent continuity',
-            'HANDOFF.md',
-            'coding agent',
-            '세션 인수인계',
-        ],
-    },
-    {
         id: 'watchlist-md',
         title: 'WATCHLIST.md',
         description:
@@ -135,23 +118,6 @@ export const agentSkills: AgentSkill[] = [
             '국내 주식 시세',
             'ETF',
             '업종 테마',
-        ],
-    },
-    {
-        id: 'naverfinance-api-skill',
-        title: 'Naver Finance API Skill',
-        description:
-            '네이버 금융과 네이버페이 증권의 공개 read-only 시장 데이터를 다루는 Agent Skill입니다. 모바일 JSON 엔드포인트와 공개 PC HTML 테이블을 기준으로 시세, 차트, 랭킹, 지수, 환율, 리서치를 조회합니다.',
-        shortDescription: '네이버 금융 API',
-        tech: ['Python', 'Codex', 'OpenAI'],
-        github: 'https://github.com/dd3ok/naverfinance-api-skill',
-        category: 'finance',
-        keywords: [
-            'Naver Finance',
-            '네이버페이 증권',
-            'market data',
-            'stock chart',
-            'market index',
         ],
     },
     {
