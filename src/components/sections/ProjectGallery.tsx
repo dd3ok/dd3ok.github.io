@@ -24,7 +24,7 @@ function TechPills({ tech, compact = false }: { tech: string[]; compact?: boolea
             {tech.map((item) => (
                 <span
                     key={item}
-                    className="rounded-full border border-[var(--accent-color)]/10 bg-[var(--accent-glow)] px-2.5 py-1 text-[10px] font-bold text-[var(--accent-color)] shadow-sm"
+                    className="rounded-full border border-[var(--accent-color)]/10 bg-[var(--accent-glow)] px-2.5 py-1 text-[10px] font-bold text-[var(--accent-color)] shadow-xs"
                 >
                     {item}
                 </span>

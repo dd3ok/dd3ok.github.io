@@ -36,7 +36,7 @@ const TimeoutMessage = ({ onRetry }: { onRetry: () => void }) => (
         <button
             type="button"
             onClick={onRetry}
-            className="px-4 py-2 bg-[var(--button-primary-bg)] text-[var(--button-primary-text)] text-xs font-semibold rounded-xl hover:bg-[var(--button-primary-hover)] shadow-sm transition-all duration-300"
+            className="px-4 py-2 bg-[var(--button-primary-bg)] text-[var(--button-primary-text)] text-xs font-semibold rounded-xl hover:bg-[var(--button-primary-hover)] shadow-xs transition-all duration-300"
         >
             새 연결로 다시 요청하기
         </button>
@@ -93,7 +93,7 @@ const markdownComponents: Components = {
         const isInline = !match
 
         return isInline ? (
-            <code className="!text-xs !px-1 !py-0.5 !bg-slate-200 !text-slate-800 !rounded" {...props}>
+            <code className="!text-xs !px-1 !py-0.5 !bg-slate-200 !text-slate-800 !rounded-sm" {...props}>
                 {children}
             </code>
         ) : (
@@ -327,7 +327,7 @@ function ConfiguredAIChat({
                 <div className="flex items-center space-x-2">
                     <span className="text-sm font-extrabold text-[var(--text-primary)] tracking-tight">커리어 에이전트</span>
                 </div>
-                <div className="flex items-center space-x-1.5 bg-[var(--card-bg)] border border-[var(--card-border)] px-3 py-1 rounded-full shadow-sm">
+                <div className="flex items-center space-x-1.5 bg-[var(--card-bg)] border border-[var(--card-border)] px-3 py-1 rounded-full shadow-xs">
                     <ConnectionStatusIcon readyState={readyState} />
                     <span className="text-[10px] font-bold text-[var(--text-secondary)] tracking-tight">{connectionStatus}</span>
                 </div>
@@ -338,7 +338,7 @@ function ConfiguredAIChat({
                 {messages.map((msg) => (
                     <div key={msg.id} className={`flex items-start gap-2.5 ${msg.isUser ? 'justify-end' : 'justify-start'}`}>
                         {!msg.isUser && (
-                            <div className="w-8 h-8 rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] flex items-center justify-center shrink-0 ring-1 ring-[var(--card-border)] shadow-sm overflow-hidden p-0.5">
+                            <div className="w-8 h-8 rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] flex items-center justify-center shrink-0 ring-1 ring-[var(--card-border)] shadow-xs overflow-hidden p-0.5">
                                 <Image
                                     src="/image/aiimage.png"
                                     alt="커리어 에이전트 프로필"
@@ -350,8 +350,8 @@ function ConfiguredAIChat({
                         )}
                         <div className={`break-words transition-all duration-300 ${
                             msg.isUser
-                                ? 'bg-gradient-to-br from-[var(--accent-color)] to-[var(--accent-secondary)] text-white shadow-sm rounded-2xl rounded-tr-none px-4 py-2.5 max-w-[75%] md:max-w-[80%] hover:shadow-md font-medium text-sm leading-relaxed whitespace-pre-wrap'
-                                : 'bg-[var(--card-bg)] border border-[var(--card-border)] text-[var(--text-primary)] shadow-sm rounded-2xl rounded-tl-none px-4 py-3 max-w-[85%] md:max-w-[90%] hover:border-[var(--card-hover-border)]'
+                                ? 'bg-gradient-to-br from-[var(--accent-color)] to-[var(--accent-secondary)] text-white shadow-xs rounded-2xl rounded-tr-none px-4 py-2.5 max-w-[75%] md:max-w-[80%] hover:shadow-md font-medium text-sm leading-relaxed whitespace-pre-wrap'
+                                : 'bg-[var(--card-bg)] border border-[var(--card-border)] text-[var(--text-primary)] shadow-xs rounded-2xl rounded-tl-none px-4 py-3 max-w-[85%] md:max-w-[90%] hover:border-[var(--card-hover-border)]'
                         }`}>
                             {msg.isUser ? (
                                 <p>{msg.text}</p>
@@ -371,7 +371,7 @@ function ConfiguredAIChat({
 
                 {isAwaitingFirstToken && !isTimeout && (
                     <div className="flex items-start gap-2.5 justify-start">
-                        <div className="w-8 h-8 rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] flex items-center justify-center shrink-0 ring-1 ring-[var(--card-border)] shadow-sm overflow-hidden p-0.5">
+                        <div className="w-8 h-8 rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] flex items-center justify-center shrink-0 ring-1 ring-[var(--card-border)] shadow-xs overflow-hidden p-0.5">
                             <Image
                                 src="/image/aiimage.png"
                                 alt="커리어 에이전트 프로필"
@@ -380,7 +380,7 @@ function ConfiguredAIChat({
                                 className="rounded-full"
                             />
                         </div>
-                        <div className="px-4 py-3 rounded-2xl rounded-tl-none shadow-sm bg-[var(--card-bg)] border border-[var(--card-border)]">
+                        <div className="px-4 py-3 rounded-2xl rounded-tl-none shadow-xs bg-[var(--card-bg)] border border-[var(--card-border)]">
                             <LoadingDots />
                         </div>
                     </div>
@@ -388,7 +388,7 @@ function ConfiguredAIChat({
 
                 {isTimeout && (
                     <div className="flex items-start gap-2.5 justify-start">
-                        <div className="w-8 h-8 rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] flex items-center justify-center shrink-0 ring-1 ring-[var(--card-border)] shadow-sm overflow-hidden p-0.5">
+                        <div className="w-8 h-8 rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] flex items-center justify-center shrink-0 ring-1 ring-[var(--card-border)] shadow-xs overflow-hidden p-0.5">
                             <Image
                                 src="/image/aiimage.png"
                                 alt="커리어 에이전트 프로필"
@@ -397,7 +397,7 @@ function ConfiguredAIChat({
                                 className="rounded-full"
                             />
                         </div>
-                        <div className="px-4 py-3 rounded-2xl rounded-tl-none shadow-sm bg-[var(--card-bg)] border border-[var(--card-border)]">
+                        <div className="px-4 py-3 rounded-2xl rounded-tl-none shadow-xs bg-[var(--card-bg)] border border-[var(--card-border)]">
                             <TimeoutMessage onRetry={handleRetry} />
                         </div>
                     </div>
@@ -412,11 +412,11 @@ function ConfiguredAIChat({
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
                         placeholder="무엇이든 물어보세요."
-                        className="flex-1 px-4 py-2.5 glass-input text-sm placeholder-[var(--text-muted)] focus:outline-none"
+                        className="flex-1 px-4 py-2.5 glass-input text-sm placeholder-[var(--text-muted)] focus:outline-hidden"
                     />
                     <button
                         type="submit"
-                        className="w-9 h-9 flex items-center justify-center bg-[var(--button-primary-bg)] text-[var(--button-primary-text)] rounded-full hover:bg-[var(--button-primary-hover)] focus:outline-none transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed shrink-0 shadow-md shadow-black/[0.04]"
+                        className="w-9 h-9 flex items-center justify-center bg-[var(--button-primary-bg)] text-[var(--button-primary-text)] rounded-full hover:bg-[var(--button-primary-hover)] focus:outline-hidden transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed shrink-0 shadow-md shadow-black/[0.04]"
                         disabled={!inputValue.trim() || isResponding || readyState !== ReadyState.OPEN}
                     >
                         <SendIcon />

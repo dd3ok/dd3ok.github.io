@@ -1,4 +1,5 @@
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import vm from 'node:vm'
 import ts from 'typescript'
 
@@ -46,6 +47,12 @@ for (const project of projects ?? []) {
 
   if (!project.displayLabel?.trim()) {
     failures.push(`${project.title} must include a displayLabel`)
+  }
+
+  if (!project.image?.startsWith('/')) {
+    failures.push(`${project.title} image must use a root-relative public path`)
+  } else if (!existsSync(resolve('public', project.image.slice(1)))) {
+    failures.push(`${project.title} image file does not exist: ${project.image}`)
   }
 }
 

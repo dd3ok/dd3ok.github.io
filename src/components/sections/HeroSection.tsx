@@ -5,7 +5,7 @@ function HeroAgentPreview() {
     const quickTopics = ['프로젝트', '기술 스택', '경력']
 
     return (
-        <div className="mx-auto w-full max-w-md rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)]/85 p-4 text-left shadow-[0_20px_60px_rgba(15,23,42,0.10)] backdrop-blur md:p-5">
+        <div className="mx-auto w-full max-w-md rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)]/85 p-4 text-left shadow-[0_20px_60px_rgba(15,23,42,0.10)] backdrop-blur-sm md:p-5">
             <div className="flex items-center gap-4">
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-[var(--card-border)] bg-[var(--accent-glow)] text-sm font-black text-[var(--accent-color)]">
                     AI

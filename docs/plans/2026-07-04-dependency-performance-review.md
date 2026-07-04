@@ -13,8 +13,11 @@
 
 ## Deferred Updates
 - `eslint@10.6.0`: not compatible with the current Next lint stack. `eslint-plugin-react@7.37.5` only peers through ESLint 9 and failed with `contextOrFilename.getFilename is not a function`.
-- `tailwindcss@4.3.2`: not a dependency-only bump. Tailwind 4 requires `@tailwindcss/postcss`, CSS `@import "tailwindcss"`, and review of v4 breaking changes.
-- `@types/node@26.1.0`: not aligned with the GitHub Actions deployment workflow, which currently uses Node 20.
+- `@types/node@26.1.0`: not aligned with the GitHub Actions deployment workflow, which currently uses Node 24. Node types were advanced to the latest compatible 24.x line instead.
+
+## Follow-Up Updates
+- `tailwindcss@4.3.2`: migrated after the follow-up pass because the repo can satisfy Tailwind 4's modern browser requirement and the static export can be visually checked locally. The migration now uses `@tailwindcss/postcss`, CSS `@import "tailwindcss"`, explicit `@config "../../tailwind.config.mjs"`, and v4 utility names for renamed v3 classes.
+- Tailwind 4 static/browser verification passed in the follow-up branch. Browser smoke covered desktop/mobile navigation, the dropdown, mobile menu, theme toggle, project WebP images, image modal, horizontal overflow, console errors, and failed network requests.
 
 ## Verification
 - `npm ci`: passed.
@@ -25,19 +28,22 @@
 
 ## Performance Findings
 - Highest ROI: optimize project screenshots under `public/image/projects`. The largest raw files are `sec-bqms.png` at ~535 KB, `esm-seller-deal.png` at ~244 KB, and `esm-category-manager.png` at ~219 KB. Because static export uses `images.unoptimized: true`, these are served as-is.
+- Follow-up applied: project screenshots now use WebP assets. The largest converted files are `esm-seller-deal.webp` at ~154 KB, `esm-category-manager.webp` at ~116 KB, and `esm-etapi.webp` at ~86 KB; `sec-bqms` dropped from ~535 KB PNG to ~48 KB WebP.
 - Bundle shape is acceptable but watch CSS. Largest exported CSS chunk is ~309 KB raw, ~107 KB gzip, ~17 KB brotli. The raw size mostly matters for uncached local inspection; compressed delivery is reasonable.
+- Tailwind 4 did not materially change the CSS size profile: the largest post-migration CSS chunk is 308,592 bytes raw, 107,029 bytes gzip, and 16,948 bytes brotli.
 - Keep `DeferredAIChat` as a lazy boundary. `AIChat.tsx` imports `react-markdown`, `remark-gfm`, and `react-use-websocket`; loading it after idle and only for the desktop hero is the right performance posture.
 - Global `*` transition in `src/app/globals.css` applies to every element. This is convenient for theme polish but can increase style work. Prefer scoping theme transitions to known surfaces in a future visual pass.
 - Animated blurred aurora orbs use large blur radii and continuous animation. They are hidden on small screens and disabled under reduced motion, so this is a low-priority desktop polish tradeoff rather than an urgent issue.
 
 ## Architecture Findings
-- `src/components/layout/Navigation.tsx` is the largest component at ~424 lines and owns desktop nav, mobile nav, dropdown keyboard behavior, focus management, route state, and section scrolling. Split into `DesktopNavigation`, `MobileNavigation`, and a small dropdown-focus hook when making the next navigation change.
+- `src/components/layout/Navigation.tsx` was split into parent state/interaction orchestration plus `DesktopNavigation`, `MobileNavigation`, and shared `navigationItems` modules. Dropdown keyboard/focus behavior remains centralized in the parent to avoid changing interaction semantics.
+- Internal navigation prefetch is disabled for nav links where static export produced missing RSC prefetch requests during local browser smoke.
 - `src/components/sections/AIChat.tsx` is ~405 lines and mixes transport, session retry, streaming message assembly, markdown rendering, timeout state, and UI. Split only when changing chat behavior; a good boundary is `useChatSession`, `ChatMessages`, and `ChatInput`.
 - `ScrollAnimation` is used many times and creates one `IntersectionObserver` per wrapper. This is acceptable at current scale, but a shared observer or CSS-first reveal helper would be cleaner if more animated sections are added.
-- `@next/bundle-analyzer` is installed but not wired into config or scripts. Either add a deliberate `analyze` script/config later or remove it as unused dev tooling.
+- `@next/bundle-analyzer` was removed as unused Webpack-era dev tooling. Use the Next 16 Turbopack analyzer through `npm run analyze` when bundle inspection is needed.
 
 ## Recommended Follow-Up Order
-1. Convert project screenshots to WebP/AVIF thumbnails and keep originals only if the modal truly needs full-resolution PNGs.
-2. Add a real bundle-analyzer script or remove `@next/bundle-analyzer`.
-3. Split `Navigation.tsx` the next time navigation behavior changes.
-4. Plan Tailwind 4 as a separate migration with visual QA, not as part of routine dependency maintenance.
+1. Done: project screenshots were converted to WebP and PNG originals were removed from the public export path.
+2. Run `npm run analyze` when investigating bundle composition; no separate `@next/bundle-analyzer` package is needed for this project.
+3. Done: `Navigation.tsx` was split without changing exported navigation behavior.
+4. Done: Tailwind 4 was migrated in the follow-up branch with static validation plus browser visual smoke. Keep ESLint 10 and Node 26 deferred until the lint stack and CI runtime line up.

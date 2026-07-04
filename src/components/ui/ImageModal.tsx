@@ -136,7 +136,7 @@ export default function ImageModal({ isOpen, imageSrc, imageAlt, onClose }: Imag
                 </div>
 
                 {/* 이미지 제목 */}
-                <div className="p-6 bg-white border-t">
+                <div className="p-6 bg-white border-t border-gray-200">
                     <h3 id={titleId} className="text-lg font-semibold text-gray-900 text-center">
                         {imageAlt}
                     </h3>

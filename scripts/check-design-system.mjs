@@ -1,9 +1,23 @@
-import { readFileSync } from 'node:fs'
+import { readdirSync, readFileSync, statSync } from 'node:fs'
+import { join } from 'node:path'
 
 const read = (path) => readFileSync(path, 'utf8')
+const collectSourceFiles = (directory) => {
+  return readdirSync(directory).flatMap((entry) => {
+    const path = join(directory, entry)
+    const stats = statSync(path)
+
+    if (stats.isDirectory()) {
+      return collectSourceFiles(path)
+    }
+
+    return /\.(tsx?|css)$/.test(entry) ? [path] : []
+  })
+}
 
 const layout = read('src/app/layout.tsx')
 const globals = read('src/app/globals.css')
+const postcss = read('postcss.config.mjs')
 const hero = read('src/components/sections/HeroSection.tsx')
 const button = read('src/components/ui/Button.tsx')
 const navigation = read('src/components/layout/Navigation.tsx')
@@ -15,6 +29,29 @@ const notesDirectory = read('src/app/notes/NotesDirectoryView.tsx')
 const tailwind = read('tailwind.config.mjs')
 const card = read('src/components/ui/Card.tsx')
 const portfolioData = read('src/data/portfolio.ts')
+const sourceBundle = collectSourceFiles('src')
+  .map((path) => read(path))
+  .join('\n')
+const removedTailwindUtilities = [
+  'bg-opacity-',
+  'text-opacity-',
+  'border-opacity-',
+  'divide-opacity-',
+  'ring-opacity-',
+  'placeholder-opacity-',
+  'flex-shrink-',
+  'flex-grow-',
+  'overflow-ellipsis',
+  'decoration-slice',
+  'decoration-clone',
+]
+const renamedTailwindUtilities = [
+  'shadow-sm',
+  'outline-none',
+]
+const hasBareRingUtility = /(?<![-\w])(?:[a-z-]+:)*ring(?![-\w])/.test(sourceBundle)
+const hasBareRoundedUtility = /(?<![-\w])!?(?:[a-z-]+:)*rounded(?![-\w])/.test(sourceBundle)
+const hasBareBackdropBlurUtility = /(?<![-\w])!?(?:[a-z-]+:)*backdrop-blur(?![-\w])/.test(sourceBundle)
 
 const extractCssBlock = (source, marker) => {
   const markerIndex = source.indexOf(marker)
@@ -186,6 +223,30 @@ const checks = [
   {
     name: 'Tailwind sans stack does not default to Inter',
     passed: !tailwind.includes("sans: ['Inter'"),
+  },
+  {
+    name: 'Tailwind 4 CSS entrypoint uses import syntax',
+    passed: globals.includes('@import "tailwindcss";') && !globals.includes('@tailwind '),
+  },
+  {
+    name: 'Tailwind 4 CSS entrypoint loads the JavaScript config explicitly',
+    passed: globals.includes('@config "../../tailwind.config.mjs";'),
+  },
+  {
+    name: 'PostCSS uses Tailwind 4 dedicated plugin',
+    passed: postcss.includes("'@tailwindcss/postcss'") && !postcss.includes('tailwindcss:') && !postcss.includes('autoprefixer'),
+  },
+  {
+    name: 'source avoids Tailwind 4 removed utilities',
+    passed: removedTailwindUtilities.every((utility) => !sourceBundle.includes(utility)),
+  },
+  {
+    name: 'source avoids Tailwind 4 renamed v3 utilities',
+    passed:
+      renamedTailwindUtilities.every((utility) => !sourceBundle.includes(utility)) &&
+      !hasBareRingUtility &&
+      !hasBareRoundedUtility &&
+      !hasBareBackdropBlurUtility,
   },
   {
     name: 'global CSS includes a reduced-motion media query',

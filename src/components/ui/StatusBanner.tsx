@@ -104,7 +104,7 @@ export default function StatusBanner({
             aria-atomic="true"
         >
             <div className="flex items-start">
-                <div className="mt-0.5 flex-shrink-0">
+                <div className="mt-0.5 shrink-0">
                     <svg className={`h-4 w-4 md:h-5 md:w-5 ${config.icon}`} viewBox="0 0 20 20" fill="currentColor">
                         {config.iconPath}
                     </svg>
