@@ -23,12 +23,25 @@ const FALLBACK_IMAGE_SRC = `data:image/svg+xml;charset=UTF-8,${encodeURIComponen
     </svg>`
 )}`
 
+function ModalImage({ imageSrc, imageAlt }: Pick<ImageModalProps, 'imageSrc' | 'imageAlt'>) {
+    const [failedImageSrc, setFailedImageSrc] = useState<string | null>(null)
+    const hasImageError = failedImageSrc === imageSrc
+
+    return (
+        <img
+            src={hasImageError ? FALLBACK_IMAGE_SRC : imageSrc}
+            alt={imageAlt}
+            className="max-w-full max-h-[80vh] object-contain"
+            onError={() => setFailedImageSrc(imageSrc)}
+        />
+    )
+}
+
 export default function ImageModal({ isOpen, imageSrc, imageAlt, onClose }: ImageModalProps) {
     const titleId = useId()
     const dialogRef = useRef<HTMLDivElement>(null)
     const closeButtonRef = useRef<HTMLButtonElement>(null)
     const previousFocusedElementRef = useRef<HTMLElement | null>(null)
-    const [hasImageError, setHasImageError] = useState(false)
 
     useEffect(() => {
         if (!isOpen) {
@@ -89,14 +102,6 @@ export default function ImageModal({ isOpen, imageSrc, imageAlt, onClose }: Imag
         }
     }, [isOpen, onClose])
 
-    useEffect(() => {
-        if (!isOpen) {
-            return
-        }
-
-        setHasImageError(false)
-    }, [imageSrc, isOpen])
-
     if (!isOpen) return null
 
     return (
@@ -127,12 +132,7 @@ export default function ImageModal({ isOpen, imageSrc, imageAlt, onClose }: Imag
 
                 {/* 이미지 */}
                 <div className="flex items-center justify-center bg-gray-100">
-                    <img
-                        src={hasImageError ? FALLBACK_IMAGE_SRC : imageSrc}
-                        alt={imageAlt}
-                        className="max-w-full max-h-[80vh] object-contain"
-                        onError={() => setHasImageError(true)}
-                    />
+                    <ModalImage key={imageSrc} imageSrc={imageSrc} imageAlt={imageAlt} />
                 </div>
 
                 {/* 이미지 제목 */}

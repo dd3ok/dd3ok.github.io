@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useState, type MouseEvent } from 'react'
+import { useCallback, useEffect, useMemo, useSyncExternalStore, type MouseEvent } from 'react'
 import Link from 'next/link'
 import {
     allNotesCategory,
@@ -14,6 +14,18 @@ import type { PublicNote } from '@/lib/notes'
 interface NotesDirectoryViewProps {
     activeCategoryId: string
     notes: PublicNote[]
+}
+
+const NOTES_PATHNAME_CHANGED_EVENT = 'notes-pathname-changed'
+
+const subscribeToNotesPathname = (onStoreChange: () => void) => {
+    window.addEventListener('popstate', onStoreChange)
+    window.addEventListener(NOTES_PATHNAME_CHANGED_EVENT, onStoreChange)
+
+    return () => {
+        window.removeEventListener('popstate', onStoreChange)
+        window.removeEventListener(NOTES_PATHNAME_CHANGED_EVENT, onStoreChange)
+    }
 }
 
 const formatDate = (date: string) => {
@@ -53,7 +65,11 @@ const getCategoryFromPathname = (pathname: string) => {
 }
 
 export default function NotesDirectoryView({ activeCategoryId, notes }: NotesDirectoryViewProps) {
-    const [selectedCategoryId, setSelectedCategoryId] = useState(activeCategoryId)
+    const selectedCategoryId = useSyncExternalStore(
+        subscribeToNotesPathname,
+        () => getCategoryFromPathname(window.location.pathname)?.id ?? activeCategoryId,
+        () => activeCategoryId
+    )
     const currentCategory = useMemo(() => (
         noteFilterCategories.find((category) => category.id === selectedCategoryId) ?? allNotesCategory
     ), [selectedCategoryId])
@@ -74,24 +90,6 @@ export default function NotesDirectoryView({ activeCategoryId, notes }: NotesDir
     const activeCategoryLabel = currentCategory.id === allNotesCategory.id
         ? '최근 노트'
         : currentCategory.title
-
-    useEffect(() => {
-        setSelectedCategoryId(activeCategoryId)
-    }, [activeCategoryId])
-
-    useEffect(() => {
-        const handlePopState = () => {
-            const nextCategory = getCategoryFromPathname(window.location.pathname)
-
-            if (nextCategory) {
-                setSelectedCategoryId(nextCategory.id)
-            }
-        }
-
-        window.addEventListener('popstate', handlePopState)
-
-        return () => window.removeEventListener('popstate', handlePopState)
-    }, [])
 
     useEffect(() => {
         document.title = currentCategory.id === allNotesCategory.id
@@ -122,8 +120,8 @@ export default function NotesDirectoryView({ activeCategoryId, notes }: NotesDir
             return
         }
 
-        setSelectedCategoryId(category.id)
         window.history.pushState({ notesCategory: category.id }, '', nextHref)
+        window.dispatchEvent(new Event(NOTES_PATHNAME_CHANGED_EVENT))
     }, [])
 
     return (

@@ -1,5 +1,4 @@
 import Navigation from '@/components/layout/Navigation'
-import { HealthcheckInitializer } from '@/components/HealthcheckInitializer'
 import HeroSection from '@/components/sections/HeroSection'
 import AboutSection from '@/components/sections/AboutSection'
 import ProjectsSection from '@/components/sections/ProjectsSection'
@@ -11,7 +10,6 @@ import Footer from '@/components/layout/Footer'
 export default function Home() {
   return (
       <main>
-        <HealthcheckInitializer />
         <Navigation />
         <HeroSection />
         <AboutSection />
