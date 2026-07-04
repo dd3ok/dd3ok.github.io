@@ -1,3 +1,4 @@
+/* Static export serves already optimized local assets; the modal intentionally renders the full source image. */
 /* eslint-disable @next/next/no-img-element */
 'use client'
 

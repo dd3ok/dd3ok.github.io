@@ -24,7 +24,9 @@ const navigation = read('src/components/layout/Navigation.tsx')
 const projectGallery = read('src/components/sections/ProjectGallery.tsx')
 const pagesSection = read('src/components/sections/PagesSection.tsx')
 const contactForm = read('src/components/sections/ContactForm.tsx')
-const aiChat = read('src/components/sections/AIChat.tsx')
+const aiChatSession = read('src/components/sections/ai-chat/useChatSession.ts')
+const aiChatMessages = read('src/components/sections/ai-chat/ChatMessages.tsx')
+const aiChatInput = read('src/components/sections/ai-chat/ChatInput.tsx')
 const notesDirectory = read('src/app/notes/NotesDirectoryView.tsx')
 const tailwind = read('tailwind.config.mjs')
 const card = read('src/components/ui/Card.tsx')
@@ -149,31 +151,32 @@ const pagesSectionActiveLinkClass =
 const contactFormSubmitButtonClass =
   contactForm.match(/type="submit"[\s\S]*?className="([^"]+)"/)?.[1] ?? ''
 const aiChatRetryButtonClass =
-  aiChat.match(/onClick=\{onRetry\}[\s\S]*?className="([^"]+)"/)?.[1] ?? ''
+  aiChatMessages.match(/onClick=\{onRetry\}[\s\S]*?className="([^"]+)"/)?.[1] ?? ''
 const aiChatSubmitButtonClass =
-  aiChat.match(/type="submit"[\s\S]*?className="([^"]+)"[\s\S]*?disabled=\{!inputValue\.trim\(\)/)?.[1] ?? ''
+  aiChatInput.match(/type="submit"[\s\S]*?className="([^"]+)"[\s\S]*?disabled=\{!canSend\}/)?.[1] ?? ''
 const hasUseStateTuple = (source, stateName, setterName) =>
   new RegExp(`const\\s*\\[\\s*${stateName}\\s*,\\s*${setterName}\\s*\\]\\s*=\\s*useState`).test(source)
 const matchesLoadingDotsExpression = (source, stateName) =>
   new RegExp(`\\{\\s*${stateName}\\s*&&\\s*!isTimeout\\s*&&\\s*\\([\\s\\S]*?<LoadingDots\\s*/>`).test(source)
 const aiChatResponseTimeoutBody =
-  aiChat.match(/responseTimeoutRef\.current\s*=\s*setTimeout\(\s*\(\)\s*=>\s*\{([\s\S]*?)\}\s*,\s*RESPONSE_TIMEOUT_MS\s*\)/)?.[1] ?? ''
+  aiChatSession.match(/responseTimeoutRef\.current\s*=\s*setTimeout\(\s*\(\)\s*=>\s*\{([\s\S]*?)\}\s*,\s*RESPONSE_TIMEOUT_MS\s*\)/)?.[1] ?? ''
 const aiChatSubmitButtonBlock =
-  aiChat.match(/<button\b(?:(?!<\/button>)[\s\S])*?type="submit"(?:(?!<\/button>)[\s\S])*?<\/button>/)?.[0] ?? ''
+  aiChatInput.match(/<button\b(?:(?!<\/button>)[\s\S])*?type="submit"(?:(?!<\/button>)[\s\S])*?<\/button>/)?.[0] ?? ''
 const aiChatLoadingDotsUseFirstTokenState =
-  hasUseStateTuple(aiChat, 'isAwaitingFirstToken', 'setIsAwaitingFirstToken') &&
-  /setIsAwaitingFirstToken\s*\(\s*false\s*\)/.test(aiChat) &&
-  matchesLoadingDotsExpression(aiChat, 'isAwaitingFirstToken') &&
-  !matchesLoadingDotsExpression(aiChat, 'isResponding')
+  hasUseStateTuple(aiChatSession, 'isAwaitingFirstToken', 'setIsAwaitingFirstToken') &&
+  /setIsAwaitingFirstToken\s*\(\s*false\s*\)/.test(aiChatSession) &&
+  matchesLoadingDotsExpression(aiChatMessages, 'isAwaitingFirstToken') &&
+  !matchesLoadingDotsExpression(aiChatMessages, 'isResponding')
 const aiChatResponseTimeoutWaitsForColdStarts =
-  /const\s+RESPONSE_TIMEOUT_MS\s*=\s*60000\b/.test(aiChat)
+  /const\s+RESPONSE_TIMEOUT_MS\s*=\s*60000\b/.test(aiChatSession)
 const aiChatTimeoutKeepsLateResponseReceivable =
   aiChatResponseTimeoutBody.length > 0 &&
   /setIsTimeout\s*\(\s*true\s*\)/.test(aiChatResponseTimeoutBody) &&
   !/activeAssistantMessageIdRef\.current\s*=\s*null/.test(aiChatResponseTimeoutBody) &&
   !/setIsResponding\s*\(\s*false\s*\)/.test(aiChatResponseTimeoutBody)
 const aiChatInputStaysLockedDuringTimeout =
-  /disabled=\{\s*!inputValue\.trim\(\)\s*\|\|\s*isResponding\s*\|\|\s*readyState\s*!==\s*ReadyState\.OPEN\s*\}/.test(aiChatSubmitButtonBlock)
+  /const\s+canSend\s*=\s*inputValue\.trim\(\)\.length\s*>\s*0\s*&&\s*!isResponding\s*&&\s*readyState\s*===\s*ReadyState\.OPEN/.test(aiChatSession) &&
+  /disabled=\{\s*!canSend\s*\}/.test(aiChatSubmitButtonBlock)
 const notesDirectoryListClass =
   notesDirectory.match(/<div className="([^"]+)">\s*\{activeNotes\.map/)?.[1] ?? ''
 const heroMobilePreviewBlock = hero.match(/<div className="lg:hidden">[\s\S]*?<HeroAgentPreview \/>[\s\S]*?<\/div>/)?.[0] ?? ''

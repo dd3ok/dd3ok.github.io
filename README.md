@@ -36,7 +36,7 @@ If the optional AI variables are missing, the portfolio still renders normally a
 
 ### Notes
 - The site is exported statically, so local preview should serve the generated `out/` directory.
-- Repository linting is enforced before build because Next.js 15.5.10 built-in linting still conflicts with the current flat config path.
+- Repository linting is enforced through the ESLint CLI via `npm run validate` before build on the current Next 16 stack.
 - Interactive demos depend on external services that may take time to wake from sleep.
 
 ### Recommended Verification Flow

@@ -50,4 +50,4 @@
 ## Current Constraints
 - The site is statically exported, so Next.js runtime-only features are limited
 - Some user-facing features depend on external services waking up from sleep
-- Next.js 15.5.2 built-in linting still conflicts with the current flat config path, so repository lint is enforced before build via `npm run validate`
+- Repository linting is enforced through the ESLint CLI via `npm run validate` before build on the current Next 16 stack
