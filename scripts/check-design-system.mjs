@@ -54,12 +54,16 @@ const hasBareRoundedUtility = /(?<![-\w])!?(?:[a-z-]+:)*rounded(?![-\w])/.test(s
 const hasBareBackdropBlurUtility = /(?<![-\w])!?(?:[a-z-]+:)*backdrop-blur(?![-\w])/.test(sourceBundle)
 
 const findCssBlockRange = (source, marker) => {
-  const markerIndex = source.indexOf(marker)
-  if (markerIndex === -1) {
+  const escapedMarker = marker.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const markerRegex = new RegExp(`^[ \\t]*${escapedMarker}(?=\\s*\\{)`, 'm')
+  const markerMatch = source.match(markerRegex)
+
+  if (!markerMatch) {
     return null
   }
 
-  const openBraceIndex = source.indexOf('{', markerIndex)
+  const markerIndex = markerMatch.index
+  const openBraceIndex = source.indexOf('{', markerIndex + markerMatch[0].length)
   if (openBraceIndex === -1) {
     return null
   }
@@ -111,9 +115,9 @@ const removeCssBlock = (source, marker) => {
 }
 
 const hasUniversalSpacingReset = (source) => (
-  Array.from(source.matchAll(/^\s*\*\s*\{([^}]*)\}/gm)).some(([, ruleBody]) => {
-    const hasZeroMargin = /(?:^|;)\s*margin\s*:\s*0\s*(?:;|$)/.test(ruleBody)
-    const hasZeroPadding = /(?:^|;)\s*padding\s*:\s*0\s*(?:;|$)/.test(ruleBody)
+  Array.from(source.matchAll(/\*\s*\{([^}]*)\}/g)).some(([, ruleBody]) => {
+    const hasZeroMargin = /(?:^|;)\s*margin\s*:\s*0(?:[a-z]+|%)?\s*(?:;|$)/.test(ruleBody)
+    const hasZeroPadding = /(?:^|;)\s*padding\s*:\s*0(?:[a-z]+|%)?\s*(?:;|$)/.test(ruleBody)
 
     return hasZeroMargin && hasZeroPadding
   })
@@ -125,6 +129,10 @@ const hasLayeredUniversalReset = hasUniversalSpacingReset(baseLayerCss)
 const hasUnlayeredUniversalReset = hasUniversalSpacingReset(globalsWithoutBaseLayer)
 const universalResetDetectorHandlesReorderedDeclarations =
   hasUniversalSpacingReset('* { padding: 0; margin: 0; }')
+const universalResetDetectorHandlesCompactRules =
+  hasUniversalSpacingReset('body{color:red}*{padding:0;margin:0}')
+const universalResetDetectorHandlesZeroUnits =
+  hasUniversalSpacingReset('* { padding: 0rem; margin: 0px; }')
 const universalResetDetectorRequiresBothSpacingDeclarations =
   !hasUniversalSpacingReset('* { padding: 0; }') &&
   !hasUniversalSpacingReset('* { margin: 0; }')
@@ -287,6 +295,14 @@ const checks = [
   {
     name: 'global spacing reset detector is order-insensitive',
     passed: universalResetDetectorHandlesReorderedDeclarations,
+  },
+  {
+    name: 'global spacing reset detector handles compact CSS rules',
+    passed: universalResetDetectorHandlesCompactRules,
+  },
+  {
+    name: 'global spacing reset detector handles zero units',
+    passed: universalResetDetectorHandlesZeroUnits,
   },
   {
     name: 'global spacing reset detector requires both spacing declarations',
