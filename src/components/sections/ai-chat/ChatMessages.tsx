@@ -5,6 +5,8 @@ import remarkGfm from 'remark-gfm'
 import StatusBanner from '@/components/ui/StatusBanner'
 import type { ChatMessage } from '@/components/sections/ai-chat/useChatSession'
 
+const REMARK_PLUGINS = [remarkGfm]
+
 interface ChatMessagesProps {
     messages: ChatMessage[]
     isAwaitingFirstToken: boolean
@@ -117,7 +119,7 @@ export default function ChatMessages({
                         ) : (
                             <div className="prose prose-sm max-w-none text-[var(--text-primary)] [&>*:first-child]:mt-0 [&>*:last-child]:mb-0">
                                 <ReactMarkdown
-                                    remarkPlugins={[remarkGfm]}
+                                    remarkPlugins={REMARK_PLUGINS}
                                     components={markdownComponents}
                                 >
                                     {msg.text}

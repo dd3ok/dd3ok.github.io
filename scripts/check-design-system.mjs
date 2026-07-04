@@ -175,8 +175,11 @@ const aiChatTimeoutKeepsLateResponseReceivable =
   !/activeAssistantMessageIdRef\.current\s*=\s*null/.test(aiChatResponseTimeoutBody) &&
   !/setIsResponding\s*\(\s*false\s*\)/.test(aiChatResponseTimeoutBody)
 const aiChatInputStaysLockedDuringTimeout =
-  /const\s+canSend\s*=\s*inputValue\.trim\(\)\.length\s*>\s*0\s*&&\s*!isResponding\s*&&\s*readyState\s*===\s*ReadyState\.OPEN/.test(aiChatSession) &&
+  /const\s+canSend\s*=\s*inputValue\.trim\(\)\.length\s*>\s*0\s*&&\s*!isResponding\s*&&\s*readyState\s*===\s*ReadyState\.OPEN\s*&&\s*!!userId/.test(aiChatSession) &&
   /disabled=\{\s*!canSend\s*\}/.test(aiChatSubmitButtonBlock)
+const aiChatMarkdownPluginsAreStable =
+  /const\s+REMARK_PLUGINS\s*=\s*\[\s*remarkGfm\s*\]/.test(aiChatMessages) &&
+  /remarkPlugins=\{\s*REMARK_PLUGINS\s*\}/.test(aiChatMessages)
 const notesDirectoryListClass =
   notesDirectory.match(/<div className="([^"]+)">\s*\{activeNotes\.map/)?.[1] ?? ''
 const heroMobilePreviewBlock = hero.match(/<div className="lg:hidden">[\s\S]*?<HeroAgentPreview \/>[\s\S]*?<\/div>/)?.[0] ?? ''
@@ -501,6 +504,10 @@ const checks = [
   {
     name: 'AIChat input stays locked while a timed-out response can still arrive',
     passed: aiChatInputStaysLockedDuringTimeout,
+  },
+  {
+    name: 'AIChat markdown plugins keep a stable reference',
+    passed: aiChatMarkdownPluginsAreStable,
   },
   {
     name: 'NotesDirectory note list avoids duplicate top divider',

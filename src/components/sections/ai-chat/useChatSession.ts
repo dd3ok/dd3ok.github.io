@@ -207,7 +207,7 @@ export function useChatSession({
         [ReadyState.UNINSTANTIATED]: { color: 'bg-slate-400', animate: '', title: '초기화 안됨' },
     }[readyState] ?? null
 
-    const canSend = inputValue.trim().length > 0 && !isResponding && readyState === ReadyState.OPEN
+    const canSend = inputValue.trim().length > 0 && !isResponding && readyState === ReadyState.OPEN && !!userId
 
     return {
         inputValue,
