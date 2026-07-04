@@ -222,7 +222,7 @@ export default function Navigation() {
                             alt="dd3ok 로고"
                             width={32}
                             height={32}
-                            className="w-7 h-7 md:w-8 md:h-8 rounded-lg shadow-sm"
+                            className="w-7 h-7 md:w-8 md:h-8 rounded-lg shadow-xs"
                             priority
                         />
                         <span className="font-extrabold text-base md:text-lg tracking-tight text-[var(--accent-color)]">dd3ok</span>
@@ -256,9 +256,9 @@ export default function Navigation() {
                             aria-label={isMobileMenuOpen ? '모바일 메뉴 닫기' : '모바일 메뉴 열기'}
                         >
                             <div className="w-5 h-5 flex flex-col justify-center items-center">
-                                <span className={`bg-[var(--text-primary)] block transition-all duration-300 ease-out h-0.5 w-5 rounded-sm ${isMobileMenuOpen ? 'rotate-45 translate-y-[3px]' : '-translate-y-1'}`} />
-                                <span className={`bg-[var(--text-primary)] block transition-all duration-300 ease-out h-0.5 w-5 rounded-sm my-0.5 ${isMobileMenuOpen ? 'opacity-0' : 'opacity-100'}`} />
-                                <span className={`bg-[var(--text-primary)] block transition-all duration-300 ease-out h-0.5 w-5 rounded-sm ${isMobileMenuOpen ? '-rotate-45 -translate-y-[3px]' : 'translate-y-1'}`} />
+                                <span className={`bg-[var(--text-primary)] block transition-all duration-300 ease-out h-0.5 w-5 rounded-xs ${isMobileMenuOpen ? 'rotate-45 translate-y-[3px]' : '-translate-y-1'}`} />
+                                <span className={`bg-[var(--text-primary)] block transition-all duration-300 ease-out h-0.5 w-5 rounded-xs my-0.5 ${isMobileMenuOpen ? 'opacity-0' : 'opacity-100'}`} />
+                                <span className={`bg-[var(--text-primary)] block transition-all duration-300 ease-out h-0.5 w-5 rounded-xs ${isMobileMenuOpen ? '-rotate-45 -translate-y-[3px]' : 'translate-y-1'}`} />
                             </div>
                         </button>
                     </div>

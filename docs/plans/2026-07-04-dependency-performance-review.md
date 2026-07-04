@@ -13,8 +13,11 @@
 
 ## Deferred Updates
 - `eslint@10.6.0`: not compatible with the current Next lint stack. `eslint-plugin-react@7.37.5` only peers through ESLint 9 and failed with `contextOrFilename.getFilename is not a function`.
-- `tailwindcss@4.3.2`: not a dependency-only bump. Tailwind 4 requires `@tailwindcss/postcss`, CSS `@import "tailwindcss"`, and review of v4 breaking changes.
 - `@types/node@26.1.0`: not aligned with the GitHub Actions deployment workflow, which currently uses Node 24. Node types were advanced to the latest compatible 24.x line instead.
+
+## Follow-Up Updates
+- `tailwindcss@4.3.2`: migrated after the follow-up pass because the repo can satisfy Tailwind 4's modern browser requirement and the static export can be visually checked locally. The migration now uses `@tailwindcss/postcss`, CSS `@import "tailwindcss"`, explicit `@config "../../tailwind.config.mjs"`, and v4 utility names for renamed v3 classes.
+- Tailwind 4 static/browser verification passed in the follow-up branch. Browser smoke covered desktop/mobile navigation, the dropdown, mobile menu, theme toggle, project WebP images, image modal, horizontal overflow, console errors, and failed network requests.
 
 ## Verification
 - `npm ci`: passed.
@@ -27,6 +30,7 @@
 - Highest ROI: optimize project screenshots under `public/image/projects`. The largest raw files are `sec-bqms.png` at ~535 KB, `esm-seller-deal.png` at ~244 KB, and `esm-category-manager.png` at ~219 KB. Because static export uses `images.unoptimized: true`, these are served as-is.
 - Follow-up applied: project screenshots now use WebP assets. The largest converted files are `esm-seller-deal.webp` at ~154 KB, `esm-category-manager.webp` at ~116 KB, and `esm-etapi.webp` at ~86 KB; `sec-bqms` dropped from ~535 KB PNG to ~48 KB WebP.
 - Bundle shape is acceptable but watch CSS. Largest exported CSS chunk is ~309 KB raw, ~107 KB gzip, ~17 KB brotli. The raw size mostly matters for uncached local inspection; compressed delivery is reasonable.
+- Tailwind 4 did not materially change the CSS size profile: the largest post-migration CSS chunk is 308,592 bytes raw, 107,029 bytes gzip, and 16,948 bytes brotli.
 - Keep `DeferredAIChat` as a lazy boundary. `AIChat.tsx` imports `react-markdown`, `remark-gfm`, and `react-use-websocket`; loading it after idle and only for the desktop hero is the right performance posture.
 - Global `*` transition in `src/app/globals.css` applies to every element. This is convenient for theme polish but can increase style work. Prefer scoping theme transitions to known surfaces in a future visual pass.
 - Animated blurred aurora orbs use large blur radii and continuous animation. They are hidden on small screens and disabled under reduced motion, so this is a low-priority desktop polish tradeoff rather than an urgent issue.
@@ -42,4 +46,4 @@
 1. Done: project screenshots were converted to WebP and PNG originals were removed from the public export path.
 2. Run `npm run analyze` when investigating bundle composition; no separate `@next/bundle-analyzer` package is needed for this project.
 3. Done: `Navigation.tsx` was split without changing exported navigation behavior.
-4. Plan Tailwind 4 as a separate migration with visual QA, not as part of routine dependency maintenance.
+4. Done: Tailwind 4 was migrated in the follow-up branch with static validation plus browser visual smoke. Keep ESLint 10 and Node 26 deferred until the lint stack and CI runtime line up.

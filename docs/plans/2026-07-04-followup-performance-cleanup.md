@@ -29,10 +29,28 @@
    - Re-evaluate ESLint 10, Tailwind 4, and Node types against current local config plus official/upstream evidence.
    - Move `@types/node` to the latest Node 24-compatible major because GitHub Actions now runs Node 24.
    - Done: moved `@types/node` to Node 24-compatible types.
-   - Kept ESLint 10 and Tailwind 4 deferred as separate migration items.
+   - Done: migrated Tailwind CSS to 4.3.2 with `@tailwindcss/postcss`, CSS import syntax, explicit JS config loading, and renamed v4 utility classes that preserve the v3 visual scale (`shadow-sm` to `shadow-xs`, v3 `rounded` to `rounded-sm`, v3 `rounded-sm` to `rounded-xs`, `outline-none` to `outline-hidden`, `backdrop-blur` to `backdrop-blur-sm`, `flex-shrink-0` to `shrink-0`).
+   - Done: extended `design:check` so Tailwind 4 entrypoint drift and removed/renamed v3 utilities fail during `npm run validate`.
+   - Kept ESLint 10 deferred because the current Next lint stack still fails against it.
+
+5. Visual QA guardrail
+   - Verify the exported site in a browser after Tailwind 4 because v4 changes generated CSS, hover behavior, shadows/radius names, and border defaults.
+   - Check desktop and mobile navigation, theme toggle, project gallery image modal, and exported WebP assets.
+   - Done: browser visual smoke on `http://127.0.0.1:3101/` checked desktop/mobile layouts, desktop dropdown, mobile menu, `light -> dark` theme toggle, WebP project images, project image modal, no horizontal overflow, no console errors, and no failed network requests.
+
+## Follow-Up Result
+- `tailwindcss` is now on 4.3.2 and no longer appears in `npm outdated`.
+- `npm outdated --json` now only reports the intentional `eslint@10.6.0` and `@types/node@26.1.0` deferrals.
+- `npm audit --json` reports 0 vulnerabilities.
+- `npm run analyze` completed and wrote `.next/diagnostics/analyze`.
+- Largest static chunks after Tailwind 4 remain in the same range: CSS chunk `308,592` raw / `107,029` gzip / `16,948` brotli, second CSS chunk `85,568` raw / `14,755` gzip / `12,122` brotli.
 
 ## Verification
 - `npm run validate`
 - `npm run build`
+- Browser visual smoke on the static export
+- `npm run analyze`
+- `npm audit --json`
+- `npm outdated --json`
 - Subagent review
 - Self-review of diff and generated asset size changes

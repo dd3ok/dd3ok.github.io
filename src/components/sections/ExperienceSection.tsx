@@ -33,7 +33,7 @@ export default function ExperienceSection() {
                             {/* 타임라인 도트 */}
                             <div className="absolute left-3 top-8 w-4 h-4 bg-[var(--accent-color)] rounded-full border-4 border-[var(--bg-color)] ring-4 ring-[var(--accent-glow)] shadow-md" />
 
-                            <div className="glass-card p-6 rounded-2xl shadow-sm">
+                            <div className="glass-card p-6 rounded-2xl shadow-xs">
                                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
                                     <div>
                                         <h3 className="text-xl font-bold text-[var(--text-primary)]">
@@ -43,7 +43,7 @@ export default function ExperienceSection() {
                                             {exp.company}
                                         </p>
                                     </div>
-                                    <span className="text-xs font-bold text-[var(--text-muted)] bg-[var(--card-bg)] border border-[var(--card-border)] px-3 py-1 rounded-full mt-1.5 md:mt-0 shadow-sm">
+                                    <span className="text-xs font-bold text-[var(--text-muted)] bg-[var(--card-bg)] border border-[var(--card-border)] px-3 py-1 rounded-full mt-1.5 md:mt-0 shadow-xs">
                                         {exp.period}
                                     </span>
                                 </div>
@@ -51,7 +51,7 @@ export default function ExperienceSection() {
                                 <ul className="space-y-3">
                                     {exp.description.map((item, idx) => (
                                         <li key={idx} className="text-[var(--text-secondary)] flex items-start leading-relaxed text-sm">
-                                            <span className="text-[var(--accent-color)] mr-2 mt-1.5 flex-shrink-0 text-[10px]">•</span>
+                                            <span className="text-[var(--accent-color)] mr-2 mt-1.5 shrink-0 text-[10px]">•</span>
                                             <span className="flex-1 font-medium">{item}</span>
                                         </li>
                                     ))}
