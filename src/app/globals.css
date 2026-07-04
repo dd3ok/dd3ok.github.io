@@ -84,11 +84,13 @@
   --scroll-thumb-hover: #5a5a5a;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+  }
 }
 
 /* Exempt micro-transitions that shouldn't lag */

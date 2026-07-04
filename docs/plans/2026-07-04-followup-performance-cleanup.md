@@ -42,12 +42,18 @@
    - Done: added explicit ARIA menu semantics to the desktop services dropdown.
    - Done: added screen-reader-only context for external dropdown links and simplified dropdown link prefetch handling.
 
+7. Tailwind 4 cascade regression follow-up
+   - Done: reproduced that spacing utilities such as `px-*`, `py-*`, and `space-x-*` were generated but computed as `0px` because the global universal reset was outside Tailwind's cascade layers.
+   - Done: moved the universal spacing reset into Tailwind's `base` layer so utility-layer spacing wins the cascade again.
+   - Done: added a `design:check` guard that fails if the universal spacing reset drifts back outside the Tailwind base layer.
+
 ## Follow-Up Result
 - `tailwindcss` is now on 4.3.2 and no longer appears in `npm outdated`.
 - `npm outdated --json` now only reports the intentional `eslint@10.6.0` and `@types/node@26.1.0` deferrals.
 - `npm audit --json` reports 0 vulnerabilities.
 - `npm run analyze` completed and wrote `.next/diagnostics/analyze`.
 - Largest static chunks after Tailwind 4 remain in the same range: CSS chunk `308,592` raw / `107,029` gzip / `16,948` brotli, second CSS chunk `85,568` raw / `14,755` gzip / `12,122` brotli.
+- Tailwind 4 cascade regression fixed: browser computed style now shows restored spacing on hero buttons, desktop navigation links, the hero section, and the chat header.
 
 ## Verification
 - `npm run validate`
