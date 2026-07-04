@@ -1,30 +1,24 @@
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
-    // GitHub Pages 정적 배포 설정
+    // Static export for GitHub Pages.
     output: 'export',
     trailingSlash: true,
     skipTrailingSlashRedirect: true,
 
-    // 이미지 최적화 비활성화 (GitHub Pages 제약)
+    // GitHub Pages cannot run the default Next image optimizer.
     images: {
         unoptimized: true,
     },
 
-    // 개발/프로덕션 환경 분리
+    // Keep local and production paths identical for the user site.
     basePath: '',
     assetPrefix: '',
 
-    // 성능 최적화
+    // Trim accidental logs from the exported production bundle.
     compiler: {
         removeConsole: process.env.NODE_ENV === 'production',
     },
-
-    // Next.js 15.5.10의 내장 lint 단계는 현재 flat config 조합과 충돌하므로
-    // 저장소의 lint 게이트는 package.json의 build/validate 스크립트에서 강제합니다.
-    eslint: {
-        ignoreDuringBuilds: true,
-    },
 }
 
-module.exports = nextConfig
+export default nextConfig

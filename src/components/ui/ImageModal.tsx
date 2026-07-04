@@ -28,7 +28,8 @@ export default function ImageModal({ isOpen, imageSrc, imageAlt, onClose }: Imag
     const dialogRef = useRef<HTMLDivElement>(null)
     const closeButtonRef = useRef<HTMLButtonElement>(null)
     const previousFocusedElementRef = useRef<HTMLElement | null>(null)
-    const [hasImageError, setHasImageError] = useState(false)
+    const [failedImageSrc, setFailedImageSrc] = useState<string | null>(null)
+    const hasImageError = failedImageSrc === imageSrc
 
     useEffect(() => {
         if (!isOpen) {
@@ -89,14 +90,6 @@ export default function ImageModal({ isOpen, imageSrc, imageAlt, onClose }: Imag
         }
     }, [isOpen, onClose])
 
-    useEffect(() => {
-        if (!isOpen) {
-            return
-        }
-
-        setHasImageError(false)
-    }, [imageSrc, isOpen])
-
     if (!isOpen) return null
 
     return (
@@ -131,7 +124,7 @@ export default function ImageModal({ isOpen, imageSrc, imageAlt, onClose }: Imag
                         src={hasImageError ? FALLBACK_IMAGE_SRC : imageSrc}
                         alt={imageAlt}
                         className="max-w-full max-h-[80vh] object-contain"
-                        onError={() => setHasImageError(true)}
+                        onError={() => setFailedImageSrc(imageSrc)}
                     />
                 </div>
 
