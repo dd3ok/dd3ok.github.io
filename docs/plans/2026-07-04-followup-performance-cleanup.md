@@ -38,6 +38,10 @@
    - Check desktop and mobile navigation, theme toggle, project gallery image modal, and exported WebP assets.
    - Done: browser visual smoke on `http://127.0.0.1:3101/` checked desktop/mobile layouts, desktop dropdown, mobile menu, `light -> dark` theme toggle, WebP project images, project image modal, no horizontal overflow, no console errors, and no failed network requests.
 
+6. PR accessibility review follow-up
+   - Done: added explicit ARIA menu semantics to the desktop services dropdown.
+   - Done: added screen-reader-only context for external dropdown links and simplified dropdown link prefetch handling.
+
 ## Follow-Up Result
 - `tailwindcss` is now on 4.3.2 and no longer appears in `npm outdated`.
 - `npm outdated --json` now only reports the intentional `eslint@10.6.0` and `@types/node@26.1.0` deferrals.

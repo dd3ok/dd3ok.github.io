@@ -110,6 +110,7 @@ export default function DesktopNavigation({
                             {activeDropdown === item.id && item.dropdown && (
                                 <div
                                     id={`${item.id}-desktop-menu`}
+                                    role="menu"
                                     aria-label={`${item.label} 링크`}
                                     className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-56 bg-[var(--dropdown-bg)] backdrop-blur-2xl rounded-2xl shadow-xl border border-[var(--card-border)] py-2 z-50 animate-dropdownEnter"
                                     onMouseEnter={onDropdownMouseEnter}
@@ -127,7 +128,8 @@ export default function DesktopNavigation({
                                                 key={dropdownItem.id}
                                                 ref={(element) => onDropdownItemRef(dropdownIndex, element)}
                                                 href={dropdownItem.path}
-                                                prefetch={external ? undefined : false}
+                                                role="menuitem"
+                                                prefetch={false}
                                                 target={external ? '_blank' : undefined}
                                                 rel={external ? 'noopener noreferrer' : undefined}
                                                 className="flex items-center px-4 py-3 text-sm text-[var(--text-secondary)] hover:bg-[var(--accent-glow)] hover:text-[var(--text-primary)] transition-all duration-300 rounded-xl mx-2 my-0.5 group"
@@ -137,6 +139,9 @@ export default function DesktopNavigation({
                                                     {String(dropdownIndex + 1).padStart(2, '0')}
                                                 </span>
                                                 <span className="font-medium">{dropdownItem.label}</span>
+                                                {external && (
+                                                    <span className="sr-only">(새 창으로 열림)</span>
+                                                )}
                                                 {external && (
                                                     <svg
                                                         className="w-3 h-3 ml-auto text-[var(--text-muted)] group-hover:text-[var(--accent-color)] transition-colors duration-300"
