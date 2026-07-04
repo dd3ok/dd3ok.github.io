@@ -53,15 +53,19 @@ const hasBareRingUtility = /(?<![-\w])(?:[a-z-]+:)*ring(?![-\w])/.test(sourceBun
 const hasBareRoundedUtility = /(?<![-\w])!?(?:[a-z-]+:)*rounded(?![-\w])/.test(sourceBundle)
 const hasBareBackdropBlurUtility = /(?<![-\w])!?(?:[a-z-]+:)*backdrop-blur(?![-\w])/.test(sourceBundle)
 
-const extractCssBlock = (source, marker) => {
-  const markerIndex = source.indexOf(marker)
-  if (markerIndex === -1) {
-    return ''
+const findCssBlockRange = (source, marker) => {
+  const escapedMarker = marker.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const markerRegex = new RegExp(`^[ \\t]*${escapedMarker}(?=\\s*\\{)`, 'm')
+  const markerMatch = source.match(markerRegex)
+
+  if (!markerMatch) {
+    return null
   }
 
-  const openBraceIndex = source.indexOf('{', markerIndex)
+  const markerIndex = markerMatch.index
+  const openBraceIndex = source.indexOf('{', markerIndex + markerMatch[0].length)
   if (openBraceIndex === -1) {
-    return ''
+    return null
   }
 
   let depth = 0
@@ -77,13 +81,61 @@ const extractCssBlock = (source, marker) => {
       depth -= 1
 
       if (depth === 0) {
-        return source.slice(openBraceIndex + 1, index)
+        return {
+          blockStart: markerIndex,
+          contentStart: openBraceIndex + 1,
+          contentEnd: index,
+          blockEnd: index + 1,
+        }
       }
     }
   }
 
-  return ''
+  return null
 }
+
+const extractCssBlock = (source, marker) => {
+  const range = findCssBlockRange(source, marker)
+
+  if (!range) {
+    return ''
+  }
+
+  return source.slice(range.contentStart, range.contentEnd)
+}
+
+const removeCssBlock = (source, marker) => {
+  const range = findCssBlockRange(source, marker)
+
+  if (!range) {
+    return source
+  }
+
+  return `${source.slice(0, range.blockStart)}${source.slice(range.blockEnd)}`
+}
+
+const hasUniversalSpacingReset = (source) => (
+  Array.from(source.matchAll(/\*\s*\{([^}]*)\}/g)).some(([, ruleBody]) => {
+    const hasZeroMargin = /(?:^|;)\s*margin\s*:\s*0(?:[a-z]+|%)?\s*(?:;|$)/.test(ruleBody)
+    const hasZeroPadding = /(?:^|;)\s*padding\s*:\s*0(?:[a-z]+|%)?\s*(?:;|$)/.test(ruleBody)
+
+    return hasZeroMargin && hasZeroPadding
+  })
+)
+
+const baseLayerCss = extractCssBlock(globals, '@layer base')
+const globalsWithoutBaseLayer = removeCssBlock(globals, '@layer base')
+const hasLayeredUniversalReset = hasUniversalSpacingReset(baseLayerCss)
+const hasUnlayeredUniversalReset = hasUniversalSpacingReset(globalsWithoutBaseLayer)
+const universalResetDetectorHandlesReorderedDeclarations =
+  hasUniversalSpacingReset('* { padding: 0; margin: 0; }')
+const universalResetDetectorHandlesCompactRules =
+  hasUniversalSpacingReset('body{color:red}*{padding:0;margin:0}')
+const universalResetDetectorHandlesZeroUnits =
+  hasUniversalSpacingReset('* { padding: 0rem; margin: 0px; }')
+const universalResetDetectorRequiresBothSpacingDeclarations =
+  !hasUniversalSpacingReset('* { padding: 0; }') &&
+  !hasUniversalSpacingReset('* { margin: 0; }')
 
 const reducedMotionCss = extractCssBlock(globals, '@media (prefers-reduced-motion: reduce)')
 const hasReducedMotionQuery = reducedMotionCss.length > 0
@@ -235,6 +287,26 @@ const checks = [
   {
     name: 'PostCSS uses Tailwind 4 dedicated plugin',
     passed: postcss.includes("'@tailwindcss/postcss'") && !postcss.includes('tailwindcss:') && !postcss.includes('autoprefixer'),
+  },
+  {
+    name: 'global spacing reset is scoped to Tailwind base layer',
+    passed: hasLayeredUniversalReset && !hasUnlayeredUniversalReset,
+  },
+  {
+    name: 'global spacing reset detector is order-insensitive',
+    passed: universalResetDetectorHandlesReorderedDeclarations,
+  },
+  {
+    name: 'global spacing reset detector handles compact CSS rules',
+    passed: universalResetDetectorHandlesCompactRules,
+  },
+  {
+    name: 'global spacing reset detector handles zero units',
+    passed: universalResetDetectorHandlesZeroUnits,
+  },
+  {
+    name: 'global spacing reset detector requires both spacing declarations',
+    passed: universalResetDetectorRequiresBothSpacingDeclarations,
   },
   {
     name: 'source avoids Tailwind 4 removed utilities',
