@@ -310,10 +310,6 @@ export default function ContactForm() {
                     '메시지 보내기'
                 )}
             </button>
-
-            <p className="text-xs text-[var(--text-muted)] text-center font-medium leading-relaxed">
-                외부 서비스가 wake up 중일 수 있습니다. 잠시 후 다시 시도해주세요.
-            </p>
         </form>
     )
 }
