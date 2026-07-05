@@ -4,7 +4,8 @@ const read = (path) => readFileSync(path, 'utf8')
 
 const homePage = read('src/app/page.tsx')
 const contactForm = read('src/components/sections/ContactForm.tsx')
-const aiChat = read('src/components/sections/AIChat.tsx')
+const aiChatSession = read('src/components/sections/ai-chat/useChatSession.ts')
+const aiChatMessages = read('src/components/sections/ai-chat/ChatMessages.tsx')
 
 const countMatches = (source, pattern) => Array.from(source.matchAll(pattern)).length
 
@@ -43,9 +44,9 @@ const extractBlockAfter = (source, marker) => {
 }
 
 const contactServerErrorBlock = extractBlockAfter(contactForm, 'if (status && status >= 500)')
-const connectionStatusBlock = extractBlockAfter(aiChat, 'const connectionStatus = {')
-const scheduleResponseTimeoutBlock = extractBlockAfter(aiChat, 'const scheduleResponseTimeout = useCallback')
-const sendChatMessageBlock = extractBlockAfter(aiChat, 'const sendChatMessage = useCallback')
+const connectionStatusBlock = extractBlockAfter(aiChatSession, 'const connectionStatus = {')
+const scheduleResponseTimeoutBlock = extractBlockAfter(aiChatSession, 'const scheduleResponseTimeout = useCallback')
+const sendChatMessageBlock = extractBlockAfter(aiChatSession, 'const sendChatMessage = useCallback')
 const wakeCopy = '외부 서비스가 wake up 중일 수 있습니다'
 const chatSleepCopy = '서버가 sleep 상태에서 wake up 중일 수 있습니다'
 
@@ -75,15 +76,15 @@ const checks = [
   {
     name: 'AI chat wake-up copy is limited to the timeout message',
     passed:
-      aiChat.includes(chatSleepCopy) &&
-      countMatches(aiChat, /<TimeoutMessage\b/g) === 1 &&
-      aiChat.indexOf('{isTimeout && (') !== -1 &&
-      aiChat.indexOf('<TimeoutMessage') > aiChat.indexOf('{isTimeout && ('),
+      aiChatMessages.includes(chatSleepCopy) &&
+      countMatches(aiChatMessages, /<TimeoutMessage\b/g) === 1 &&
+      aiChatMessages.indexOf('{isTimeout && (') !== -1 &&
+      aiChatMessages.indexOf('<TimeoutMessage') > aiChatMessages.indexOf('{isTimeout && ('),
   },
   {
     name: 'AI chat timeout state is set only by the response timeout timer',
     passed:
-      countMatches(aiChat, /setIsTimeout\(true\)/g) === 1 &&
+      countMatches(aiChatSession, /setIsTimeout\(true\)/g) === 1 &&
       scheduleResponseTimeoutBlock.includes('responseTimeoutRef.current = setTimeout') &&
       scheduleResponseTimeoutBlock.includes('setIsTimeout(true)'),
   },
