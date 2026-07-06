@@ -36,7 +36,7 @@ const contentChecks = {
     '<title>Open Source Agent Skills | dd3ok</title>',
     'Agent Skills',
     'Codex와 Claude Code에서 반복 작업을 줄이기 위해 만든 공개 Agent Skill 저장소입니다.',
-    'Document Briefing Cache Skill',
+    'Briefprint',
     'Newbie Lens',
     'Savepoint',
     'Rabbit Hole',

@@ -2,20 +2,21 @@ import type { AgentSkill } from '@/types'
 
 export const agentSkills: AgentSkill[] = [
     {
-        id: 'document-briefing-cache-skill',
-        title: 'Document Briefing Cache Skill',
+        id: 'briefprint',
+        title: 'Briefprint',
         description:
-            '문서를 구조화된 브리핑으로 요약하고 지문 기반 캐시에 저장하는 Agent Skill입니다. 같은 문서를 반복해서 요약하지 않고, 검증된 브리핑을 재사용해 LLM 호출과 컨텍스트 낭비를 줄입니다.',
-        shortDescription: '문서 브리핑 캐시',
+            '반복 문서 브리핑을 위한 명시 호출형 Agent Skill입니다. 문서를 재사용 가능한 구조화 브리핑으로 바꾸고 문서 지문 기반 캐시에 저장한 뒤, 같은 내용을 LLM에 다시 읽히지 않고 brief, digest, executive, action_items 형식으로 재렌더링합니다.',
+        shortDescription: '캐시형 문서 브리핑',
         tech: ['Python', 'Codex', 'OpenAI'],
-        github: 'https://github.com/dd3ok/document-briefing-cache-skill',
+        github: 'https://github.com/dd3ok/briefprint',
         category: 'workflow',
         keywords: [
-            'document summarization',
-            'LLM caching',
-            'briefing',
+            'briefprint',
+            'document briefing',
+            'fingerprint cache',
+            'rerendering',
             'agent skill',
-            '문서 요약',
+            '문서 브리핑',
         ],
     },
     {
