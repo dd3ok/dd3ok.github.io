@@ -31,7 +31,7 @@
 - Follow-up applied: project screenshots now use WebP assets. The largest converted files are `esm-seller-deal.webp` at ~154 KB, `esm-category-manager.webp` at ~116 KB, and `esm-etapi.webp` at ~86 KB; `sec-bqms` dropped from ~535 KB PNG to ~48 KB WebP.
 - Bundle shape is acceptable but watch CSS. Largest exported CSS chunk is ~309 KB raw, ~107 KB gzip, ~17 KB brotli. The raw size mostly matters for uncached local inspection; compressed delivery is reasonable.
 - Tailwind 4 did not materially change the CSS size profile: the largest post-migration CSS chunk is 308,592 bytes raw, 107,029 bytes gzip, and 16,948 bytes brotli.
-- Keep `DeferredAIChat` as a lazy boundary. `AIChat.tsx` imports `react-markdown`, `remark-gfm`, and `react-use-websocket`; loading it after idle and only for the desktop hero is the right performance posture.
+- Keep `DeferredAIChat` as a lazy boundary. `AIChat.tsx` imports `react-markdown`, `remark-gfm`, and `react-use-websocket`; loading it after idle preserves the performance posture while allowing the real chat component to render on mobile and desktop.
 - Global `*` transition in `src/app/globals.css` applies to every element. This is convenient for theme polish but can increase style work. Prefer scoping theme transitions to known surfaces in a future visual pass.
 - Animated blurred aurora orbs use large blur radii and continuous animation. They are hidden on small screens and disabled under reduced motion, so this is a low-priority desktop polish tradeoff rather than an urgent issue.
 

@@ -182,8 +182,7 @@ const aiChatMarkdownPluginsAreStable =
   /remarkPlugins=\{\s*REMARK_PLUGINS\s*\}/.test(aiChatMessages)
 const notesDirectoryListClass =
   notesDirectory.match(/<div className="([^"]+)">\s*\{activeNotes\.map/)?.[1] ?? ''
-const heroMobilePreviewBlock = hero.match(/<div className="lg:hidden">[\s\S]*?<HeroAgentPreview \/>[\s\S]*?<\/div>/)?.[0] ?? ''
-const heroDesktopChatBlock = hero.match(/<div className="hidden lg:block">[\s\S]*?<DeferredAIChat \/>[\s\S]*?<\/div>/)?.[0] ?? ''
+const heroChatBlock = hero.match(/<div className="w-full max-w-md[\s\S]*?<DeferredAIChat \/>[\s\S]*?<\/div>/)?.[0] ?? ''
 const requiredReducedMotionFragments = [
   'scroll-behavior: auto',
   'animation: none !important',
@@ -360,8 +359,11 @@ const checks = [
     passed: !hero.includes('min-h-screen'),
   },
   {
-    name: 'hero uses mobile preview and desktop full AI chat',
-    passed: heroMobilePreviewBlock.includes('<HeroAgentPreview />') && heroDesktopChatBlock.includes('<DeferredAIChat />'),
+    name: 'hero renders the full AI chat on mobile and desktop',
+    passed:
+      heroChatBlock.includes('<DeferredAIChat />') &&
+      !hero.includes('HeroAgentPreview') &&
+      !hero.includes('hidden lg:block'),
   },
   {
     name: 'shared Button has pressed translate feedback',
