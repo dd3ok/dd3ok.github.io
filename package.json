@@ -12,7 +12,7 @@
     "validate": "npm run test:notes-import && npm run test:notes-categories && npm run test:projects-data && npm run test:agent-skills-data && npm run test:wake-messaging && npm run test:ai-chat-architecture && npm run design:check && npm run lint && node node_modules/typescript/bin/tsc --noEmit && npm run notes:check",
     "design:check": "node scripts/check-design-system.mjs",
     "test:wake-messaging": "node scripts/check-wake-messaging.mjs",
-    "test:ai-chat-architecture": "node scripts/check-ai-chat-architecture.mjs",
+    "test:ai-chat-architecture": "node scripts/check-ai-chat-architecture.mjs && node --test scripts/test-chat-protocol.mjs",
     "notes:import:waitworthy": "node scripts/import-waitworthy-notes.mjs",
     "notes:check": "node scripts/check-notes.mjs",
     "test:notes-import": "node scripts/test-import-waitworthy-notes.mjs",

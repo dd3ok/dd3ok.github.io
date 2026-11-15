@@ -33,7 +33,7 @@ export const experiences: Experience[] = [
     {
         company: '지마켓',
         position: 'Backend Developer',
-        period: '2021.10 - 2024.12',
+        period: '2021.10 - 2025.01',
         description: [
             'ESM+ 로그인/가입/인증',
             'ESM+ 슈퍼딜/올킬 신청 및 관리',
@@ -137,7 +137,7 @@ export const services: Service[] = [
         navLabel: 'who-am-ai',
         description: '경력, 프로젝트, 기술 스택을 대화형으로 확인할 수 있는 포트폴리오 Q&A 에이전트',
         path: 'https://github.com/dd3ok/who-am-ai',
-        features: ['Spring AI + Gemini 2.5 Flash Lite', '커리어 기반 맞춤 답변', '채팅 컨텍스트와 RAG 구현'],
+        features: ['Spring AI + Gemini', '커리어 기반 맞춤 답변', '채팅 컨텍스트와 RAG 구현'],
         buttonText: 'Repository 바로가기',
         buttonType: 'repo',
     },

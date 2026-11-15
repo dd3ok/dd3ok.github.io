@@ -68,6 +68,7 @@ function ConfiguredAIChat({
         canSend,
         isAwaitingFirstToken,
         isTimeout,
+        error,
         chatContainerRef,
         connectionStatus,
         connectionStatusInfo,
@@ -98,6 +99,7 @@ function ConfiguredAIChat({
                 messages={messages}
                 isAwaitingFirstToken={isAwaitingFirstToken}
                 isTimeout={isTimeout}
+                error={error}
                 onRetry={retryLastMessage}
                 containerRef={chatContainerRef}
             />
@@ -132,7 +134,7 @@ export default function AIChat() {
     return (
         <ConfiguredAIChat
             key={sessionKey}
-            socketUrl={`${socketUrl}/ws/chat`}
+            socketUrl={`${socketUrl.replace(/\/$/, '')}/ws/chat/events`}
             initialPrompt={retryPrompt}
             messages={messages}
             setMessages={setMessages}

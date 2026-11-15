@@ -39,7 +39,7 @@ const checks = [
     name: 'useChatSession owns websocket transport and response timers',
     passed:
       sources.session.includes('react-use-websocket') &&
-      sources.session.includes('useUserIdentifier') &&
+      sources.session.includes('loadChatSession') &&
       sources.session.includes('RESPONSE_TIMEOUT_MS') &&
       sources.session.includes('scheduleResponseTimeout'),
   },

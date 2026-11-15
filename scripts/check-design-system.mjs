@@ -169,13 +169,13 @@ const aiChatLoadingDotsUseFirstTokenState =
   !matchesLoadingDotsExpression(aiChatMessages, 'isResponding')
 const aiChatResponseTimeoutWaitsForColdStarts =
   /const\s+RESPONSE_TIMEOUT_MS\s*=\s*60000\b/.test(aiChatSession)
-const aiChatTimeoutKeepsLateResponseReceivable =
+const aiChatTimeoutRequiresExplicitRetry =
   aiChatResponseTimeoutBody.length > 0 &&
   /setIsTimeout\s*\(\s*true\s*\)/.test(aiChatResponseTimeoutBody) &&
-  !/activeAssistantMessageIdRef\.current\s*=\s*null/.test(aiChatResponseTimeoutBody) &&
-  !/setIsResponding\s*\(\s*false\s*\)/.test(aiChatResponseTimeoutBody)
+  /failResponse\(/.test(aiChatResponseTimeoutBody) &&
+  /activeAssistantMessageIdRef\.current\s*=\s*null/.test(aiChatSession)
 const aiChatInputStaysLockedDuringTimeout =
-  /const\s+canSend\s*=\s*inputValue\.trim\(\)\.length\s*>\s*0\s*&&\s*!isResponding\s*&&\s*readyState\s*===\s*ReadyState\.OPEN\s*&&\s*!!userId/.test(aiChatSession) &&
+  /const\s+canSend\s*=[^\n]*!isResponding[^\n]*!error[^\n]*ReadyState\.OPEN[^\n]*!!session/.test(aiChatSession) &&
   /disabled=\{\s*!canSend\s*\}/.test(aiChatSubmitButtonBlock)
 const aiChatMarkdownPluginsAreStable =
   /const\s+REMARK_PLUGINS\s*=\s*\[\s*remarkGfm\s*\]/.test(aiChatMessages) &&
@@ -500,11 +500,11 @@ const checks = [
     passed: aiChatResponseTimeoutWaitsForColdStarts,
   },
   {
-    name: 'AIChat timeout state keeps late streamed responses receivable',
-    passed: aiChatTimeoutKeepsLateResponseReceivable,
+    name: 'AIChat timeout requires an explicit retry and clears the active response',
+    passed: aiChatTimeoutRequiresExplicitRetry,
   },
   {
-    name: 'AIChat input stays locked while a timed-out response can still arrive',
+    name: 'AIChat input stays locked after failure until a new connection is requested',
     passed: aiChatInputStaysLockedDuringTimeout,
   },
   {
