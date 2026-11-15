@@ -3,7 +3,7 @@ import useWebSocket, { ReadyState } from 'react-use-websocket'
 import { clearChatSession, loadChatSession, type SessionGrant } from './chatSession'
 import { applyChatEvent, chatErrorMessage, parseChatEvent, type ChatResponse, type ChatSource } from './chatProtocol'
 
-const RESPONSE_TIMEOUT_MS = 60000
+const RESPONSE_TIMEOUT_MS = 150000
 
 export interface ChatMessage {
     id: string
