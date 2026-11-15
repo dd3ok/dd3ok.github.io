@@ -20,6 +20,23 @@ export interface ChatResponse {
     code?: string
 }
 
+export interface ChatMessage {
+    id: string
+    text: string
+    isUser: boolean
+    sources?: ChatSource[]
+    status?: ChatResponse['status']
+}
+
+export function updateAssistantMessage(messages: ChatMessage[], id: string, response: ChatResponse): ChatMessage[] {
+    // Metadata and whitespace are retained in the response state, not rendered as an answer.
+    if (!response.text.trim()) return messages
+    const next: ChatMessage = { id, text: response.text, sources: response.sources, status: response.status, isUser: false }
+    return messages.some(message => message.id === id)
+        ? messages.map(message => message.id === id ? next : message)
+        : [...messages, next]
+}
+
 export function safeSourceUrl(value: unknown): string | undefined {
     if (typeof value !== 'string') return undefined
     try {
@@ -64,7 +81,9 @@ export function applyChatEvent(state: ChatResponse, event: ChatEvent): ChatRespo
     switch (event.type) {
         case 'SOURCES': return { ...next, sources: event.sources ?? [] }
         case 'DELTA': return { ...next, text: state.text + (event.content ?? '') }
-        case 'DONE': return { ...next, status: 'complete' }
+        case 'DONE': return state.text.trim()
+            ? { ...next, status: 'complete' }
+            : { ...next, status: 'failed', code: 'EMPTY_RESPONSE' }
         case 'ERROR': return { ...next, status: 'failed', code: event.code }
     }
 }

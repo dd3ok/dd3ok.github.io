@@ -1,17 +1,11 @@
 import { useCallback, useEffect, useRef, useState, type Dispatch, type SetStateAction } from 'react'
 import useWebSocket, { ReadyState } from 'react-use-websocket'
 import { clearChatSession, loadChatSession, type SessionGrant } from './chatSession'
-import { applyChatEvent, chatErrorMessage, parseChatEvent, type ChatResponse, type ChatSource } from './chatProtocol'
+import { applyChatEvent, chatErrorMessage, parseChatEvent, updateAssistantMessage, type ChatMessage, type ChatResponse } from './chatProtocol'
 
 const RESPONSE_TIMEOUT_MS = 150000
 
-export interface ChatMessage {
-    id: string
-    text: string
-    isUser: boolean
-    sources?: ChatSource[]
-    status?: ChatResponse['status']
-}
+export type { ChatMessage } from './chatProtocol'
 
 export interface ConnectionStatusInfo {
     color: string
@@ -48,12 +42,7 @@ export function useChatSession({ socketUrl, initialPrompt, messages, setMessages
     }, [])
 
     const showResponse = useCallback((id: string, response: ChatResponse) => {
-        setMessages(previous => {
-            const next: ChatMessage = { id, text: response.text, sources: response.sources, status: response.status, isUser: false }
-            return previous.some(message => message.id === id)
-                ? previous.map(message => message.id === id ? next : message)
-                : [...previous, next]
-        })
+        setMessages(previous => updateAssistantMessage(previous, id, response))
     }, [setMessages])
 
     const failResponse = useCallback((message: string) => {
@@ -86,7 +75,7 @@ export function useChatSession({ socketUrl, initialPrompt, messages, setMessages
         if (next === responseRef.current) return
         responseRef.current = next
         showResponse(id, next)
-        if (event.type === 'DELTA' && event.content) setIsAwaitingFirstToken(false)
+        if (next.text.trim()) setIsAwaitingFirstToken(false)
         if (next.status === 'complete' || next.status === 'failed') {
             clearResponseTimer()
             activeAssistantMessageIdRef.current = null
