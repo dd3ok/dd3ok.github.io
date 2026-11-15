@@ -34,6 +34,8 @@ export default function ChatInput({
             <form onSubmit={handleSubmit} className="flex gap-2 items-center">
                 <input
                     type="text"
+                    aria-label="커리어 질문"
+                    maxLength={4000}
                     value={inputValue}
                     onChange={(e) => onInputChange(e.target.value)}
                     placeholder="무엇이든 물어보세요."
@@ -41,6 +43,7 @@ export default function ChatInput({
                 />
                 <button
                     type="submit"
+                    aria-label="질문 보내기"
                     className="w-9 h-9 flex items-center justify-center bg-[var(--button-primary-bg)] text-[var(--button-primary-text)] rounded-full hover:bg-[var(--button-primary-hover)] focus:outline-hidden transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed shrink-0 shadow-md shadow-black/[0.04]"
                     disabled={!canSend}
                 >

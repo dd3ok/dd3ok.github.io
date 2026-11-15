@@ -11,6 +11,7 @@ interface ChatMessagesProps {
     messages: ChatMessage[]
     isAwaitingFirstToken: boolean
     isTimeout: boolean
+    error: string | null
     onRetry: () => void
     containerRef: RefObject<HTMLDivElement | null>
 }
@@ -101,11 +102,12 @@ export default function ChatMessages({
     messages,
     isAwaitingFirstToken,
     isTimeout,
+    error,
     onRetry,
     containerRef,
 }: ChatMessagesProps) {
     return (
-        <div ref={containerRef} className="flex-1 p-5 overflow-y-auto space-y-6 chat-scroll bg-transparent">
+        <div ref={containerRef} role="log" aria-label="대화 내용" aria-live="polite" className="flex-1 p-5 overflow-y-auto space-y-6 chat-scroll bg-transparent">
             {messages.map((msg) => (
                 <div key={msg.id} className={`flex items-start gap-2.5 ${msg.isUser ? 'justify-end' : 'justify-start'}`}>
                     {!msg.isUser && <AssistantAvatar />}
@@ -126,6 +128,19 @@ export default function ChatMessages({
                                 </ReactMarkdown>
                             </div>
                         )}
+                        {!msg.isUser && !!msg.sources?.length && (
+                            <div className="mt-3 border-t border-[var(--card-border)] pt-2">
+                                <p className="text-xs font-semibold text-[var(--text-secondary)]">참고 자료</p>
+                                <ul className="mt-1 flex flex-wrap gap-1.5 text-xs">
+                                    {msg.sources.map(source => (
+                                        <li key={source.id} className="rounded-lg border border-[var(--card-border)] px-2 py-1">
+                                            {source.url ? <a href={source.url} target="_blank" rel="noopener noreferrer" className="text-[var(--accent-color)] underline">{source.title}</a> : source.title}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                        {msg.status === 'failed' && <p className="mt-2 text-xs text-[var(--text-secondary)]">완료되지 않은 답변</p>}
                     </div>
                 </div>
             ))}
@@ -146,6 +161,13 @@ export default function ChatMessages({
                         <TimeoutMessage onRetry={onRetry} />
                     </div>
                 </div>
+            )}
+            {error && !isTimeout && (
+                <StatusBanner tone="warning" title="대화를 이어가지 못했습니다." description={error}>
+                    <button type="button" onClick={onRetry} className="mt-2 rounded-lg px-3 py-2 text-sm font-semibold text-[var(--accent-color)] underline">
+                        다시 연결하고 요청하기
+                    </button>
+                </StatusBanner>
             )}
         </div>
     )

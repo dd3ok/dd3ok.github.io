@@ -21,6 +21,10 @@
 If the optional AI variables are missing, the portfolio still renders normally and now shows a clear unavailable state instead of failing with a broken request URL.
 
 ### Local AI Checks
+- The chat now calls `POST /api/chat/sessions`, then sends the issued conversation ID and token to `/ws/chat/events`.
+- Tokens stay in tab-scoped `sessionStorage` (memory fallback when storage is blocked), never in a URL. Old client-generated UUIDs are no longer used.
+- `SOURCES` appears as 참고 자료; only HTTP(S) source URLs become links. `DONE` ends a response. Errors and disconnected partial answers stay marked incomplete until an explicit retry opens a new connection.
+- Deploy with the matching session-enabled who-am-ai backend. Both use the WebSocket base URL's origin; the backend must allow the frontend origin for HTTP and WebSocket requests.
 - To exercise the AI chat flow locally, set `NEXT_PUBLIC_WHO_AM_AI_API` and `NEXT_PUBLIC_WHO_AM_AI_WS` in `.env.local`.
 - To test the contact flow against your own backend, set `NEXT_PUBLIC_PAGES_KOYEB_API`. If you do not, the hosted default is still used for the portfolio contact endpoint.
 - Missing optional AI variables are treated as a supported state. The UI should show an unavailable message instead of throwing a runtime error.
