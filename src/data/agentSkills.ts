@@ -105,6 +105,58 @@ export const agentSkills: AgentSkill[] = [
         ],
     },
     {
+        id: 'spring-engineering-skills',
+        title: 'Spring Engineering Skills',
+        description:
+            'Spring Boot 구현, 아키텍처·성능·보안 리뷰, 업그레이드 계획, Modulith 경계 감사를 8개 전문 워크플로로 분리한 Agent Skills 스위트입니다. 정적 근거 수집과 버전 호환성 검증을 분리해 다룹니다.',
+        shortDescription: 'Spring 엔지니어링 스킬 모음',
+        tech: ['Python', 'Spring Boot', 'Codex'],
+        github: 'https://github.com/dd3ok/spring-engineering-skills',
+        category: 'review',
+        keywords: [
+            'spring boot',
+            'architecture review',
+            'security',
+            'modulith',
+            'upgrade planner',
+            '스프링 리뷰',
+        ],
+    },
+    {
+        id: 'boring-backend',
+        title: 'Boring Backend',
+        description:
+            '신뢰성 있는 백엔드 API를 설계·구현·리뷰하기 위한 코딩 에이전트용 Agent Skill입니다. 정합성, 멱등성, 장애 경계와 검증 기준을 일관된 체크리스트로 다룹니다.',
+        shortDescription: '백엔드 API 설계·리뷰',
+        tech: ['Python', 'Codex', 'Claude Code'],
+        github: 'https://github.com/dd3ok/boring-backend',
+        category: 'review',
+        keywords: [
+            'backend api',
+            'reliability',
+            'code review',
+            'agent skill',
+            '백엔드 설계',
+        ],
+    },
+    {
+        id: 'stash',
+        title: 'Stash',
+        description:
+            '평소 컨텍스트에 올리지 않는 로컬 Agent Skills 라이브러리를 작업 설명이나 이름으로 검색해 필요한 SKILL.md만 불러오는 CLI 및 스킬입니다. 로컬 읽기 전용 카탈로그와 라이프사이클 관리를 분리합니다.',
+        shortDescription: '로컬 스킬 검색·관리',
+        tech: ['JavaScript', 'Node.js', 'Codex'],
+        github: 'https://github.com/dd3ok/stash',
+        category: 'workflow',
+        keywords: [
+            'stash',
+            'skill library',
+            'cli',
+            'agent skill',
+            '스킬 검색',
+        ],
+    },
+    {
         id: 'market-data-skills',
         title: 'Market Data Skills',
         description:
