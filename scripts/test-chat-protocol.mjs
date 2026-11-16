@@ -1,10 +1,51 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { applyChatEvent, parseChatEvent, safeSourceUrl } from '../src/components/sections/ai-chat/chatProtocol.ts'
+import { applyChatEvent, parseChatEvent, safeSourceUrl, updateAssistantMessage } from '../src/components/sections/ai-chat/chatProtocol.ts'
 import { clearChatSession, loadChatSession } from '../src/components/sections/ai-chat/chatSession.ts'
 
 const initial = () => ({ text: '', sources: [], status: 'streaming' })
 const event = (type, fields = {}) => parseChatEvent(JSON.stringify({ type, requestId: 'request-1', ...fields }))
+
+test('sources and whitespace wait for a visible answer without creating assistant rows', () => {
+    const userMessages = [{ id: 'user', text: '질문', isUser: true }]
+    for (const sources of [[], [{ id: 'p', title: '프로젝트', url: undefined }]]) {
+        let response = applyChatEvent(initial(), event('SOURCES', { sources }))
+        let messages = updateAssistantMessage(userMessages, 'answer', response)
+        assert.equal(messages, userMessages)
+        response = applyChatEvent(response, event('DELTA', { content: ' \n' }))
+        messages = updateAssistantMessage(messages, 'answer', response)
+        assert.equal(messages, userMessages)
+        response = applyChatEvent(response, event('DELTA', { content: '첫 답변' }))
+        messages = updateAssistantMessage(messages, 'answer', response)
+        assert.equal(messages.length, 2)
+        assert.deepEqual(messages[1].sources, sources)
+        assert.equal(messages[1].status, 'streaming')
+        response = applyChatEvent(response, event('DELTA', { content: '입니다.' }))
+        messages = updateAssistantMessage(messages, 'answer', response)
+        response = applyChatEvent(response, event('DONE'))
+        messages = updateAssistantMessage(messages, 'answer', response)
+        assert.equal(messages.length, 2)
+        assert.equal(messages[1].text, ' \n첫 답변입니다.')
+        assert.equal(messages[1].status, 'complete')
+    }
+})
+
+test('early errors and empty completion leave no empty answer while partial failures stay visible', () => {
+    const messages = [{ id: 'user', text: '질문', isUser: true }]
+    const sourced = applyChatEvent(initial(), event('SOURCES', { sources: [{ id: 'p', title: '자료' }] }))
+    for (const terminal of [event('ERROR', { code: 'TIMEOUT' }), event('DONE')]) {
+        const response = applyChatEvent(sourced, terminal)
+        assert.equal(response.status, 'failed')
+        assert.equal(updateAssistantMessage(messages, 'answer', response), messages)
+        assert.equal(applyChatEvent(response, event('DELTA', { content: '늦은 응답' })), response)
+    }
+    const partial = applyChatEvent(sourced, event('DELTA', { content: '일부 답변' }))
+    const visible = updateAssistantMessage(messages, 'answer', partial)
+    const failed = updateAssistantMessage(visible, 'answer', applyChatEvent(partial, event('ERROR', { code: 'TIMEOUT' })))
+    assert.equal(failed.length, 2)
+    assert.equal(failed[1].text, '일부 답변')
+    assert.equal(failed[1].status, 'failed')
+})
 
 test('all token frames are accumulated and only DONE completes a response', () => {
     let state = applyChatEvent(initial(), event('SOURCES', { sources: [{ id: 'p', title: '프로젝트' }] }))

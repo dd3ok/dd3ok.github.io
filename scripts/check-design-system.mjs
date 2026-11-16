@@ -167,8 +167,8 @@ const aiChatLoadingDotsUseFirstTokenState =
   /setIsAwaitingFirstToken\s*\(\s*false\s*\)/.test(aiChatSession) &&
   matchesLoadingDotsExpression(aiChatMessages, 'isAwaitingFirstToken') &&
   !matchesLoadingDotsExpression(aiChatMessages, 'isResponding')
-const aiChatResponseTimeoutWaitsForColdStarts =
-  /const\s+RESPONSE_TIMEOUT_MS\s*=\s*60000\b/.test(aiChatSession)
+const aiChatResponseTimeoutAllowsLongAnswers =
+  /const\s+RESPONSE_TIMEOUT_MS\s*=\s*150000\b/.test(aiChatSession)
 const aiChatTimeoutRequiresExplicitRetry =
   aiChatResponseTimeoutBody.length > 0 &&
   /setIsTimeout\s*\(\s*true\s*\)/.test(aiChatResponseTimeoutBody) &&
@@ -496,8 +496,8 @@ const checks = [
     passed: aiChatLoadingDotsUseFirstTokenState,
   },
   {
-    name: 'AIChat response timeout allows cold starts and slow first tokens',
-    passed: aiChatResponseTimeoutWaitsForColdStarts,
+    name: 'AIChat response timeout allows the backend to finish long answers',
+    passed: aiChatResponseTimeoutAllowsLongAnswers,
   },
   {
     name: 'AIChat timeout requires an explicit retry and clears the active response',
