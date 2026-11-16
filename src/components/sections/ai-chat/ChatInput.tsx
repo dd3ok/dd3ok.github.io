@@ -1,4 +1,4 @@
-import type { FormEvent } from 'react'
+import type { FormEvent, KeyboardEvent } from 'react'
 
 interface ChatInputProps {
     inputValue: string
@@ -29,6 +29,12 @@ export default function ChatInput({
         onSend()
     }
 
+    const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter' && (e.nativeEvent.isComposing || e.keyCode === 229)) {
+            e.preventDefault()
+        }
+    }
+
     return (
         <div className="border-t border-[var(--card-border)] bg-[var(--nav-bg)] px-4 py-3 md:px-8 md:py-4">
             <form onSubmit={handleSubmit} className="mx-auto flex w-full max-w-3xl items-center gap-2.5">
@@ -38,13 +44,14 @@ export default function ChatInput({
                     maxLength={4000}
                     value={inputValue}
                     onChange={(e) => onInputChange(e.target.value)}
-                    placeholder="유인재의 경력, 프로젝트, GitHub 작업물에 대해 물어보세요."
+                    onKeyDown={handleKeyDown}
+                    placeholder="경력, 프로젝트, 작업물에 대해 물어보세요"
                     className="flex-1 rounded-xl px-4 py-3 glass-input text-sm placeholder-[var(--text-muted)] focus:outline-hidden"
                 />
                 <button
                     type="submit"
                     aria-label="질문 보내기"
-                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--button-primary-bg)] text-[var(--button-primary-text)] shadow-md shadow-black/[0.04] transition-all duration-300 hover:bg-[var(--button-primary-hover)] focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-40"
+                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--button-primary-bg)] text-[var(--button-primary-text)] shadow-md shadow-black/[0.04] transition-all duration-300 hover:bg-[var(--button-primary-hover)] disabled:cursor-not-allowed disabled:opacity-40"
                     disabled={!canSend}
                 >
                     <SendIcon />

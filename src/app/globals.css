@@ -9,14 +9,14 @@
 
   --text-primary: #12131a;
   --text-secondary: #5a5d6a;
-  --text-muted: #8e92a2;
+  --text-muted: #616678;
 
   --card-bg: rgba(255, 255, 255, 0.65);
   --card-border: rgba(18, 25, 38, 0.06);
   --card-hover-border: rgba(13, 148, 136, 0.35);
   --card-hover-shadow: 0 20px 40px -15px rgba(13, 148, 136, 0.08);
 
-  --accent-color: #0d9488; /* Sage Teal */
+  --accent-color: #0f766e; /* Sage Teal */
   --accent-secondary: #0891b2; /* Deep Cyan */
   --accent-glow: rgba(13, 148, 136, 0.15);
   --button-primary-bg: #0f766e;
@@ -56,8 +56,8 @@
   --bg-grad-end: #252525;
 
   --text-primary: #e8e8e8;
-  --text-secondary: #a0a0a0;
-  --text-muted: #6b6b6b;
+  --text-secondary: #b8b8b8;
+  --text-muted: #949494;
 
   --card-bg: rgba(38, 38, 38, 0.75);
   --card-border: rgba(255, 255, 255, 0.08);
@@ -90,6 +90,28 @@
     padding: 0;
     box-sizing: border-box;
     transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+  }
+
+  button,
+  a[href],
+  [role="button"] {
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  [role="button"]:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+  }
+
+  #dashboard-main:focus {
+    outline: none;
   }
 }
 
@@ -415,7 +437,6 @@ body {
 }
 
 .dashboard-pane,
-.thinking-phrase-enter,
 .chat-message-enter,
 .chat-chip-enter {
   animation: surfaceFadeEnter 0.22s ease-out both;

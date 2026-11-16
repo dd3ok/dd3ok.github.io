@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useSyncExternalStore, type MouseEvent } from 'react'
 import Link from 'next/link'
+import DashboardSection from '@/components/layout/DashboardSection'
 import {
     allNotesCategory,
     getNoteCategoryById,
@@ -125,25 +126,18 @@ export default function NotesDirectoryView({ activeCategoryId, notes }: NotesDir
     }, [])
 
     return (
-        <section className="px-4 pb-16 pt-24 md:px-12 md:pb-20 md:pt-28">
-            <div className="container">
-                <div className="border-b border-[var(--card-border)] pb-4">
-                    <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-                        <div className="max-w-3xl">
-                            <h1 className="text-3xl font-extrabold tracking-tight text-[var(--text-primary)] md:text-4xl">
-                                Waitworthy
-                            </h1>
-                            <p className="mt-2 max-w-2xl text-sm font-medium leading-6 text-[var(--text-secondary)]">
-                                Deep Research처럼 기다릴 가치 있는 AI 보고서를 정리합니다.
-                            </p>
-                        </div>
-                        <p className="text-sm font-semibold text-[var(--text-muted)]">
-                            공개 노트 {notes.length}개
-                        </p>
-                    </div>
-                </div>
-
-                <nav className="mt-4 flex flex-wrap gap-1.5" aria-label="노트 카테고리">
+        <DashboardSection
+            eyebrow="AI Research Notes"
+            headingTag="h1"
+            title="Waitworthy"
+            description="Deep Research처럼 기다릴 가치 있는 AI 보고서를 정리합니다."
+            headerExtra={
+                <span className="inline-block rounded-xl border border-[var(--card-border)] bg-[var(--card-bg)] px-3 py-1.5 text-xs font-bold text-[var(--text-secondary)]">
+                    공개 노트 {notes.length}개
+                </span>
+            }
+        >
+            <nav className="flex flex-wrap gap-1.5" aria-label="노트 카테고리">
                     {visibleCategoryTabs.map((category) => {
                         const isActiveCategory = category.id === currentCategory.id
 
@@ -224,8 +218,7 @@ export default function NotesDirectoryView({ activeCategoryId, notes }: NotesDir
                             })}
                         </div>
                     )}
-                </div>
             </div>
-        </section>
+        </DashboardSection>
     )
 }

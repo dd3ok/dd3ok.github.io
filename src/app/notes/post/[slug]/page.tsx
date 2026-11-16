@@ -3,7 +3,8 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import Navigation from '@/components/layout/Navigation'
+import DashboardShell from '@/components/layout/DashboardShell'
+import Footer from '@/components/layout/Footer'
 import {
     getNoteCategoryById,
     getPublicNoteBySlug,
@@ -71,25 +72,29 @@ export default async function NotePostPage({ params }: NotePostPageProps) {
         if (slug === emptyPostSlug) {
             return (
                 <main className="min-h-screen min-h-[100dvh] bg-[var(--bg-color)]">
-                    <Navigation />
-                    <section className="section-padding pt-28 md:pt-32">
-                        <div className="container max-w-3xl">
-                            <Link
-                                href="/notes/"
-                                className="text-sm font-bold text-[var(--accent-color)] transition-colors hover:text-[var(--accent-secondary)]"
-                            >
-                                Notes
-                            </Link>
-                            <div className="glass-card mt-6 p-6">
-                                <h1 className="text-2xl font-extrabold text-[var(--text-primary)]">
-                                    No public notes yet
-                                </h1>
-                                <p className="mt-3 text-sm leading-6 text-[var(--text-secondary)]">
-                                    Public notes will appear here after reviewed Markdown notes are added.
-                                </p>
-                            </div>
+                    <DashboardShell activeNav="notes">
+                        <div className="dashboard-pane min-h-0 flex-1 overflow-y-auto pt-12 lg:pt-0 chat-scroll">
+                            <section className="px-4 py-8 md:px-10 md:py-10">
+                                <div className="mx-auto max-w-3xl">
+                                    <Link
+                                        href="/notes/"
+                                        className="text-sm font-bold text-[var(--accent-color)] transition-colors hover:text-[var(--accent-secondary)]"
+                                    >
+                                        Notes
+                                    </Link>
+                                    <div className="glass-card mt-6 p-6">
+                                        <h1 className="text-2xl font-extrabold text-[var(--text-primary)]">
+                                            No public notes yet
+                                        </h1>
+                                        <p className="mt-3 text-sm leading-6 text-[var(--text-secondary)]">
+                                            Public notes will appear here after reviewed Markdown notes are added.
+                                        </p>
+                                    </div>
+                                </div>
+                            </section>
+                            <Footer />
                         </div>
-                    </section>
+                    </DashboardShell>
                 </main>
             )
         }
@@ -101,9 +106,10 @@ export default async function NotePostPage({ params }: NotePostPageProps) {
 
     return (
         <main className="min-h-screen min-h-[100dvh] bg-[var(--bg-color)]">
-            <Navigation />
-            <article className="section-padding pt-28 md:pt-32">
-                <div className="container max-w-3xl">
+            <DashboardShell activeNav="notes">
+                <div className="dashboard-pane min-h-0 flex-1 overflow-y-auto pt-12 lg:pt-0 chat-scroll">
+                    <article className="px-4 py-8 md:px-10 md:py-10">
+                        <div className="mx-auto max-w-3xl">
                     <Link
                         href="/notes/"
                         className="text-sm font-bold text-[var(--accent-color)] transition-colors hover:text-[var(--accent-secondary)]"
@@ -153,8 +159,11 @@ export default async function NotePostPage({ params }: NotePostPageProps) {
                             </span>
                         ))}
                     </footer>
+                        </div>
+                    </article>
+                    <Footer />
                 </div>
-            </article>
+            </DashboardShell>
         </main>
     )
 }

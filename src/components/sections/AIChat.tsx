@@ -5,6 +5,7 @@ import { getEnvConfig } from '@/utils/EnvConfig'
 import StatusBanner from '@/components/ui/StatusBanner'
 import ChatInput from '@/components/sections/ai-chat/ChatInput'
 import ChatMessages from '@/components/sections/ai-chat/ChatMessages'
+import { recoverStoredConversation } from '@/components/sections/ai-chat/chatProtocol'
 import { buildAnswerFollowUpPrompts, STARTER_PROMPTS } from '@/components/sections/ai-chat/followUpPrompts'
 import {
     useChatSession,
@@ -15,25 +16,15 @@ import {
 const CHAT_HISTORY_STORAGE_KEY = 'whoamai-chat-messages'
 
 const INITIAL_MESSAGES: ChatMessage[] = [
-    { id: 'welcome', text: '안녕하세요! 유인재의 커리어 에이전트입니다 👋\n\n경력, 프로젝트, 기술 스택, 공개 GitHub 작업물에 대해 무엇이든 물어보세요.', isUser: false },
+    { id: 'welcome', text: '안녕하세요! 유인재의 커리어 에이전트입니다 👋\n\n경력, 프로젝트, 작업물에 대해 물어보세요.', isUser: false },
 ]
 
-function loadStoredMessages(): ChatMessage[] | null {
+function loadStoredConversation(): { messages: ChatMessage[]; pendingPrompt: string | null } | null {
     if (typeof window === 'undefined') return null
     try {
         const raw = window.sessionStorage.getItem(CHAT_HISTORY_STORAGE_KEY)
         if (!raw) return null
-        const parsed = JSON.parse(raw)
-        if (!Array.isArray(parsed) || parsed.length === 0) return null
-        const restored: ChatMessage[] = []
-        for (const item of parsed) {
-            if (!item || typeof item.id !== 'string' || typeof item.text !== 'string' || typeof item.isUser !== 'boolean') {
-                return null
-            }
-            const status = item.status === 'streaming' ? 'failed' : item.status
-            restored.push({ id: item.id, text: item.text, isUser: item.isUser, status })
-        }
-        return restored
+        return recoverStoredConversation(JSON.parse(raw))
     } catch {
         return null
     }
@@ -67,7 +58,7 @@ const ConnectionStatusIcon = ({ statusInfo }: { statusInfo: ConnectionStatusInfo
 
     return (
         <span
-            title={statusInfo.title}
+            aria-hidden="true"
             className={`h-2 w-2 rounded-full ${statusInfo.color} ${statusInfo.animate} transition-colors`}
         />
     )
@@ -83,7 +74,7 @@ function WorkspaceFloatingControls({
     onNewChat?: () => void
 }) {
     return (
-        <div className="pointer-events-none flex shrink-0 items-center justify-center gap-2 px-16 pt-3.5 pb-2 lg:justify-end lg:px-8 lg:pt-4 lg:pb-1">
+        <div className="pointer-events-none flex shrink-0 items-center justify-end gap-2 pl-14 pr-4 pt-3.5 pb-2 lg:px-8 lg:pt-4 lg:pb-1">
             <h1 className="sr-only">유인재 포트폴리오 커리어 에이전트</h1>
             <div className="pointer-events-auto flex items-center gap-2">
                 {showNewChat && onNewChat && (
@@ -106,8 +97,8 @@ function AIChatUnavailable() {
         <div className="flex h-full min-h-0 w-full flex-col overflow-hidden bg-transparent">
             <WorkspaceFloatingControls
                 statusBadge={
-                    <div className="flex items-center space-x-1.5 rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] px-3 py-1 shadow-xs backdrop-blur-xl">
-                        <span className="h-2 w-2 rounded-full bg-amber-400 animate-pulse" />
+                    <div role="status" className="flex items-center space-x-1.5 rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] px-3 py-1 shadow-xs backdrop-blur-xl">
+                        <span aria-hidden="true" className="h-2 w-2 rounded-full bg-amber-400 animate-pulse" />
                         <span className="text-[11px] font-bold tracking-tight text-[var(--text-secondary)]">오프라인 모드</span>
                     </div>
                 }
@@ -161,7 +152,7 @@ function ConfiguredAIChat({
                 showNewChat={messages.length > 1}
                 onNewChat={onNewChat}
                 statusBadge={
-                    <div className="flex items-center space-x-1.5 rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] px-3 py-1 shadow-xs backdrop-blur-xl">
+                    <div role="status" className="flex items-center space-x-1.5 rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] px-3 py-1 shadow-xs backdrop-blur-xl">
                         <ConnectionStatusIcon statusInfo={connectionStatusInfo} />
                         <span className="text-[11px] font-bold tracking-tight text-[var(--text-secondary)]">{connectionStatus}</span>
                     </div>
@@ -193,10 +184,16 @@ function ConfiguredAIChat({
 export default function AIChat() {
     const config = getEnvConfig()
     const socketUrl = config.whoAmAiWs?.baseUrl
-    const [messages, setMessages] = useState<ChatMessage[]>(() => loadStoredMessages() ?? INITIAL_MESSAGES)
-    const messageSequenceRef = useRef(messages.length)
+    const [initialConversation] = useState(() => loadStoredConversation())
+    const [messages, setMessages] = useState<ChatMessage[]>(() => initialConversation?.messages ?? INITIAL_MESSAGES)
+    const messageSequenceRef = useRef(
+        messages.reduce((maxId, message) => {
+            const numericId = Number(message.id.replace('message-', ''))
+            return Number.isFinite(numericId) ? Math.max(maxId, numericId) : maxId
+        }, messages.length)
+    )
     const [sessionKey, setSessionKey] = useState(0)
-    const [retryPrompt, setRetryPrompt] = useState<string | null>(null)
+    const [retryPrompt, setRetryPrompt] = useState<string | null>(() => initialConversation?.pendingPrompt ?? null)
 
     useEffect(() => {
         saveStoredMessages(messages)

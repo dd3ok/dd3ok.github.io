@@ -37,7 +37,7 @@ function FeaturedProjectCard({ project, index, onImageOpen, variant = 'secondary
     const isPrimary = variant === 'primary'
 
     return (
-        <article className={`glass-card hover-lift overflow-hidden rounded-2xl p-4 ${isPrimary ? 'lg:grid lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-stretch lg:gap-5' : 'h-full sm:grid sm:grid-cols-[11rem_1fr] sm:gap-4 lg:block'}`}>
+        <article className={`glass-card overflow-hidden rounded-2xl p-4 ${isPrimary ? 'lg:grid lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-stretch lg:gap-5' : 'h-full sm:grid sm:grid-cols-[11rem_1fr] sm:gap-4 lg:block'}`}>
             <div
                 className={`group/image relative cursor-pointer overflow-hidden rounded-xl border border-[var(--card-border)] bg-[var(--input-border)] ${isPrimary ? 'aspect-video lg:aspect-auto lg:min-h-[18rem]' : 'aspect-video sm:aspect-square lg:aspect-video'}`}
                 onClick={() => onImageOpen(project.image, project.title)}
@@ -95,7 +95,7 @@ function FeaturedProjectCard({ project, index, onImageOpen, variant = 'secondary
                     href={project.demo}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex w-full items-center justify-center rounded-xl bg-[var(--button-primary-bg)] px-4 py-2.5 text-xs font-bold text-[var(--button-primary-text)] shadow-md shadow-[var(--accent-color)]/10 transition-all duration-300 hover:scale-[1.02] hover:bg-[var(--button-primary-hover)] hover:shadow-[var(--accent-color)]/20"
+                    className="inline-flex w-full items-center justify-center rounded-xl bg-[var(--button-primary-bg)] px-4 py-2.5 text-xs font-bold text-[var(--button-primary-text)] shadow-md shadow-[var(--accent-color)]/10 transition-colors duration-200 hover:bg-[var(--button-primary-hover)]"
                 >
                     방문하기
                 </a>

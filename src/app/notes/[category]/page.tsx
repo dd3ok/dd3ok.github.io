@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import Navigation from '@/components/layout/Navigation'
+import DashboardShell from '@/components/layout/DashboardShell'
+import Footer from '@/components/layout/Footer'
 import NotesDirectoryView from '../NotesDirectoryView'
 import {
     getNoteCategoryById,
@@ -49,8 +50,12 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
     return (
         <main className="min-h-screen min-h-[100dvh] bg-[var(--bg-color)]">
-            <Navigation />
-            <NotesDirectoryView activeCategoryId={category.id} notes={getPublicNotes()} />
+            <DashboardShell activeNav="notes">
+                <div className="dashboard-pane min-h-0 flex-1 overflow-y-auto pt-12 lg:pt-0 chat-scroll">
+                    <NotesDirectoryView activeCategoryId={category.id} notes={getPublicNotes()} />
+                    <Footer />
+                </div>
+            </DashboardShell>
         </main>
     )
 }

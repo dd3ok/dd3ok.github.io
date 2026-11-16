@@ -1,66 +1,71 @@
+import DashboardSection from '@/components/layout/DashboardSection'
 import { agentSkills } from '@/data/agentSkills'
 
 export default function AgentSkillsSection() {
     return (
-        <section
+        <DashboardSection
             id="agent-skills"
-            className="px-4 pb-16 pt-24 md:px-12 md:pb-20 md:pt-28"
-            aria-labelledby="agent-skills-title"
+            eyebrow="Open Source · AI Workflow"
+            headingTag="h1"
+            headingId="agent-skills-title"
+            title="Agent Skills"
+            description="Codex와 Claude Code에서 반복 작업을 줄이기 위해 만든 공개 Agent Skill 저장소입니다."
+            headerExtra={
+                <span className="inline-block rounded-xl border border-[var(--card-border)] bg-[var(--card-bg)] px-3 py-1.5 text-xs font-bold text-[var(--text-secondary)]">
+                    공개 스킬 {agentSkills.length}개
+                </span>
+            }
         >
-            <div className="container">
-                <header className="border-b border-[var(--card-border)] pb-5">
-                    <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-                        <div className="max-w-3xl">
-                            <h1
-                                id="agent-skills-title"
-                                className="text-3xl font-extrabold tracking-tight text-[var(--text-primary)] md:text-4xl"
-                            >
-                                Agent Skills
-                            </h1>
-                            <p className="mt-2 max-w-2xl text-sm font-medium leading-6 text-[var(--text-secondary)]">
-                                Codex와 Claude Code에서 반복 작업을 줄이기 위해 만든 공개 Agent Skill 저장소입니다.
-                            </p>
-                        </div>
-                        <p className="text-sm font-semibold text-[var(--text-muted)]">
-                            공개 스킬 {agentSkills.length}개
-                        </p>
-                    </div>
-                </header>
+            <div className="grid gap-4 md:grid-cols-2">
+                {agentSkills.map((skill, index) => (
+                    <article
+                        key={skill.id}
+                        className="glass-card flex h-full min-w-0 flex-col justify-between rounded-2xl p-5 [overflow-wrap:anywhere] md:p-6"
+                    >
+                        <div>
+                            <div className="flex items-center justify-between gap-2">
+                                <span className="font-mono text-xs font-bold tabular-nums text-[var(--text-muted)]">
+                                    {String(index + 1).padStart(2, '0')}
+                                </span>
+                                <span className="rounded-xl border border-[var(--card-border)] bg-[var(--input-bg)] px-2.5 py-0.5 text-[11px] font-bold text-[var(--text-muted)]">
+                                    Skill Repo
+                                </span>
+                            </div>
 
-                <div className="mt-8 grid gap-4 md:grid-cols-2">
-                    {agentSkills.map((skill) => (
-                        <article key={skill.id} className="glass-card flex h-full flex-col p-5">
-                            <h2 className="text-lg font-bold text-[var(--text-primary)]">
+                            <h2 className="mt-3 text-lg font-extrabold text-[var(--text-primary)]">
                                 {skill.title}
                             </h2>
 
-                            <p className="mt-3 flex-1 text-sm font-medium leading-6 text-[var(--text-secondary)]">
+                            <p className="mt-2 text-sm font-medium leading-relaxed text-[var(--text-secondary)]">
                                 {skill.description}
                             </p>
 
-                            <ul className="mt-4 flex flex-wrap gap-2" aria-label={`${skill.title} 기술`}>
+                            <ul className="mt-4 flex flex-wrap gap-1.5" aria-label={`${skill.title} 기술`}>
                                 {skill.tech.map((tech) => (
                                     <li
                                         key={tech}
-                                        className="rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] px-2.5 py-1 text-xs font-bold text-[var(--text-muted)]"
+                                        className="rounded-xl border border-[var(--card-border)] bg-[var(--input-bg)] px-2.5 py-1 text-xs font-semibold text-[var(--text-secondary)]"
                                     >
                                         {tech}
                                     </li>
                                 ))}
                             </ul>
+                        </div>
 
+                        <div className="mt-5 border-t border-[var(--card-border)] pt-4">
                             <a
                                 href={skill.github}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="mt-5 inline-flex text-sm font-bold text-[var(--accent-color)] transition-colors hover:text-[var(--accent-secondary)]"
+                                className="inline-flex items-center gap-1.5 text-sm font-bold text-[var(--accent-color)] transition-colors hover:text-[var(--accent-secondary)]"
                             >
-                                Repository
+                                <span>Repository</span>
+                                <span aria-hidden="true">→</span>
                             </a>
-                        </article>
-                    ))}
-                </div>
+                        </div>
+                    </article>
+                ))}
             </div>
-        </section>
+        </DashboardSection>
     )
 }

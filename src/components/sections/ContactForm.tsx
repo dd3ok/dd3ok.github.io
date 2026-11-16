@@ -299,11 +299,11 @@ export default function ContactForm() {
             <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-[var(--button-primary-bg)] hover:bg-[var(--button-primary-hover)] text-[var(--button-primary-text)] py-3 px-6 rounded-xl hover:shadow-[0_0_20px_var(--accent-glow)] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 font-semibold focus:outline-hidden focus:ring-2 focus:ring-[var(--accent-color)] focus:ring-offset-2"
+                className="w-full bg-[var(--button-primary-bg)] hover:bg-[var(--button-primary-hover)] text-[var(--button-primary-text)] py-3 px-6 rounded-xl hover:shadow-[0_0_20px_var(--accent-glow)] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 font-semibold"
             >
                 {isSubmitting ? (
                     <div className="flex items-center justify-center">
-                        <div className="animate-spin rounded-full h-4 w-4 md:h-5 md:w-5 border-b-2 border-white mr-2"></div>
+                        <div className="animate-spin rounded-full h-4 w-4 md:h-5 md:w-5 border-b-2 border-current mr-2"></div>
                         전송 중...
                     </div>
                 ) : (

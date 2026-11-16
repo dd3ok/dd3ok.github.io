@@ -1,8 +1,7 @@
-import { useEffect, useState, type RefObject } from 'react'
+import type { RefObject } from 'react'
 import Image from 'next/image'
 import ReactMarkdown, { type Components } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import StatusBanner from '@/components/ui/StatusBanner'
 import type { ChatMessage } from '@/components/sections/ai-chat/useChatSession'
 
 const REMARK_PLUGINS = [remarkGfm]
@@ -19,27 +18,6 @@ interface ChatMessagesProps {
     containerRef: RefObject<HTMLDivElement | null>
 }
 
-const THINKING_PHRASES = [
-    '자료를 살펴보고 있어요...',
-    '관련 경력을 정리 중이에요...',
-    '답변을 준비하고 있어요...',
-    '세부 내용을 확인하고 있어요...',
-    '맥락에 맞춰 정리하고 있어요...',
-    '프로젝트 이력을 찾아보고 있어요...',
-    '기술 스택과 구현 배경을 확인하고 있어요...',
-    'GitHub 저장소 기록을 살펴보고 있어요...',
-    '핵심 내용을 추려내고 있어요...',
-    '담당했던 역할과 성과를 짚어보고 있어요...',
-    '질문 의도에 맞게 내용을 구성하고 있어요...',
-    '근거 자료를 대조하고 있어요...',
-    '트러블슈팅 사례를 확인 중이에요...',
-    '가장 알맞은 경험 사례를 고르고 있어요...',
-    '흐름이 자연스럽게 이어지도록 다듬고 있어요...',
-    '관련 문서를 한곳에 모아 정리하고 있어요...',
-    '읽기 편하게 답변을 정리하는 중이에요...',
-    '조금만 기다려 주세요, 곧 정리해 드릴게요...',
-] as const
-
 const LoadingDots = () => (
     <div className="flex space-x-1 items-center">
         <span className="h-2 w-2 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.3s]" />
@@ -48,42 +26,59 @@ const LoadingDots = () => (
     </div>
 )
 
-const ThinkingStatus = ({ seed }: { seed: number }) => {
-    const [step, setStep] = useState(0)
-
-    useEffect(() => {
-        const intervalId = window.setInterval(() => {
-            setStep((previous) => previous + 1)
-        }, 2200)
-
-        return () => window.clearInterval(intervalId)
-    }, [])
-
-    const startOffset = Math.max(0, Math.floor(seed / 2) - 1) * 5
-    const phrase = THINKING_PHRASES[(startOffset + step) % THINKING_PHRASES.length]
-
-    return (
-        <span key={step} className="thinking-phrase-enter text-xs font-medium text-[var(--text-secondary)]">
-            {phrase}
-        </span>
-    )
+interface ChatRecoveryBubbleProps {
+    title: string
+    description: string
+    actionLabel: string
+    onRetry: () => void
 }
 
+const ChatRecoveryBubble = ({ title, description, actionLabel, onRetry }: ChatRecoveryBubbleProps) => (
+    <div className="chat-message-enter flex items-start gap-3 justify-start">
+        <AssistantAvatar />
+        <div
+            role="status"
+            aria-live="polite"
+            className="min-w-0 [overflow-wrap:anywhere] max-w-[88%] md:max-w-[85%] rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)] px-4 py-3 text-[var(--text-primary)] shadow-xs"
+        >
+            <div className="flex items-start gap-2.5">
+                <svg
+                    className="mt-0.5 h-4 w-4 shrink-0 text-amber-500"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                >
+                    <path
+                        fillRule="evenodd"
+                        d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l6.518 11.591c.75 1.334-.213 2.99-1.742 2.99H3.48c-1.53 0-2.492-1.656-1.743-2.99L8.257 3.1zM11 13a1 1 0 10-2 0 1 1 0 002 0zm-1-6a1 1 0 00-1 1v3a1 1 0 102 0V8a1 1 0 00-1-1z"
+                        clipRule="evenodd"
+                    />
+                </svg>
+                <div className="min-w-0 space-y-1">
+                    <p className="text-sm font-semibold text-[var(--text-primary)]">{title}</p>
+                    <p className="text-xs leading-relaxed text-[var(--text-secondary)]">{description}</p>
+                </div>
+            </div>
+            <div className="mt-3 pl-6">
+                <button
+                    type="button"
+                    onClick={onRetry}
+                    className="inline-flex items-center rounded-xl bg-[var(--button-primary-bg)] px-3.5 py-2 text-xs font-semibold text-[var(--button-primary-text)] shadow-xs transition-colors duration-200 hover:bg-[var(--button-primary-hover)]"
+                >
+                    {actionLabel}
+                </button>
+            </div>
+        </div>
+    </div>
+)
+
 const TimeoutMessage = ({ onRetry }: { onRetry: () => void }) => (
-    <StatusBanner
-        tone="warning"
+    <ChatRecoveryBubble
         title="응답이 지연되고 있습니다."
         description="서버가 sleep 상태에서 wake up 중일 수 있습니다. 잠시 후 다시 시도해주세요."
-        className="border-[var(--card-border)] bg-[var(--card-bg)]"
-    >
-        <button
-            type="button"
-            onClick={onRetry}
-            className="px-4 py-2 bg-[var(--button-primary-bg)] text-[var(--button-primary-text)] text-xs font-semibold rounded-xl hover:bg-[var(--button-primary-hover)] shadow-xs transition-all duration-300"
-        >
-            새 연결로 다시 요청하기
-        </button>
-    </StatusBanner>
+        actionLabel="새 연결로 다시 요청하기"
+        onRetry={onRetry}
+    />
 )
 
 const AssistantAvatar = () => (
@@ -110,7 +105,7 @@ const markdownComponents: Components = {
         const isInline = !match
 
         return isInline ? (
-            <code className="!text-xs !px-1 !py-0.5 !bg-slate-200 !text-slate-800 !rounded-sm" {...props}>
+            <code className="!text-xs !font-mono !px-1.5 !py-0.5 !bg-[var(--card-border)] !text-[var(--text-primary)] !rounded-md [overflow-wrap:anywhere]" {...props}>
                 {children}
             </code>
         ) : (
@@ -127,7 +122,7 @@ const markdownComponents: Components = {
     ol: ({ children }) => <ol className="!text-sm !my-1 !pl-4">{children}</ol>,
     li: ({ children }) => <li className="!my-0.5">{children}</li>,
     blockquote: ({ children }) => (
-        <blockquote className="!text-sm !my-2 !pl-3 !border-l-2 !border-slate-300 !italic">
+        <blockquote className="!text-sm !my-2 !pl-3 !border-l-2 !border-[var(--card-border)] !text-[var(--text-secondary)] !italic">
             {children}
         </blockquote>
     ),
@@ -137,7 +132,7 @@ const markdownComponents: Components = {
         </div>
     ),
     a: ({ children, href }) => (
-        <a href={href} className="!text-[var(--accent-color)] hover:!text-[var(--accent-secondary)] !underline" target="_blank" rel="noopener noreferrer">
+        <a href={href} className="!text-[var(--accent-color)] hover:!text-[var(--accent-secondary)] !underline [overflow-wrap:anywhere]" target="_blank" rel="noopener noreferrer">
             {children}
         </a>
     ),
@@ -154,7 +149,7 @@ export default function ChatMessages({
     followUpPrompts,
     containerRef,
 }: ChatMessagesProps) {
-    const showStarterPrompts = !!starterPrompts?.length && messages.length === 1 && !isAwaitingFirstToken && !isTimeout
+    const showStarterPrompts = !!starterPrompts?.length && messages.length === 1 && !isAwaitingFirstToken && !isTimeout && !error
     const showFollowUpPrompts = !showStarterPrompts && !!followUpPrompts?.length && !isAwaitingFirstToken && !isTimeout && !error
 
     return (
@@ -163,7 +158,7 @@ export default function ChatMessages({
                 {messages.map((msg) => (
                     <div key={msg.id} className={`chat-message-enter flex items-start gap-3 ${msg.isUser ? 'justify-end' : 'justify-start'}`}>
                         {!msg.isUser && <AssistantAvatar />}
-                        <div className={`break-words transition-all duration-300 ${
+                        <div className={`min-w-0 [overflow-wrap:anywhere] transition-all duration-300 ${
                             msg.isUser
                                 ? 'bg-gradient-to-br from-[var(--accent-color)] to-[var(--accent-secondary)] text-white shadow-xs rounded-2xl rounded-tr-none px-4 py-2.5 max-w-[80%] md:max-w-[75%] hover:shadow-md font-medium text-sm leading-relaxed whitespace-pre-wrap'
                                 : 'bg-[var(--card-bg)] border border-[var(--card-border)] text-[var(--text-primary)] shadow-xs rounded-2xl px-4 py-3 max-w-[88%] md:max-w-[85%] hover:border-[var(--card-hover-border)]'
@@ -171,7 +166,7 @@ export default function ChatMessages({
                             {msg.isUser ? (
                                 <p>{msg.text}</p>
                             ) : (
-                                <div className="prose prose-sm max-w-none text-[var(--text-primary)] [&>*:first-child]:mt-0 [&>*:last-child]:mb-0">
+                                <div className="prose prose-sm max-w-none text-[var(--text-primary)] prose-headings:text-[var(--text-primary)] prose-p:text-[var(--text-primary)] prose-strong:text-[var(--text-primary)] prose-li:text-[var(--text-primary)] prose-li:marker:text-[var(--accent-color)] prose-blockquote:text-[var(--text-secondary)] prose-code:before:content-none prose-code:after:content-none [&>*:first-child]:mt-0 [&>*:last-child]:mb-0">
                                     <ReactMarkdown
                                         remarkPlugins={REMARK_PLUGINS}
                                         components={markdownComponents}
@@ -206,7 +201,7 @@ export default function ChatMessages({
 
                 {showFollowUpPrompts && (
                     <div className="pl-11">
-                        <p className="mb-2 text-xs font-semibold text-[var(--text-muted)]">다음 질문 추천</p>
+                        <p className="mb-2 text-xs font-semibold text-[var(--text-muted)]">관련 질문</p>
                         <div className="flex flex-wrap gap-2">
                             {followUpPrompts.map((prompt, index) => (
                                 <button
@@ -226,27 +221,22 @@ export default function ChatMessages({
                 {isAwaitingFirstToken && !isTimeout && (
                     <div className="chat-message-enter flex items-start gap-3 justify-start">
                         <AssistantAvatar />
-                        <div className="flex items-center gap-2.5 px-4 py-3 rounded-2xl shadow-xs bg-[var(--card-bg)] border border-[var(--card-border)]">
+                        <div className="px-4 py-3 rounded-2xl shadow-xs bg-[var(--card-bg)] border border-[var(--card-border)]">
                             <LoadingDots />
-                            <ThinkingStatus seed={messages.length} />
                         </div>
                     </div>
                 )}
 
                 {isTimeout && (
-                    <div className="flex items-start gap-3 justify-start">
-                        <AssistantAvatar />
-                        <div className="px-4 py-3 rounded-2xl shadow-xs bg-[var(--card-bg)] border border-[var(--card-border)]">
-                            <TimeoutMessage onRetry={onRetry} />
-                        </div>
-                    </div>
+                    <TimeoutMessage onRetry={onRetry} />
                 )}
                 {error && !isTimeout && (
-                    <StatusBanner tone="warning" title="대화를 이어가지 못했습니다." description={error}>
-                        <button type="button" onClick={onRetry} className="mt-2 rounded-xl px-3 py-2 text-sm font-semibold text-[var(--accent-color)] underline">
-                            다시 연결하고 요청하기
-                        </button>
-                    </StatusBanner>
+                    <ChatRecoveryBubble
+                        title="대화를 이어가지 못했습니다."
+                        description={error}
+                        actionLabel="다시 연결하고 요청하기"
+                        onRetry={onRetry}
+                    />
                 )}
             </div>
         </div>

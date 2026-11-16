@@ -88,6 +88,37 @@ export function applyChatEvent(state: ChatResponse, event: ChatEvent): ChatRespo
     }
 }
 
+export function recoverStoredConversation(parsed: unknown): { messages: ChatMessage[]; pendingPrompt: string | null } | null {
+    if (!Array.isArray(parsed) || parsed.length === 0) return null
+
+    const restored: ChatMessage[] = []
+    for (const item of parsed) {
+        if (!item || typeof item !== 'object') return null
+        const candidate = item as Record<string, unknown>
+        if (typeof candidate.id !== 'string' || typeof candidate.text !== 'string' || typeof candidate.isUser !== 'boolean') {
+            return null
+        }
+        const status = candidate.status === 'streaming' || candidate.status === 'complete' || candidate.status === 'failed'
+            ? candidate.status
+            : undefined
+        restored.push({ id: candidate.id, text: candidate.text, isUser: candidate.isUser, status })
+    }
+
+    const tail = restored[restored.length - 1]
+    const previous = restored[restored.length - 2]
+    if (tail && !tail.isUser && tail.status === 'streaming' && previous?.isUser) {
+        restored.pop()
+    }
+
+    const messages = restored.map(message =>
+        message.status === 'streaming' ? { ...message, status: 'failed' as const } : message
+    )
+    const last = messages[messages.length - 1]
+    const pendingPrompt = last?.isUser && last.text.trim() ? last.text : null
+
+    return { messages, pendingPrompt }
+}
+
 export function chatErrorMessage(code?: string): string {
     switch (code) {
         case 'SESSION_REQUIRED': return '대화 세션이 만료되었습니다. 다시 요청하면 새 대화가 시작됩니다.'

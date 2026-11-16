@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { applyChatEvent, parseChatEvent, safeSourceUrl, updateAssistantMessage } from '../src/components/sections/ai-chat/chatProtocol.ts'
+import { applyChatEvent, parseChatEvent, recoverStoredConversation, safeSourceUrl, updateAssistantMessage } from '../src/components/sections/ai-chat/chatProtocol.ts'
 import { clearChatSession, loadChatSession } from '../src/components/sections/ai-chat/chatSession.ts'
 import { buildAnswerFollowUpPrompts } from '../src/components/sections/ai-chat/followUpPrompts.ts'
 
@@ -142,4 +142,39 @@ test('follow-up prompts derive from completed assistant answers and skip already
     assert.equal(turnTwo.length, 3)
     assert.ok(!turnTwo.includes(turnOne[0]))
     assert.notDeepEqual(turnOne, turnTwo)
+})
+
+test('refresh recovery resumes unanswered or interrupted-streaming user turns cleanly', () => {
+    const waitingRefresh = recoverStoredConversation([
+        { id: 'welcome', text: '안녕하세요', isUser: false },
+        { id: 'message-1', text: '지마켓에서 어떤 작업을 했어?', isUser: true },
+    ])
+    assert.equal(waitingRefresh.messages.length, 2)
+    assert.equal(waitingRefresh.pendingPrompt, '지마켓에서 어떤 작업을 했어?')
+
+    const midStreamRefresh = recoverStoredConversation([
+        { id: 'welcome', text: '안녕하세요', isUser: false },
+        { id: 'message-1', text: '이전 질문', isUser: true },
+        { id: 'message-2', text: '이전 답변', isUser: false, status: 'complete' },
+        { id: 'message-3', text: 'who-am-ai 구조 알려줘', isUser: true },
+        { id: 'message-4', text: '부분 응답', isUser: false, status: 'streaming' },
+    ])
+    assert.equal(midStreamRefresh.messages.length, 4)
+    assert.equal(midStreamRefresh.messages[2].status, 'complete')
+    assert.equal(midStreamRefresh.pendingPrompt, 'who-am-ai 구조 알려줘')
+
+    const completedRefresh = recoverStoredConversation([
+        { id: 'welcome', text: '안녕하세요', isUser: false },
+        { id: 'message-1', text: '질문', isUser: true },
+        { id: 'message-2', text: '완료된 답변', isUser: false, status: 'complete' },
+    ])
+    assert.equal(completedRefresh.pendingPrompt, null)
+
+    const failedRefresh = recoverStoredConversation([
+        { id: 'welcome', text: '안녕하세요', isUser: false },
+        { id: 'message-1', text: '질문', isUser: true },
+        { id: 'message-2', text: '중단된 답변', isUser: false, status: 'failed' },
+    ])
+    assert.equal(failedRefresh.pendingPrompt, null)
+    assert.equal(failedRefresh.messages[2].status, 'failed')
 })
