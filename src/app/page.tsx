@@ -1,4 +1,4 @@
-import Navigation from '@/components/layout/Navigation'
+import PortfolioDashboard from '@/components/layout/PortfolioDashboard'
 import HeroSection from '@/components/sections/HeroSection'
 import AboutSection from '@/components/sections/AboutSection'
 import ProjectsSection from '@/components/sections/ProjectsSection'
@@ -10,14 +10,15 @@ import Footer from '@/components/layout/Footer'
 export default function Home() {
   return (
       <main>
-        <Navigation />
-        <HeroSection />
-        <AboutSection />
-        <ExperienceSection />
-        <ProjectsSection />
-        <PagesSection />
-        <ContactSection />
-        <Footer />
+        <PortfolioDashboard
+          chatSlot={<HeroSection />}
+          aboutSlot={<AboutSection />}
+          experienceSlot={<ExperienceSection />}
+          projectsSlot={<ProjectsSection />}
+          servicesSlot={<PagesSection />}
+          contactSlot={<ContactSection />}
+          footerSlot={<Footer />}
+        />
       </main>
   )
 }

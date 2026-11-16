@@ -1,6 +1,6 @@
 export default function Footer() {
     return (
-        <footer className="bg-[var(--bg-grad-end)] text-[var(--text-primary)] border-t border-[var(--card-border)] pt-5 pb-[21px]">
+        <footer className="hidden lg:block bg-[var(--bg-grad-end)] text-[var(--text-primary)] border-t border-[var(--card-border)] pt-5 pb-[21px]">
             <div className="container px-4 md:px-6">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-5 md:gap-6 mb-[21px]">
                     {/* 메인 소개 섹션 */}

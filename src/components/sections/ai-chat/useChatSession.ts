@@ -123,6 +123,12 @@ export function useChatSession({ socketUrl, initialPrompt, messages, setMessages
         if (content && content.length <= 4000 && !isResponding) sendChatMessage(content)
     }, [inputValue, isResponding, sendChatMessage])
 
+    const sendPrompt = useCallback((prompt: string) => {
+        const content = prompt.trim()
+        if (!content || content.length > 4000 || isResponding) return
+        if (!sendChatMessage(content)) setInputValue(content)
+    }, [isResponding, sendChatMessage])
+
     useEffect(() => {
         let disposed = false
         loadChatSession(socketUrl).then(grant => { if (!disposed) setSession(grant) })
@@ -159,5 +165,5 @@ export function useChatSession({ socketUrl, initialPrompt, messages, setMessages
     const canSend = inputValue.trim().length > 0 && inputValue.trim().length <= 4000 && !isResponding && !error && readyState === ReadyState.OPEN && !!session
 
     return { inputValue, setInputValue, canSend, isAwaitingFirstToken, isTimeout, error, chatContainerRef,
-        connectionStatus, connectionStatusInfo, retryLastMessage, sendCurrentMessage }
+        connectionStatus, connectionStatusInfo, retryLastMessage, sendCurrentMessage, sendPrompt }
 }

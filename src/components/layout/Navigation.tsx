@@ -222,7 +222,7 @@ export default function Navigation() {
                             alt="dd3ok 로고"
                             width={32}
                             height={32}
-                            className="w-7 h-7 md:w-8 md:h-8 rounded-lg shadow-xs"
+                            className="w-7 h-7 md:w-8 md:h-8 rounded-xl shadow-xs"
                             priority
                         />
                         <span className="font-extrabold text-base md:text-lg tracking-tight text-[var(--accent-color)]">dd3ok</span>
@@ -249,7 +249,7 @@ export default function Navigation() {
                         <ThemeToggle />
                         <button
                             type="button"
-                            className="p-1.5 text-[var(--text-primary)] hover:bg-[var(--card-border)] rounded-lg transition-colors duration-300"
+                            className="p-1.5 text-[var(--text-primary)] hover:bg-[var(--card-border)] rounded-xl transition-colors duration-300"
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                             aria-expanded={isMobileMenuOpen}
                             aria-controls="mobile-navigation"

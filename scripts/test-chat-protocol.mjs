@@ -2,6 +2,7 @@ import assert from 'node:assert/strict'
 import { test } from 'node:test'
 import { applyChatEvent, parseChatEvent, safeSourceUrl, updateAssistantMessage } from '../src/components/sections/ai-chat/chatProtocol.ts'
 import { clearChatSession, loadChatSession } from '../src/components/sections/ai-chat/chatSession.ts'
+import { buildAnswerFollowUpPrompts } from '../src/components/sections/ai-chat/followUpPrompts.ts'
 
 const initial = () => ({ text: '', sources: [], status: 'streaming' })
 const event = (type, fields = {}) => parseChatEvent(JSON.stringify({ type, requestId: 'request-1', ...fields }))
@@ -114,4 +115,31 @@ test('failed session issuance can be retried explicitly', async () => {
         await assert.rejects(loadChatSession(socket), /1분/)
         assert.equal(requests, 2)
     } finally { globalThis.fetch = originalFetch }
+})
+
+test('follow-up prompts derive from completed assistant answers and skip already asked questions', () => {
+    assert.deepEqual(buildAnswerFollowUpPrompts([{ id: 'welcome', text: '안녕하세요', isUser: false }]), [])
+    assert.deepEqual(buildAnswerFollowUpPrompts([
+        { id: 'welcome', text: '안녕하세요', isUser: false },
+        { id: 'u1', text: 'who-am-ai 설명해줘', isUser: true },
+        { id: 'a1', text: 'who-am-ai는 Spring AI와 RAG 기반입니다.', isUser: false, status: 'streaming' },
+    ]), [])
+
+    const turnOne = buildAnswerFollowUpPrompts([
+        { id: 'welcome', text: '안녕하세요', isUser: false },
+        { id: 'u1', text: 'who-am-ai 설명해줘', isUser: true },
+        { id: 'a1', text: 'who-am-ai는 Spring AI와 RAG 기반입니다.', isUser: false, status: 'complete' },
+    ])
+    assert.equal(turnOne.length, 3)
+
+    const turnTwo = buildAnswerFollowUpPrompts([
+        { id: 'welcome', text: '안녕하세요', isUser: false },
+        { id: 'u1', text: 'who-am-ai 설명해줘', isUser: true },
+        { id: 'a1', text: 'who-am-ai는 Spring AI와 RAG 기반입니다.', isUser: false, status: 'complete' },
+        { id: 'u2', text: turnOne[0], isUser: true },
+        { id: 'a2', text: 'RAG 검색 정확도를 높이기 위해 규칙 기반 검색과 Gemini 임베딩을 함께 씁니다.', isUser: false, status: 'complete' },
+    ])
+    assert.equal(turnTwo.length, 3)
+    assert.ok(!turnTwo.includes(turnOne[0]))
+    assert.notDeepEqual(turnOne, turnTwo)
 })
