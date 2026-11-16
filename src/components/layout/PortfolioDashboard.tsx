@@ -394,7 +394,7 @@ export default function PortfolioDashboard({
 
             {/* Right Main Workspace */}
             <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
-                <div className={activeView === 'chat' ? 'flex min-h-0 flex-1 flex-col' : 'hidden'}>
+                <div className={activeView === 'chat' ? 'dashboard-pane flex min-h-0 flex-1 flex-col' : 'hidden'}>
                     {chatSlot}
                 </div>
 

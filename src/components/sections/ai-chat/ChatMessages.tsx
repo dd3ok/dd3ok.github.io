@@ -1,4 +1,4 @@
-import type { RefObject } from 'react'
+import { useEffect, useState, type RefObject } from 'react'
 import Image from 'next/image'
 import ReactMarkdown, { type Components } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
@@ -19,6 +19,27 @@ interface ChatMessagesProps {
     containerRef: RefObject<HTMLDivElement | null>
 }
 
+const THINKING_PHRASES = [
+    '자료를 살펴보고 있어요...',
+    '관련 경력을 정리 중이에요...',
+    '답변을 준비하고 있어요...',
+    '세부 내용을 확인하고 있어요...',
+    '맥락에 맞춰 정리하고 있어요...',
+    '프로젝트 이력을 찾아보고 있어요...',
+    '기술 스택과 구현 배경을 확인하고 있어요...',
+    'GitHub 저장소 기록을 살펴보고 있어요...',
+    '핵심 내용을 추려내고 있어요...',
+    '담당했던 역할과 성과를 짚어보고 있어요...',
+    '질문 의도에 맞게 내용을 구성하고 있어요...',
+    '근거 자료를 대조하고 있어요...',
+    '트러블슈팅 사례를 확인 중이에요...',
+    '가장 알맞은 경험 사례를 고르고 있어요...',
+    '흐름이 자연스럽게 이어지도록 다듬고 있어요...',
+    '관련 문서를 한곳에 모아 정리하고 있어요...',
+    '읽기 편하게 답변을 정리하는 중이에요...',
+    '조금만 기다려 주세요, 곧 정리해 드릴게요...',
+] as const
+
 const LoadingDots = () => (
     <div className="flex space-x-1 items-center">
         <span className="h-2 w-2 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.3s]" />
@@ -26,6 +47,27 @@ const LoadingDots = () => (
         <span className="h-2 w-2 bg-slate-400 rounded-full animate-bounce" />
     </div>
 )
+
+const ThinkingStatus = ({ seed }: { seed: number }) => {
+    const [step, setStep] = useState(0)
+
+    useEffect(() => {
+        const intervalId = window.setInterval(() => {
+            setStep((previous) => previous + 1)
+        }, 2200)
+
+        return () => window.clearInterval(intervalId)
+    }, [])
+
+    const startOffset = Math.max(0, Math.floor(seed / 2) - 1) * 5
+    const phrase = THINKING_PHRASES[(startOffset + step) % THINKING_PHRASES.length]
+
+    return (
+        <span key={step} className="thinking-phrase-enter text-xs font-medium text-[var(--text-secondary)]">
+            {phrase}
+        </span>
+    )
+}
 
 const TimeoutMessage = ({ onRetry }: { onRetry: () => void }) => (
     <StatusBanner
@@ -119,12 +161,12 @@ export default function ChatMessages({
         <div ref={containerRef} role="log" aria-label="대화 내용" aria-live="polite" className="flex-1 overflow-y-auto px-4 py-6 md:px-8 chat-scroll bg-transparent">
             <div className="mx-auto w-full max-w-3xl space-y-6">
                 {messages.map((msg) => (
-                    <div key={msg.id} className={`flex items-start gap-3 ${msg.isUser ? 'justify-end' : 'justify-start'}`}>
+                    <div key={msg.id} className={`chat-message-enter flex items-start gap-3 ${msg.isUser ? 'justify-end' : 'justify-start'}`}>
                         {!msg.isUser && <AssistantAvatar />}
                         <div className={`break-words transition-all duration-300 ${
                             msg.isUser
                                 ? 'bg-gradient-to-br from-[var(--accent-color)] to-[var(--accent-secondary)] text-white shadow-xs rounded-2xl rounded-tr-none px-4 py-2.5 max-w-[80%] md:max-w-[75%] hover:shadow-md font-medium text-sm leading-relaxed whitespace-pre-wrap'
-                                : 'bg-[var(--card-bg)] border border-[var(--card-border)] text-[var(--text-primary)] shadow-xs rounded-2xl rounded-tl-none px-4 py-3 max-w-[88%] md:max-w-[85%] hover:border-[var(--card-hover-border)]'
+                                : 'bg-[var(--card-bg)] border border-[var(--card-border)] text-[var(--text-primary)] shadow-xs rounded-2xl px-4 py-3 max-w-[88%] md:max-w-[85%] hover:border-[var(--card-hover-border)]'
                         }`}>
                             {msg.isUser ? (
                                 <p>{msg.text}</p>
@@ -147,12 +189,13 @@ export default function ChatMessages({
                     <div className="pl-11">
                         <p className="mb-2 text-xs font-semibold text-[var(--text-muted)]">추천 질문</p>
                         <div className="grid gap-2 sm:grid-cols-2">
-                            {starterPrompts.map((prompt) => (
+                            {starterPrompts.map((prompt, index) => (
                                 <button
                                     key={prompt}
                                     type="button"
+                                    style={{ animationDelay: `${index * 45}ms` }}
                                     onClick={() => onSelectPrompt?.(prompt)}
-                                    className="rounded-xl border border-[var(--card-border)] bg-[var(--card-bg)] px-3.5 py-2.5 text-left text-xs font-medium text-[var(--text-secondary)] transition-colors hover:border-[var(--card-hover-border)] hover:bg-[var(--accent-glow)]/40 hover:text-[var(--text-primary)]"
+                                    className="chat-chip-enter rounded-xl border border-[var(--card-border)] bg-[var(--card-bg)] px-3.5 py-2.5 text-left text-xs font-medium text-[var(--text-secondary)] transition-colors duration-200 hover:border-[var(--card-hover-border)] hover:bg-[var(--accent-glow)]/40 hover:text-[var(--text-primary)]"
                                 >
                                     {prompt}
                                 </button>
@@ -165,12 +208,13 @@ export default function ChatMessages({
                     <div className="pl-11">
                         <p className="mb-2 text-xs font-semibold text-[var(--text-muted)]">다음 질문 추천</p>
                         <div className="flex flex-wrap gap-2">
-                            {followUpPrompts.map((prompt) => (
+                            {followUpPrompts.map((prompt, index) => (
                                 <button
                                     key={prompt}
                                     type="button"
+                                    style={{ animationDelay: `${index * 55}ms` }}
                                     onClick={() => onSelectPrompt?.(prompt)}
-                                    className="rounded-xl border border-[var(--card-border)] bg-[var(--card-bg)] px-3 py-2 text-left text-xs font-medium text-[var(--text-secondary)] transition-colors hover:border-[var(--card-hover-border)] hover:bg-[var(--accent-glow)]/40 hover:text-[var(--text-primary)]"
+                                    className="chat-chip-enter rounded-xl border border-[var(--card-border)] bg-[var(--card-bg)] px-3 py-2 text-left text-xs font-medium text-[var(--text-secondary)] transition-colors duration-200 hover:border-[var(--card-hover-border)] hover:bg-[var(--accent-glow)]/40 hover:text-[var(--text-primary)]"
                                 >
                                     {prompt}
                                 </button>
@@ -180,10 +224,11 @@ export default function ChatMessages({
                 )}
 
                 {isAwaitingFirstToken && !isTimeout && (
-                    <div className="flex items-start gap-3 justify-start">
+                    <div className="chat-message-enter flex items-start gap-3 justify-start">
                         <AssistantAvatar />
-                        <div className="px-4 py-3 rounded-2xl rounded-tl-none shadow-xs bg-[var(--card-bg)] border border-[var(--card-border)]">
+                        <div className="flex items-center gap-2.5 px-4 py-3 rounded-2xl shadow-xs bg-[var(--card-bg)] border border-[var(--card-border)]">
                             <LoadingDots />
+                            <ThinkingStatus seed={messages.length} />
                         </div>
                     </div>
                 )}
@@ -191,7 +236,7 @@ export default function ChatMessages({
                 {isTimeout && (
                     <div className="flex items-start gap-3 justify-start">
                         <AssistantAvatar />
-                        <div className="px-4 py-3 rounded-2xl rounded-tl-none shadow-xs bg-[var(--card-bg)] border border-[var(--card-border)]">
+                        <div className="px-4 py-3 rounded-2xl shadow-xs bg-[var(--card-bg)] border border-[var(--card-border)]">
                             <TimeoutMessage onRetry={onRetry} />
                         </div>
                     </div>
