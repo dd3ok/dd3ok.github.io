@@ -1,10 +1,12 @@
 import type { ChatMessage } from './chatProtocol'
 
 export const STARTER_PROMPTS = [
-    '최근 공개 GitHub 프로젝트 알려줘',
+    '유인재님은 어떤 개발자인지 간단히 소개해 주세요',
+    '유인재님의 주요 경력과 회사별 이력을 알려주세요',
     '지마켓에서 어떤 백엔드 작업을 했어?',
-    'who-am-ai는 어떤 구조로 만들었어?',
-    'Cloudflare Mobile Sync Starter 설명해줘',
+    '최근 공개한 GitHub 프로젝트들을 소개해 주세요',
+    '퇴사 이후 최근에는 어떤 프로젝트와 공부를 하고 있나요?',
+    '보유한 주요 기술 스택과 자격증을 알려주세요',
 ] as const
 
 interface PromptRule {
@@ -18,7 +20,7 @@ const ANSWER_FOLLOW_UP_RULES: readonly PromptRule[] = [
         id: 'not-found',
         pattern: /(확인 가능한 경력 자료|찾지 못했습니다)/,
         prompts: [
-            '지마켓과 미라콤아이앤씨 주요 경력을 요약해 주세요',
+            '유인재님의 주요 경력과 회사별 이력을 알려주세요',
             '공개된 개인 GitHub 프로젝트들을 알려주세요',
             '보유한 주요 기술 스택이 궁금해요',
             '퇴사 이후 최근 진행한 프로젝트들을 소개해 주세요',
