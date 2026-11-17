@@ -19,7 +19,6 @@ interface SidebarNavItem {
     label: string
     hash: string
     routeHref: string
-    description: string
 }
 
 const SIDEBAR_COLLAPSED_STORAGE_KEY = 'whoamai-sidebar-collapsed'
@@ -44,17 +43,16 @@ const getSidebarCollapsedSnapshot = () => {
 }
 
 const PORTFOLIO_VIEWS: readonly SidebarNavItem[] = [
-    { id: 'about', label: 'About', hash: '#about', routeHref: '/#about', description: '소개 · 기술 스택' },
-    { id: 'experience', label: 'Experience', hash: '#experience', routeHref: '/#experience', description: '경력 타임라인' },
-    { id: 'projects', label: 'Projects', hash: '#projects', routeHref: '/#projects', description: '주요 프로젝트' },
-    { id: 'services', label: 'Lab', hash: '#services', routeHref: '/#services', description: '개인 실험 · 저장소' },
+    { id: 'about', label: 'About', hash: '#about', routeHref: '/#about' },
+    { id: 'experience', label: 'Experience', hash: '#experience', routeHref: '/#experience' },
+    { id: 'projects', label: 'Projects', hash: '#projects', routeHref: '/#projects' },
+    { id: 'services', label: 'Lab', hash: '#services', routeHref: '/#services' },
 ]
 
 const AGENT_SKILLS_LINK = {
     id: 'agent-skills',
     label: 'Agent Skills',
     href: '/agent-skills/',
-    description: '오픈소스 스킬',
 } as const
 
 const CONTACT_VIEW: SidebarNavItem = {
@@ -62,11 +60,10 @@ const CONTACT_VIEW: SidebarNavItem = {
     label: 'Contact',
     hash: '#contact',
     routeHref: '/#contact',
-    description: '연락처 · 메시지',
 }
 
 const NOTES_LINKS = [
-    { id: 'notes', label: 'Waitworthy', href: '/notes/', description: 'AI 리서치 노트' },
+    { id: 'notes', label: 'Waitworthy', href: '/notes/' },
 ] as const
 
 const SOCIAL_LINKS = [
@@ -237,17 +234,31 @@ export default function DashboardShell({
         )
     }
 
+    const renderSidebarToggleIcon = (collapsed: boolean) => (
+        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="16" rx="2" strokeWidth="2" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 4v16" />
+            {collapsed ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m14 9 3 3-3 3" />
+            ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m16 9-3 3 3 3" />
+            )}
+        </svg>
+    )
+
     const sidebarContent = (
         <div className="flex h-full flex-col justify-between p-4">
             <div className="space-y-5 overflow-y-auto pr-0.5 chat-scroll">
                 {/* Brand & Sidebar Collapse Toggle */}
-                <div className={`flex items-center px-1 ${isCollapsed ? 'justify-between lg:flex-col lg:gap-2.5' : 'justify-between gap-2'}`}>
+                <div className={`flex items-center px-1 ${isCollapsed ? 'justify-between lg:justify-center' : 'justify-between gap-2'}`}>
                     {renderHomeNavLink({
                         viewId: 'chat',
                         hash: '#hero',
                         routeHref: '/',
                         title: 'dd3ok 홈',
-                        className: 'flex items-center gap-2.5 rounded-xl py-1 transition-opacity hover:opacity-85',
+                        className: `flex items-center gap-2.5 rounded-xl py-1 transition-opacity hover:opacity-85 ${
+                            isCollapsed ? 'lg:hidden' : ''
+                        }`,
                         content: (
                             <>
                                 <Image
@@ -258,31 +269,48 @@ export default function DashboardShell({
                                     className="h-8 w-8 shrink-0 rounded-xl shadow-xs"
                                     priority
                                 />
-                                <div className={isCollapsed ? 'lg:hidden' : undefined}>
+                                <div>
                                     <p className="text-sm font-extrabold tracking-tight text-[var(--accent-color)]">dd3ok</p>
                                     <p className="text-[11px] font-semibold text-[var(--text-muted)]">유인재</p>
                                 </div>
                             </>
                         ),
                     })}
-                    <button
-                        type="button"
-                        onClick={handleToggleSidebarCollapse}
-                        aria-label={isCollapsed ? '메뉴 펼치기' : '메뉴 접기'}
-                        aria-expanded={!isCollapsed}
-                        title={isCollapsed ? '메뉴 펼치기' : '메뉴 접기'}
-                        className="hidden h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-[var(--card-border)] bg-[var(--card-bg)] text-[var(--text-secondary)] shadow-xs transition-colors hover:border-[var(--card-hover-border)] hover:text-[var(--text-primary)] lg:flex"
-                    >
-                        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <rect x="3" y="4" width="18" height="16" rx="2" strokeWidth="2" />
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 4v16" />
-                            {isCollapsed ? (
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m14 9 3 3-3 3" />
-                            ) : (
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m16 9-3 3 3 3" />
-                            )}
-                        </svg>
-                    </button>
+                    {isCollapsed ? (
+                        <button
+                            type="button"
+                            onClick={handleToggleSidebarCollapse}
+                            aria-controls="dashboard-sidebar"
+                            aria-label="메뉴 펼치기"
+                            aria-expanded={false}
+                            title="메뉴 펼치기"
+                            className="group relative hidden h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-xl focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] lg:flex"
+                        >
+                            <Image
+                                src="/logo.png"
+                                alt=""
+                                width={32}
+                                height={32}
+                                className="h-8 w-8 rounded-xl shadow-xs transition-all duration-150 group-hover:scale-90 group-hover:opacity-0 group-focus-visible:scale-90 group-focus-visible:opacity-0 motion-reduce:transition-none"
+                                priority
+                            />
+                            <span className="pointer-events-none absolute inset-1 flex scale-90 items-center justify-center rounded-xl border border-[var(--card-hover-border)] bg-[var(--card-bg)] text-[var(--text-primary)] opacity-0 shadow-xs transition-all duration-150 group-hover:scale-100 group-hover:opacity-100 group-focus-visible:scale-100 group-focus-visible:opacity-100 motion-reduce:transition-none">
+                                {renderSidebarToggleIcon(true)}
+                            </span>
+                        </button>
+                    ) : (
+                        <button
+                            type="button"
+                            onClick={handleToggleSidebarCollapse}
+                            aria-controls="dashboard-sidebar"
+                            aria-label="메뉴 접기"
+                            aria-expanded={true}
+                            title="메뉴 접기"
+                            className="hidden h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-[var(--card-border)] bg-[var(--card-bg)] text-[var(--text-secondary)] shadow-xs transition-colors hover:border-[var(--card-hover-border)] hover:text-[var(--text-primary)] lg:flex"
+                        >
+                            {renderSidebarToggleIcon(false)}
+                        </button>
+                    )}
                 </div>
 
                 {/* Primary Chat Entry */}
@@ -326,7 +354,7 @@ export default function DashboardShell({
                                         routeHref: item.routeHref,
                                         title: item.label,
                                         ariaCurrent: isActive ? 'page' : undefined,
-                                        className: `flex items-center justify-between gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${
+                                        className: `flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${
                                             isCollapsed ? 'lg:justify-center lg:px-2' : ''
                                         } ${
                                             isActive
@@ -335,15 +363,8 @@ export default function DashboardShell({
                                         }`,
                                         content: (
                                             <>
-                                                <span className="flex items-center gap-2.5">
-                                                    <SidebarIcon id={item.id} />
-                                                    <span className={isCollapsed ? 'lg:hidden' : undefined}>{item.label}</span>
-                                                </span>
-                                                {!isCollapsed && (
-                                                    <span className="hidden text-[11px] font-medium text-[var(--text-muted)] lg:inline">
-                                                        {item.description}
-                                                    </span>
-                                                )}
+                                                <SidebarIcon id={item.id} />
+                                                <span className={isCollapsed ? 'lg:hidden' : undefined}>{item.label}</span>
                                             </>
                                         ),
                                     })}
@@ -358,7 +379,7 @@ export default function DashboardShell({
                             aria-label={AGENT_SKILLS_LINK.label}
                             aria-current={activeNav === 'agent-skills' ? 'page' : undefined}
                             onClick={() => setIsMobileSidebarOpen(false)}
-                            className={`flex items-center justify-between gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${
+                            className={`flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${
                                 isCollapsed ? 'lg:justify-center lg:px-2' : ''
                             } ${
                                 activeNav === 'agent-skills'
@@ -366,15 +387,8 @@ export default function DashboardShell({
                                     : 'text-[var(--text-secondary)] hover:bg-[var(--card-bg)] hover:text-[var(--text-primary)]'
                             }`}
                         >
-                            <span className="flex items-center gap-2.5">
-                                <SidebarIcon id="agent-skills" />
-                                <span className={isCollapsed ? 'lg:hidden' : undefined}>{AGENT_SKILLS_LINK.label}</span>
-                            </span>
-                            {!isCollapsed && (
-                                <span className="hidden text-[11px] font-medium text-[var(--text-muted)] lg:inline">
-                                    {AGENT_SKILLS_LINK.description}
-                                </span>
-                            )}
+                            <SidebarIcon id="agent-skills" />
+                            <span className={isCollapsed ? 'lg:hidden' : undefined}>{AGENT_SKILLS_LINK.label}</span>
                         </Link>
 
                         {renderHomeNavLink({
@@ -383,7 +397,7 @@ export default function DashboardShell({
                             routeHref: CONTACT_VIEW.routeHref,
                             title: CONTACT_VIEW.label,
                             ariaCurrent: activeNav === CONTACT_VIEW.id ? 'page' : undefined,
-                            className: `flex items-center justify-between gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${
+                            className: `flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${
                                 isCollapsed ? 'lg:justify-center lg:px-2' : ''
                             } ${
                                 activeNav === CONTACT_VIEW.id
@@ -392,15 +406,8 @@ export default function DashboardShell({
                             }`,
                             content: (
                                 <>
-                                    <span className="flex items-center gap-2.5">
-                                        <SidebarIcon id={CONTACT_VIEW.id} />
-                                        <span className={isCollapsed ? 'lg:hidden' : undefined}>{CONTACT_VIEW.label}</span>
-                                    </span>
-                                    {!isCollapsed && (
-                                        <span className="hidden text-[11px] font-medium text-[var(--text-muted)] lg:inline">
-                                            {CONTACT_VIEW.description}
-                                        </span>
-                                    )}
+                                    <SidebarIcon id={CONTACT_VIEW.id} />
+                                    <span className={isCollapsed ? 'lg:hidden' : undefined}>{CONTACT_VIEW.label}</span>
                                 </>
                             ),
                         })}
@@ -425,7 +432,7 @@ export default function DashboardShell({
                                     aria-label={item.label}
                                     aria-current={isActive ? 'page' : undefined}
                                     onClick={() => setIsMobileSidebarOpen(false)}
-                                    className={`flex items-center justify-between gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${
+                                    className={`flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${
                                         isCollapsed ? 'lg:justify-center lg:px-2' : ''
                                     } ${
                                         isActive
@@ -433,15 +440,8 @@ export default function DashboardShell({
                                             : 'text-[var(--text-secondary)] hover:bg-[var(--card-bg)] hover:text-[var(--text-primary)]'
                                     }`}
                                 >
-                                    <span className="flex items-center gap-2.5">
-                                        <SidebarIcon id={item.id} />
-                                        <span className={isCollapsed ? 'lg:hidden' : undefined}>{item.label}</span>
-                                    </span>
-                                    {!isCollapsed && (
-                                        <span className="hidden text-[11px] font-medium text-[var(--text-muted)] lg:inline">
-                                            {item.description}
-                                        </span>
-                                    )}
+                                    <SidebarIcon id={item.id} />
+                                    <span className={isCollapsed ? 'lg:hidden' : undefined}>{item.label}</span>
                                 </Link>
                             )
                         })}
