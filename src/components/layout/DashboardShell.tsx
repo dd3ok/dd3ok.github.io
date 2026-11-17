@@ -280,10 +280,11 @@ export default function DashboardShell({
                         <button
                             type="button"
                             onClick={handleToggleSidebarCollapse}
+                            aria-controls="dashboard-sidebar"
                             aria-label="메뉴 펼치기"
                             aria-expanded={false}
                             title="메뉴 펼치기"
-                            className="group relative hidden h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-xl focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] lg:flex"
+                            className="group relative hidden h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-xl focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] lg:flex"
                         >
                             <Image
                                 src="/logo.png"
@@ -293,7 +294,7 @@ export default function DashboardShell({
                                 className="h-8 w-8 rounded-xl shadow-xs transition-all duration-150 group-hover:scale-90 group-hover:opacity-0 group-focus-visible:scale-90 group-focus-visible:opacity-0 motion-reduce:transition-none"
                                 priority
                             />
-                            <span className="pointer-events-none absolute inset-0 flex scale-90 items-center justify-center rounded-xl border border-[var(--card-hover-border)] bg-[var(--card-bg)] text-[var(--text-primary)] opacity-0 shadow-xs transition-all duration-150 group-hover:scale-100 group-hover:opacity-100 group-focus-visible:scale-100 group-focus-visible:opacity-100 motion-reduce:transition-none">
+                            <span className="pointer-events-none absolute inset-1 flex scale-90 items-center justify-center rounded-xl border border-[var(--card-hover-border)] bg-[var(--card-bg)] text-[var(--text-primary)] opacity-0 shadow-xs transition-all duration-150 group-hover:scale-100 group-hover:opacity-100 group-focus-visible:scale-100 group-focus-visible:opacity-100 motion-reduce:transition-none">
                                 {renderSidebarToggleIcon(true)}
                             </span>
                         </button>
@@ -301,6 +302,7 @@ export default function DashboardShell({
                         <button
                             type="button"
                             onClick={handleToggleSidebarCollapse}
+                            aria-controls="dashboard-sidebar"
                             aria-label="메뉴 접기"
                             aria-expanded={true}
                             title="메뉴 접기"
