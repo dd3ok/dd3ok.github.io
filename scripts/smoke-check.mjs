@@ -38,8 +38,6 @@ const contentChecks = {
     'Codex와 Claude Code에서 반복 작업을 줄이기 위해 만든 공개 Agent Skill 저장소입니다.',
     'Briefprint',
     'Newbie Lens',
-    'Savepoint',
-    'Rabbit Hole',
     'Lucid',
     'Market Data Skills',
     'WATCHLIST.md',
@@ -119,6 +117,8 @@ const absentContentChecks = {
     'TossInvest API Skill',
     'Binance API Skill',
     'Yahoo Finance Market Skill',
+    'Savepoint',
+    'Rabbit Hole',
   ],
 }
 

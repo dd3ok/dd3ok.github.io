@@ -10,11 +10,6 @@ export default function PagesSection() {
             eyebrow="Experiments & Tools"
             title="Lab"
             description="AI, 자동화, 개발 도구를 직접 실험하며 정리한 개인 프로젝트입니다"
-            headerExtra={
-                <span className="inline-block rounded-xl border border-[var(--card-border)] bg-[var(--card-bg)] px-3 py-1.5 text-xs font-bold text-[var(--text-secondary)]">
-                    실험 · 저장소 {services.length}개
-                </span>
-            }
         >
             <div className="grid gap-4 md:grid-cols-2">
                 {services.map((service, index) => (

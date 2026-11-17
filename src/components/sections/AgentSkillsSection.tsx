@@ -10,11 +10,6 @@ export default function AgentSkillsSection() {
             headingId="agent-skills-title"
             title="Agent Skills"
             description="Codex와 Claude Code에서 반복 작업을 줄이기 위해 만든 공개 Agent Skill 저장소입니다."
-            headerExtra={
-                <span className="inline-block rounded-xl border border-[var(--card-border)] bg-[var(--card-bg)] px-3 py-1.5 text-xs font-bold text-[var(--text-secondary)]">
-                    공개 스킬 {agentSkills.length}개
-                </span>
-            }
         >
             <div className="grid gap-4 md:grid-cols-2">
                 {agentSkills.map((skill, index) => (

@@ -3,7 +3,7 @@ import { aboutContent, skills } from '@/data/portfolio'
 
 const HIGHLIGHTS = [
     { label: '경력 기간', value: '7년+', detail: '지마켓 · 미라콤아이앤씨' },
-    { label: '주력 도메인', value: '인증 · API · 커머스', detail: 'Spring Boot · .NET · MSA' },
+    { label: '주력 도메인', value: '커머스 · 회원 · 인증', detail: 'Spring Boot · .NET · MSA' },
     { label: '최근 집중', value: 'AI Backend · Agents', detail: 'Spring AI · RAG · 자동화' },
 ] as const
 
@@ -61,14 +61,9 @@ export default function AboutSection() {
                 </article>
 
                 <article className="glass-card rounded-2xl p-5 md:p-6">
-                    <div className="flex items-center justify-between gap-2">
-                        <p className="text-xs font-bold tracking-wider text-[var(--accent-color)] uppercase">
-                            Tech Stack
-                        </p>
-                        <span className="text-xs font-semibold text-[var(--text-muted)]">
-                            {skills.length}개 영역
-                        </span>
-                    </div>
+                    <p className="text-xs font-bold tracking-wider text-[var(--accent-color)] uppercase">
+                        Tech Stack
+                    </p>
                     <div className="mt-4 divide-y divide-[var(--card-border)]">
                         {skills.map((skillGroup) => (
                             <div key={skillGroup.category} className="py-3 first:pt-0 last:pb-0">

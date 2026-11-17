@@ -15,10 +15,7 @@ export default function ExperienceSection() {
             }
         >
             <div className="space-y-4">
-                {experiences.map((exp, index) => {
-                    const isCurrent = exp.period.includes('Present')
-
-                    return (
+                {experiences.map((exp, index) => (
                         <article
                             key={exp.company}
                             className="glass-card rounded-2xl p-5 md:p-6"
@@ -29,17 +26,9 @@ export default function ExperienceSection() {
                                         {String(index + 1).padStart(2, '0')}
                                     </span>
                                     <div>
-                                        <div className="flex flex-wrap items-center gap-2">
-                                            <h3 className="text-lg font-extrabold text-[var(--text-primary)]">
-                                                {exp.company}
-                                            </h3>
-                                            {isCurrent && (
-                                                <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--accent-color)]/25 bg-[var(--accent-glow)] px-2.5 py-0.5 text-[11px] font-bold text-[var(--accent-color)]">
-                                                    <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent-color)] motion-safe:animate-pulse" />
-                                                    Active
-                                                </span>
-                                            )}
-                                        </div>
+                                        <h3 className="text-lg font-extrabold text-[var(--text-primary)]">
+                                            {exp.company}
+                                        </h3>
                                         <p className="mt-0.5 text-sm font-semibold text-[var(--accent-color)]">
                                             {exp.position}
                                         </p>
@@ -63,8 +52,7 @@ export default function ExperienceSection() {
                                 ))}
                             </ul>
                         </article>
-                    )
-                })}
+                ))}
             </div>
         </DashboardSection>
     )

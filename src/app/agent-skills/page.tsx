@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import DashboardShell from '@/components/layout/DashboardShell'
-import Footer from '@/components/layout/Footer'
 import AgentSkillsSection from '@/components/sections/AgentSkillsSection'
 import { agentSkills } from '@/data/agentSkills'
 
@@ -89,7 +88,6 @@ export default function AgentSkillsPage() {
                 <DashboardShell activeNav="agent-skills">
                     <div className="dashboard-pane min-h-0 flex-1 overflow-y-auto pt-12 lg:pt-0 chat-scroll">
                         <AgentSkillsSection />
-                        <Footer />
                     </div>
                 </DashboardShell>
             </main>

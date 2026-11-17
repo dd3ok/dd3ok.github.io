@@ -37,23 +37,6 @@ export const agentSkills: AgentSkill[] = [
         ],
     },
     {
-        id: 'savepoint',
-        title: 'Savepoint',
-        description:
-            '코딩 에이전트 작업을 .savepoint/SAVEPOINT.md에 복구 가능한 체크포인트로 남기는 Agent Skill입니다. 컨텍스트 압축, 세션 전환, 리셋 이후에도 이어서 작업할 수 있는 최소 상태를 검증합니다.',
-        shortDescription: '작업 세이브포인트',
-        tech: ['Python', 'Codex', 'Claude Code'],
-        github: 'https://github.com/dd3ok/savepoint',
-        category: 'workflow',
-        keywords: [
-            'savepoint',
-            'session recovery',
-            'coding agent',
-            'handoff',
-            '세이브포인트',
-        ],
-    },
-    {
         id: 'newbie-lens',
         title: 'Newbie Lens',
         description:
@@ -68,23 +51,6 @@ export const agentSkills: AgentSkill[] = [
             'runbook',
             'PRD',
             '초심자 관점',
-        ],
-    },
-    {
-        id: 'rabbit-hole',
-        title: 'Rabbit Hole',
-        description:
-            '낯선 코드, 새 API, 모호한 기능, 원인 분석처럼 불확실성이 큰 작업에서 작은 검증 산출물을 먼저 만드는 Agent Skill입니다. 큰 구현 전에 최소 재현, 스파이크, 테스트로 방향을 확인합니다.',
-        shortDescription: '탐색형 검증',
-        tech: ['Prompt', 'Codex', 'Research'],
-        github: 'https://github.com/dd3ok/rabbit-hole',
-        category: 'research',
-        keywords: [
-            'root cause',
-            'spike',
-            'prototype',
-            'debugging',
-            '탐색',
         ],
     },
     {

@@ -131,11 +131,6 @@ export default function NotesDirectoryView({ activeCategoryId, notes }: NotesDir
             headingTag="h1"
             title="Waitworthy"
             description="Deep Research처럼 기다릴 가치 있는 AI 보고서를 정리합니다."
-            headerExtra={
-                <span className="inline-block rounded-xl border border-[var(--card-border)] bg-[var(--card-bg)] px-3 py-1.5 text-xs font-bold text-[var(--text-secondary)]">
-                    공개 노트 {notes.length}개
-                </span>
-            }
         >
             <nav className="flex flex-wrap gap-1.5" aria-label="노트 카테고리">
                     {visibleCategoryTabs.map((category) => {

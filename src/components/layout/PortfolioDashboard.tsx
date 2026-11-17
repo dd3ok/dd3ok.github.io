@@ -12,7 +12,6 @@ interface PortfolioDashboardProps {
     projectsSlot: ReactNode
     servicesSlot: ReactNode
     contactSlot: ReactNode
-    footerSlot: ReactNode
 }
 
 function resolveViewFromHash(hash: string): DashboardViewId {
@@ -39,7 +38,6 @@ export default function PortfolioDashboard({
     projectsSlot,
     servicesSlot,
     contactSlot,
-    footerSlot,
 }: PortfolioDashboardProps) {
     const [activeView, setActiveView] = useState<DashboardViewId>('chat')
 
@@ -77,27 +75,22 @@ export default function PortfolioDashboard({
 
             <div className={activeView === 'about' ? 'dashboard-pane min-h-0 flex-1 overflow-y-auto pt-12 lg:pt-0 chat-scroll' : 'hidden'}>
                 {aboutSlot}
-                {footerSlot}
             </div>
 
             <div className={activeView === 'experience' ? 'dashboard-pane min-h-0 flex-1 overflow-y-auto pt-12 lg:pt-0 chat-scroll' : 'hidden'}>
                 {experienceSlot}
-                {footerSlot}
             </div>
 
             <div className={activeView === 'projects' ? 'dashboard-pane min-h-0 flex-1 overflow-y-auto pt-12 lg:pt-0 chat-scroll' : 'hidden'}>
                 {projectsSlot}
-                {footerSlot}
             </div>
 
             <div className={activeView === 'services' ? 'dashboard-pane min-h-0 flex-1 overflow-y-auto pt-12 lg:pt-0 chat-scroll' : 'hidden'}>
                 {servicesSlot}
-                {footerSlot}
             </div>
 
             <div className={activeView === 'contact' ? 'dashboard-pane min-h-0 flex-1 overflow-y-auto pt-12 lg:pt-0 chat-scroll' : 'hidden'}>
                 {contactSlot}
-                {footerSlot}
             </div>
         </DashboardShell>
     )

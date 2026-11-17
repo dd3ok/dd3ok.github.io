@@ -469,8 +469,8 @@ export default function DashboardShell({
 
             {/* Sidebar Footer: Contact/Social Links Left-Aligned + Theme Toggle Right-Aligned */}
             <div className="mt-4 border-t border-[var(--card-border)] pt-3">
-                <div className={`flex items-center justify-between gap-2 px-1 ${isCollapsed ? 'lg:flex-col lg:items-center lg:gap-1.5' : ''}`}>
-                    <div className={`flex items-center gap-1 ${isCollapsed ? 'lg:flex-col' : ''}`}>
+                <div className={`flex items-center justify-between gap-1.5 px-0.5 ${isCollapsed ? 'lg:flex-col lg:items-center' : ''}`}>
+                    <div className={`flex items-center gap-0.5 ${isCollapsed ? 'lg:flex-col' : ''}`}>
                         {SOCIAL_LINKS.map((social) => (
                             <a
                                 key={social.label}
@@ -531,8 +531,8 @@ export default function DashboardShell({
             <aside
                 id="dashboard-sidebar"
                 aria-label="대시보드 탐색"
-                className={`fixed inset-y-0 left-0 z-50 w-72 shrink-0 border-r border-[var(--card-border)] bg-[var(--nav-bg)] backdrop-blur-xl transition-all duration-200 lg:static lg:translate-x-0 ${
-                    isCollapsed ? 'lg:w-20' : 'lg:w-72'
+                className={`fixed inset-y-0 left-0 z-50 w-60 shrink-0 border-r border-[var(--card-border)] bg-[var(--nav-bg)] backdrop-blur-xl transition-all duration-200 lg:static lg:translate-x-0 ${
+                    isCollapsed ? 'lg:w-20' : 'lg:w-60'
                 } ${
                     isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'
                 }`}

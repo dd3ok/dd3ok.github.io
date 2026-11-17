@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import DashboardShell from '@/components/layout/DashboardShell'
-import Footer from '@/components/layout/Footer'
 import NotesDirectoryView from './NotesDirectoryView'
 import { allNotesCategory, getPublicNotes } from '@/lib/notes'
 
@@ -18,7 +17,6 @@ export default function NotesPage() {
             <DashboardShell activeNav="notes">
                 <div className="dashboard-pane min-h-0 flex-1 overflow-y-auto pt-12 lg:pt-0 chat-scroll">
                     <NotesDirectoryView activeCategoryId={allNotesCategory.id} notes={getPublicNotes()} />
-                    <Footer />
                 </div>
             </DashboardShell>
         </main>
