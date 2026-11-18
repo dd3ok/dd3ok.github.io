@@ -27,6 +27,7 @@ type SubmitError = Error & {
 
 const MESSAGE_MIN_LENGTH = 10
 const MESSAGE_MAX_LENGTH = 1000
+const prewarmedContactApiUrls = new Set<string>()
 
 export default function ContactForm() {
     const [formData, setFormData] = useState<ContactFormData>({
@@ -40,6 +41,21 @@ export default function ContactForm() {
     const [submitFeedback, setSubmitFeedback] = useState<SubmitFeedback | null>(null)
     const resetTimerRef = useRef<number | null>(null)
     const config = getEnvConfig()
+
+    useEffect(() => {
+        const baseUrl = config.pagesApi.baseUrl
+        if (!baseUrl || prewarmedContactApiUrls.has(baseUrl)) {
+            return
+        }
+        prewarmedContactApiUrls.add(baseUrl)
+        void fetch(`${baseUrl}/api/healthcheck`, {
+            method: 'GET',
+            cache: 'no-store',
+            signal: AbortSignal.timeout(30000),
+        }).catch(() => {
+            // Silent background warmup; submit error handling surfaces real request failures.
+        })
+    }, [config.pagesApi.baseUrl])
 
     useEffect(() => {
         return () => {
