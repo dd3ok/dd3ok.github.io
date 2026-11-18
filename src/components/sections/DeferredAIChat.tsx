@@ -3,6 +3,8 @@
 import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
 import AIChatFallback from '@/components/sections/AIChatFallback'
+import { getEnvConfig } from '@/utils/EnvConfig'
+import { prewarmApiHealthcheck } from '@/utils/prewarmApi'
 
 const AIChat = dynamic(() => import('@/components/sections/AIChat'), {
     loading: () => <AIChatFallback />,
@@ -12,6 +14,10 @@ export default function DeferredAIChat() {
     const [shouldRender, setShouldRender] = useState(false)
 
     useEffect(() => {
+        const config = getEnvConfig()
+        const whoAmAiHttpBase = config.whoAmAiApi?.baseUrl ?? config.whoAmAiWs?.baseUrl?.replace(/^ws(s?):/, 'http$1:')
+        prewarmApiHealthcheck(whoAmAiHttpBase)
+
         const browserWindow = window as Window & {
             requestIdleCallback?: (callback: IdleRequestCallback, options?: IdleRequestOptions) => number
             cancelIdleCallback?: (handle: number) => void

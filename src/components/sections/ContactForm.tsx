@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { getEnvConfig } from '@/utils/EnvConfig'
+import { prewarmApiHealthcheck } from '@/utils/prewarmApi'
 import StatusBanner from '@/components/ui/StatusBanner'
 
 interface ContactFormData {
@@ -27,7 +28,6 @@ type SubmitError = Error & {
 
 const MESSAGE_MIN_LENGTH = 10
 const MESSAGE_MAX_LENGTH = 1000
-const prewarmedContactApiUrls = new Set<string>()
 
 export default function ContactForm() {
     const [formData, setFormData] = useState<ContactFormData>({
@@ -43,18 +43,7 @@ export default function ContactForm() {
     const config = getEnvConfig()
 
     useEffect(() => {
-        const baseUrl = config.pagesApi.baseUrl
-        if (!baseUrl || prewarmedContactApiUrls.has(baseUrl)) {
-            return
-        }
-        prewarmedContactApiUrls.add(baseUrl)
-        void fetch(`${baseUrl}/api/healthcheck`, {
-            method: 'GET',
-            cache: 'no-store',
-            signal: AbortSignal.timeout(30000),
-        }).catch(() => {
-            // Silent background warmup; submit error handling surfaces real request failures.
-        })
+        prewarmApiHealthcheck(config.pagesApi.baseUrl)
     }, [config.pagesApi.baseUrl])
 
     useEffect(() => {
